@@ -68,11 +68,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // if there is not one pdf, then click this can go to previous one
     @IBAction func goToPreviousPDF(sender: NSButton) {
-        
+        if self.pdfSet?.index > 1 {
+            self.pdfSet?.index -= 1
+            self.currentPDFDocument = self.pdfSet?.currentPDF
+        }
     }
     
     // if there is not one pdf, then click this can to to next one
     @IBAction func goToNextPDF(sender: NSButton) {
+        if self.pdfSet?.index < totalNumberOfPDFs {
+            self.pdfSet?.index += 1
+            self.currentPDFDocument = self.pdfSet?.currentPDF
+        }
         
     }
     
@@ -82,11 +89,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var pdfSet: PDFSet? {
         didSet {
             self.currentPDFDocument = self.pdfSet?.currentPDF
-            self.totalNumberOfPDF = self.pdfSet!.totalNumberOfPDFs
+            self.totalNumberOfPDFs = self.pdfSet!.totalNumberOfPDFs
+            print("total number of pdfs is \(totalNumberOfPDFs)")
         }
     }
     // the total number of pdfs in the array
-    var totalNumberOfPDF = 0
+    var totalNumberOfPDFs = 0
     // current Viewing pdf
     var currentPDFDocument: PDFDocument? {
         didSet {

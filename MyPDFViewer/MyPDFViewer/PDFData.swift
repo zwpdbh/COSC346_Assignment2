@@ -18,7 +18,8 @@ class PDFSet {
     }
     
     var index = 0
-    var totalNumberOfPDFs = 0
+    
+    var totalNumberOfPDFs: Int
     
     var currentPDF: PDFDocument {
         return pdfDocuments[index]
@@ -29,6 +30,7 @@ class PDFSet {
             let url = pdfURLS[i]
             self.pdfDocuments.append(PDFDocument(URL: url))
         }
+        totalNumberOfPDFs = pdfURLS.count
     }
     
 }
