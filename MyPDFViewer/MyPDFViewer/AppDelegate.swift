@@ -30,65 +30,75 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         panel.beginWithCompletionHandler { (result) in
             if(result == NSFileHandlingPanelOKButton) {
-                self.pdfSet = PDFSet(urlSet: panel.URLs)
-                self.pdfView.setDocument(self.pdfSet?.getCurrentPDFDoc().getPDFDocument())
-                self.updateView()
+                self.pdfSet = PDFSet(pdfURLS: panel.URLs)
+                self.currentPDFDocument = self.pdfSet?.currentPDF
+                self.pdfView.setDocument(self.currentPDFDocument)
             }
         }
     }
     
     // go to previous page
     @IBAction func previousPage(sender: NSButton) {
-        self.pdfDoc?.moveToPreviouPage()
-        pdfView.goToPreviousPage(sender)
-        updateView()
+        if self.currentPDFDocument != nil {
+            if currentPageNumber > 1 {
+                currentPageNumber -= 1
+            } else {
+                currentPageNumber = 1
+            }
+        }
     }
     
     
     // go to the next page
     @IBAction func nextPage(sender: NSButton) {
-        self.pdfDoc?.moveToNextPage()
-        pdfView.goToNextPage(sender)
-        updateView()
+        if let doc = self.currentPDFDocument {
+            currentPageNumber = (currentPageNumber + 1) % doc.pageCount()
+        }
     }
     
     // go to the Given page
     @IBAction func goToGivenPage(sender: NSTextField) {
-        if let pageNumber = Int(sender.stringValue) {
-            let page = self.pdfDoc?.moveToPageAt(pageNumber)
-            self.pdfView.goToPage(page)
-            updateView()
+        if let pageNumber = Int(currentPageDisplay.stringValue) {
+            if pageNumber >= 1 && pageNumber <= totoalNumberOfPages {
+                print("move to page: \(pageNumber)")
+                currentPageNumber = pageNumber
+            }
         }
     }
     
     // if there is not one pdf, then click this can go to previous one
     @IBAction func goToPreviousPDF(sender: NSButton) {
-        if let pdfDoc = self.pdfSet?.getPreviousPDFDoc() {
-            self.pdfDoc = pdfDoc
-            let page = self.pdfDoc?.moveToPageAt(1)
-            self.pdfView.goToPage(page)
-            updateView()
-        }
+
     }
     
     // if there is not one pdf, then click this can to to next one
     @IBAction func goToNextPDF(sender: NSButton) {
-        if let doc = self.pdfSet?.getNextPDFDoc() {
-            updateView()
-        }
+        
     }
     
     
     // MARK: - pdf variable
-    var pdfSet: PDFSet?
-    var pdfDoc: PDFDoc?
-
-    func updateView() {
-        if let doc = self.pdfSet?.getCurrentPDFDoc() {
-            self.pdfDoc = doc
-            self.currentPageDisplay.stringValue = "\(doc.getCurrentPage())/\(doc.getTotalPages())"
+    var pdfSet: PDFSet? {
+        didSet {
+            self.currentPDFDocument = self.pdfSet?.currentPDF
         }
     }
+    var currentPDFDocument: PDFDocument? {
+        didSet {
+            currentPageNumber = 1
+            totoalNumberOfPages = currentPDFDocument!.pageCount()
+        }
+    }
+    
+    var totoalNumberOfPages = 0
+    var currentPageNumber: Int = 1 {
+        didSet {
+            print("go to page: \(currentPageNumber)")
+            pdfView.goToPage(currentPDFDocument?.pageAtIndex(currentPageNumber))
+            currentPageDisplay.stringValue = "\(currentPageNumber)/\(totoalNumberOfPages)"
+        }
+    }
+    
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
