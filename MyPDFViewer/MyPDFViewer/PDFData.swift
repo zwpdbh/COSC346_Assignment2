@@ -60,7 +60,7 @@ class PDFDoc {
     private var currentPDFPage: PDFPage
     private var currentPage: Int {
         didSet {
-            self.currentPDFPage = self.pdfDoc.pageAtIndex(currentPage)
+            self.currentPDFPage = self.pdfDoc.pageAtIndex(currentPage - 1)
         }
     }
     
@@ -69,7 +69,7 @@ class PDFDoc {
         self.pdfDoc = PDFDocument(URL: pdfURL)
         self.totalPages = self.pdfDoc.pageCount()
         self.currentPage = 1
-        self.currentPDFPage = self.pdfDoc.pageAtIndex(currentPage)
+        self.currentPDFPage = self.pdfDoc.pageAtIndex(currentPage - 1)
     }
     
     internal func getCurrentPage() -> Int {

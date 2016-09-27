@@ -12,13 +12,16 @@ import Quartz
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
+    // MARK: - Outlet
+    @IBOutlet weak var currentPageDisplay: NSTextField!
     
-    // MARK: - pdf variable
+    @IBOutlet weak var pdfView: PDFView!
     
-    var pdfSet: PDFSet?
-    var pdfDoc: PDFDoc?
+    @IBOutlet weak var window: NSWindow!
+    
+    
 
-    // MARK: - outlet and action
+    // MARK: - Action
     
     // open file action
     @IBAction func openFile(sender: NSMenuItem) {
@@ -29,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if(result == NSFileHandlingPanelOKButton) {
                 self.pdfSet = PDFSet(urlSet: panel.URLs)
                 self.pdfView.setDocument(self.pdfSet?.getCurrentPDFDoc().getPDFDocument())
+                self.updateView()
             }
         }
     }
@@ -37,7 +41,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func previousPage(sender: NSButton) {
         self.pdfDoc?.moveToPreviouPage()
         pdfView.goToPreviousPage(sender)
-        
         updateView()
     }
     
@@ -52,30 +55,37 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // go to the Given page
     @IBAction func goToGivenPage(sender: NSTextField) {
         if let pageNumber = Int(sender.stringValue) {
-            self.pdfDoc?.moveToPageAt(pageNumber)
+            let page = self.pdfDoc?.moveToPageAt(pageNumber)
+            self.pdfView.goToPage(page)
             updateView()
         }
     }
     
-    
     // if there is not one pdf, then click this can go to previous one
     @IBAction func goToPreviousPDF(sender: NSButton) {
-
+        self.pdfDoc = self.pdfSet?.getPreviousPDFDoc()
+        updateView()
     }
     
     // if there is not one pdf, then click this can to to next one
     @IBAction func goToNextPDF(sender: NSButton) {
-
+        self.pdfDoc = self.pdfSet?.getNextPDFDoc()
+        updateView()
     }
     
-    @IBOutlet weak var currentPageDisplay: NSTextField!
     
-    @IBOutlet weak var pdfView: PDFView!
+    // MARK: - pdf variable
     
-    @IBOutlet weak var window: NSWindow!
+    var pdfSet: PDFSet?
+    var pdfDoc: PDFDoc?
+
 
     func updateView() {
-        self.currentPageDisplay.stringValue = "\(self.pdfDoc?.getCurrentPage())/\(self.pdfDoc?.getTotalPages()))"
+        if let doc = self.pdfSet?.getCurrentPDFDoc() {
+            self.pdfDoc = doc
+            self.currentPageDisplay.stringValue = "\(doc.getCurrentPage())/\(doc.getTotalPages()))"
+        }
+
     }
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
