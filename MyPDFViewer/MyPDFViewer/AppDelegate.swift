@@ -65,7 +65,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func goToGivenPage(sender: NSTextField) {
         if let pageNumber = Int(currentPageDisplay.stringValue) {
             if pageNumber >= 1 && pageNumber <= totoalNumberOfPages {
-                print("move to page: \(pageNumber)")
                 currentPageNumber = pageNumber
             }
         }
@@ -103,6 +102,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.window.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
                 + set.titles[set.index]
         }
+    }
+    @IBAction func zoomIn(sender: NSButton) {
+        self.pdfView.zoomIn(sender)
+    }
+    
+    @IBAction func zoomOut(sender: NSButton) {
+        self.pdfView.zoomOut(sender)
+    }
+    
+    @IBAction func resetZoom(sender: NSButton) {
+        self.pdfView.setAutoScales(true)
     }
     
     // MARK: - PDF Model Variables

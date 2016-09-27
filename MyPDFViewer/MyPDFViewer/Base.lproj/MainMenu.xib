@@ -684,7 +684,7 @@
                         <rect key="frame" x="0.0" y="362" width="607" height="38"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ioM-Fc-vAy">
-                                <rect key="frame" x="255" y="8" width="96" height="22"/>
+                                <rect key="frame" x="294" y="7" width="96" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Ycj-jK-PSp">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -695,7 +695,7 @@
                                 </connections>
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MCT-hP-nhI">
-                                <rect key="frame" x="353" y="2" width="49" height="32"/>
+                                <rect key="frame" x="407" y="1" width="49" height="32"/>
                                 <buttonCell key="cell" type="push" title="&gt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WH2-C8-2Pb">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -705,7 +705,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7YT-LC-Ed7">
-                                <rect key="frame" x="204" y="1" width="49" height="32"/>
+                                <rect key="frame" x="243" y="0.0" width="49" height="32"/>
                                 <buttonCell key="cell" type="push" title="&lt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jCo-it-SQt">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -714,18 +714,18 @@
                                     <action selector="previousPage:" target="Voe-Tx-rLC" id="KsG-gh-UOm"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wrs-iH-937">
-                                <rect key="frame" x="402" y="1" width="57" height="32"/>
-                                <buttonCell key="cell" type="push" title="&gt;&gt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1Hh-qr-Yae">
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q44-Ad-uM2">
+                                <rect key="frame" x="5" y="1" width="49" height="32"/>
+                                <buttonCell key="cell" type="push" title="+" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="1G3-Bx-bQr">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="goToNextPDF:" target="Voe-Tx-rLC" id="81m-eF-76a"/>
+                                    <action selector="zoomIn:" target="Voe-Tx-rLC" id="5yP-Ba-nVz"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qXi-iE-uhD">
-                                <rect key="frame" x="147" y="2" width="57" height="32"/>
+                                <rect key="frame" x="186" y="0.0" width="57" height="32"/>
                                 <buttonCell key="cell" type="push" title="&lt;&lt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rRl-Pb-ZzE">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -734,19 +734,25 @@
                                     <action selector="goToPreviousPDF:" target="Voe-Tx-rLC" id="gZN-EZ-LhQ"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q44-Ad-uM2">
-                                <rect key="frame" x="41" y="1" width="49" height="32"/>
-                                <buttonCell key="cell" type="push" title="+" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="1G3-Bx-bQr">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e4I-TY-gCJ">
-                                <rect key="frame" x="84" y="1" width="47" height="32"/>
+                                <rect key="frame" x="116" y="1" width="47" height="32"/>
                                 <buttonCell key="cell" type="push" title="-" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6se-ng-FnV">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="zoomOut:" target="Voe-Tx-rLC" id="wa2-bA-VRs"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZA2-V1-CyG">
+                                <rect key="frame" x="54" y="1" width="62" height="32"/>
+                                <buttonCell key="cell" type="push" title="reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BlH-nb-MUa">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="resetZoom:" target="Voe-Tx-rLC" id="jPk-bJ-O16"/>
+                                </connections>
                             </button>
                         </subviews>
                     </customView>
@@ -757,7 +763,7 @@
                         <rect key="frame" x="50" y="13" width="547" height="349"/>
                     </pdfView>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JOH-Sy-FkN">
-                        <rect key="frame" x="461" y="368" width="76" height="26"/>
+                        <rect key="frame" x="514" y="367" width="76" height="26"/>
                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="vhR-vr-JpK">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
@@ -767,6 +773,16 @@
                             </connections>
                         </popUpButtonCell>
                     </popUpButton>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wrs-iH-937">
+                        <rect key="frame" x="457" y="363" width="57" height="32"/>
+                        <buttonCell key="cell" type="push" title="&gt;&gt;" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1Hh-qr-Yae">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="goToNextPDF:" target="Voe-Tx-rLC" id="81m-eF-76a"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="CCz-in-hNA" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="Ew2-OV-euU"/>
