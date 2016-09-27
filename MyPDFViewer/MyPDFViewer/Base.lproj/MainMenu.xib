@@ -17,6 +17,7 @@
             <connections>
                 <outlet property="currentPageDisplay" destination="ioM-Fc-vAy" id="Z6E-Zw-2ET"/>
                 <outlet property="pdfView" destination="Y9H-yc-Eqd" id="IVa-S9-fPe"/>
+                <outlet property="selectPDFButton" destination="JOH-Sy-FkN" id="hkN-kh-obn"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -755,6 +756,23 @@
                     <pdfView autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9H-yc-Eqd">
                         <rect key="frame" x="50" y="13" width="547" height="349"/>
                     </pdfView>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JOH-Sy-FkN">
+                        <rect key="frame" x="461" y="368" width="76" height="26"/>
+                        <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="vhR-vr-JpK">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="cO1-Wx-8DH">
+                                <items>
+                                    <menuItem title="Item 1" id="2zL-JS-1Ld"/>
+                                    <menuItem title="Item 2" id="17j-qD-eRe"/>
+                                    <menuItem title="Item 3" id="99E-aC-jAi"/>
+                                </items>
+                            </menu>
+                            <connections>
+                                <action selector="selectPDF:" target="Voe-Tx-rLC" id="MXX-vL-1oD"/>
+                            </connections>
+                        </popUpButtonCell>
+                    </popUpButton>
                 </subviews>
                 <constraints>
                     <constraint firstItem="CCz-in-hNA" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="Ew2-OV-euU"/>
