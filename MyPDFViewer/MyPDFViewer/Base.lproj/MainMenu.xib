@@ -680,13 +680,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="971" height="580"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Exm-33-Ewk">
-                        <rect key="frame" x="7" y="91" width="41" height="349"/>
-                    </customView>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="CCz-in-hNA">
                         <rect key="frame" x="0.0" y="540" width="971" height="40"/>
                         <subviews>
-                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3fA-HV-tIP">
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3fA-HV-tIP">
                                 <rect key="frame" x="18" y="7" width="78" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Option" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="km5-y3-gxY" id="qC0-E5-4EB">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -700,7 +697,7 @@
                                     </menu>
                                 </popUpButtonCell>
                             </popUpButton>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZsS-t2-Izz">
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZsS-t2-Izz">
                                 <rect key="frame" x="370" y="0.0" width="477" height="40"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MCT-hP-nhI">
@@ -766,35 +763,19 @@
                                         </connections>
                                     </textField>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="477" id="6Be-aC-Jhi"/>
-                                </constraints>
                             </customView>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sUz-LS-0qt">
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sUz-LS-0qt">
                                 <rect key="frame" x="855" y="9" width="96" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="96" id="MPN-YJ-ecA"/>
-                                </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="search" drawsBackground="YES" id="sqH-Pc-eK2">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="HJN-Ja-95Z">
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HJN-Ja-95Z">
                                 <rect key="frame" x="176" y="0.0" width="186" height="40"/>
                                 <subviews>
-                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e4I-TY-gCJ">
-                                        <rect key="frame" x="125" y="3" width="47" height="32"/>
-                                        <buttonCell key="cell" type="push" title="-" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6se-ng-FnV">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="zoomOut:" target="Voe-Tx-rLC" id="wa2-bA-VRs"/>
-                                        </connections>
-                                    </button>
-                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZA2-V1-CyG">
+                                    <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZA2-V1-CyG">
                                         <rect key="frame" x="63" y="3" width="62" height="32"/>
                                         <buttonCell key="cell" type="push" title="reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BlH-nb-MUa">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -814,35 +795,31 @@
                                             <action selector="zoomIn:" target="Voe-Tx-rLC" id="5yP-Ba-nVz"/>
                                         </connections>
                                     </button>
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e4I-TY-gCJ">
+                                        <rect key="frame" x="125" y="3" width="47" height="32"/>
+                                        <buttonCell key="cell" type="push" title="-" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6se-ng-FnV">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="zoomOut:" target="Voe-Tx-rLC" id="wa2-bA-VRs"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="186" id="x6R-4x-R7l"/>
-                                </constraints>
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="HJN-Ja-95Z" firstAttribute="centerY" secondItem="CCz-in-hNA" secondAttribute="centerY" id="1AB-6f-M9H"/>
-                            <constraint firstAttribute="height" constant="40" id="6pS-wq-k7k"/>
-                            <constraint firstItem="sUz-LS-0qt" firstAttribute="centerY" secondItem="CCz-in-hNA" secondAttribute="centerY" id="8NT-vO-fbH"/>
-                            <constraint firstItem="ZsS-t2-Izz" firstAttribute="centerY" secondItem="CCz-in-hNA" secondAttribute="centerY" id="HxI-oo-3f6"/>
-                            <constraint firstItem="HJN-Ja-95Z" firstAttribute="height" secondItem="CCz-in-hNA" secondAttribute="height" id="PV0-40-v0F"/>
-                            <constraint firstItem="3fA-HV-tIP" firstAttribute="leading" secondItem="CCz-in-hNA" secondAttribute="leading" constant="20" id="RAl-w1-a2H"/>
-                            <constraint firstItem="sUz-LS-0qt" firstAttribute="leading" secondItem="ZsS-t2-Izz" secondAttribute="trailing" constant="8" id="Vbm-jd-8TL"/>
-                            <constraint firstAttribute="trailing" secondItem="sUz-LS-0qt" secondAttribute="trailing" constant="20" id="fdQ-T5-6aX"/>
-                            <constraint firstItem="ZsS-t2-Izz" firstAttribute="leading" secondItem="HJN-Ja-95Z" secondAttribute="trailing" constant="8" id="iok-DV-a5S"/>
-                            <constraint firstItem="3fA-HV-tIP" firstAttribute="centerY" secondItem="CCz-in-hNA" secondAttribute="centerY" id="jxS-TW-RyX"/>
-                            <constraint firstItem="HJN-Ja-95Z" firstAttribute="leading" secondItem="3fA-HV-tIP" secondAttribute="trailing" constant="83" id="reM-TJ-yJo"/>
-                            <constraint firstItem="ZsS-t2-Izz" firstAttribute="height" secondItem="CCz-in-hNA" secondAttribute="height" id="yKL-ho-yBr"/>
+                            <constraint firstAttribute="height" constant="40" id="9jo-3M-h9R"/>
                         </constraints>
                     </customView>
                     <pdfView autoresizesSubviews="NO" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y9H-yc-Eqd">
-                        <rect key="frame" x="186" y="57" width="547" height="349"/>
+                        <rect key="frame" x="281" y="183" width="547" height="349"/>
                     </pdfView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="CCz-in-hNA" secondAttribute="trailing" id="OVK-Jq-eaS"/>
-                    <constraint firstItem="CCz-in-hNA" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="gfz-lM-bXX"/>
-                    <constraint firstItem="CCz-in-hNA" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="p9G-jc-Fms"/>
+                    <constraint firstItem="CCz-in-hNA" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="20Z-Ur-K6m"/>
+                    <constraint firstAttribute="trailing" secondItem="CCz-in-hNA" secondAttribute="trailing" id="30p-kU-Uee"/>
+                    <constraint firstItem="CCz-in-hNA" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="heE-hE-EEl"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="744.5" y="14"/>
