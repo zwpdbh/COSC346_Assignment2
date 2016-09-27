@@ -12,10 +12,24 @@ import Quartz
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
-    var filePath: String?
     
-    var pdfDoc: PDFDocument?
+    // MARK: - pdf variable
+    var currentPDFPage: PDFPage?
+    var currentPageIndex: Int = 1 {
+        didSet {
+            currentPageDisplay.stringValue = "\(currentPageIndex)/\(self.totalPageCount)"
+        }
+    };
     
+    var totalPageCount = 0;
+    var pdfDoc: PDFDocument? {
+        didSet {
+            updateWithDocInfo()
+        }
+    }
+    
+    
+    // MARK: - outlet and action
     @IBAction func openFile(sender: NSMenuItem) {
         let panel = NSOpenPanel()
         panel.beginWithCompletionHandler { (result) in
@@ -27,20 +41,38 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-
+    
+    // go to previous page
     @IBAction func previousPage(sender: NSButton) {
-        
-    }
-    @IBAction func nextPage(sender: NSButton) {
-        
+       pdfView.goToPreviousPage(sender)
+        if currentPageIndex > 1 {
+            currentPageIndex -= 1
+            print("currentPage go to: \(currentPageIndex)")
+        }
     }
     
-    @IBOutlet weak var currentPage: NSTextField!
+    
+    // go to the next page
+    @IBAction func nextPage(sender: NSButton) {
+        pdfView.goToNextPage(sender)
+        if currentPageIndex < self.totalPageCount {
+            currentPageIndex += 1
+            print("currentPage go to: \(currentPageIndex)")
+        }
+    }
+    @IBOutlet weak var currentPageDisplay: NSTextField!
     
     @IBOutlet weak var pdfView: PDFView!
     
     @IBOutlet weak var window: NSWindow!
 
+    func updateWithDocInfo() {
+        if let doc = self.pdfDoc {
+            currentPDFPage = pdfView.currentPage()
+            totalPageCount = doc.pageCount()
+            currentPageIndex = 1
+        }
+    }
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application

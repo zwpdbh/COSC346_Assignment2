@@ -15,7 +15,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MyPDFViewer" customModuleProvider="target">
             <connections>
-                <outlet property="currentPage" destination="ioM-Fc-vAy" id="Qbs-bb-bzp"/>
+                <outlet property="currentPageDisplay" destination="ioM-Fc-vAy" id="Z6E-Zw-2ET"/>
                 <outlet property="pdfView" destination="Y9H-yc-Eqd" id="IVa-S9-fPe"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
