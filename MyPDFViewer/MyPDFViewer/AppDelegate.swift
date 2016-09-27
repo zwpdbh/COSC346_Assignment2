@@ -68,7 +68,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // if there is not one pdf, then click this can go to previous one
     @IBAction func goToPreviousPDF(sender: NSButton) {
-
+        
     }
     
     // if there is not one pdf, then click this can to to next one
@@ -77,20 +77,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    // MARK: - pdf variable
+    // MARK: - PDF Model variables
+    // a array of pdfs
     var pdfSet: PDFSet? {
         didSet {
             self.currentPDFDocument = self.pdfSet?.currentPDF
+            self.totalNumberOfPDF = self.pdfSet!.totalNumberOfPDFs
         }
     }
+    // the total number of pdfs in the array
+    var totalNumberOfPDF = 0
+    // current Viewing pdf
     var currentPDFDocument: PDFDocument? {
         didSet {
             currentPageNumber = 1
             totoalNumberOfPages = currentPDFDocument!.pageCount()
         }
     }
-    
+    // current pdf pages
     var totoalNumberOfPages = 0
+    // current viewing page
     var currentPageNumber: Int = 1 {
         didSet {
             print("go to page: \(currentPageNumber)")

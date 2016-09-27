@@ -10,8 +10,16 @@ import Cocoa
 import Quartz
 
 class PDFSet {
-    var pdfDocuments: Array<PDFDocument> = []
+    private var pdfDocuments: Array<PDFDocument> = [] {
+        didSet {
+            totalNumberOfPDFs = self.pdfDocuments.count
+            index = 0;
+        }
+    }
+    
     var index = 0
+    var totalNumberOfPDFs = 0
+    
     var currentPDF: PDFDocument {
         return pdfDocuments[index]
     }
@@ -21,8 +29,8 @@ class PDFSet {
             let url = pdfURLS[i]
             self.pdfDocuments.append(PDFDocument(URL: url))
         }
-        
     }
+    
 }
 
 
