@@ -22,19 +22,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var selectPDFButton: NSPopUpButton!
 
     // MARK: - Action
-    
     // open pdf files and put them into array
     @IBAction func openFile(sender: NSMenuItem) {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = true;
         
         panel.beginWithCompletionHandler { (result) in
-
             if(result == NSFileHandlingPanelOKButton) {
                 self.pdfSet = PDFSet(pdfURLS: panel.URLs)
                 self.currentPDFDocument = self.pdfSet?.currentPDF
                 self.pdfView.setDocument(self.currentPDFDocument)
-
+                
+                for title in self.pdfSet!.titles {
+                    self.selectPDFButton.addItemWithTitle(title)
+                }
             }
         }
     }
@@ -89,7 +90,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     // move to selected pdf
     @IBAction func selectPDF(sender: NSPopUpButtonCell) {
-        
+        if let set = self.pdfSet {
+            let selectedIndex = self.selectPDFButton.indexOfSelectedItem
+            set.index = selectedIndex
+            self.currentPDFDocument = set.currentPDF
+        }
     }
     
     // MARK: - PDF Model variables

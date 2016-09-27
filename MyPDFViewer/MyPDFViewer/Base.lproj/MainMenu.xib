@@ -761,13 +761,7 @@
                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="vhR-vr-JpK">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
-                            <menu key="menu" id="cO1-Wx-8DH">
-                                <items>
-                                    <menuItem title="Item 1" id="2zL-JS-1Ld"/>
-                                    <menuItem title="Item 2" id="17j-qD-eRe"/>
-                                    <menuItem title="Item 3" id="99E-aC-jAi"/>
-                                </items>
-                            </menu>
+                            <menu key="menu" id="cO1-Wx-8DH"/>
                             <connections>
                                 <action selector="selectPDF:" target="Voe-Tx-rLC" id="MXX-vL-1oD"/>
                             </connections>

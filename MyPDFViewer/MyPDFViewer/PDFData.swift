@@ -17,6 +17,8 @@ class PDFSet {
         }
     }
     
+    var titles: Array<String> = []
+    
     var index = 0
     
     var totalNumberOfPDFs: Int
@@ -30,7 +32,14 @@ class PDFSet {
     init(pdfURLS: Array<NSURL>) {
         for i in 0..<pdfURLS.count {
             let url = pdfURLS[i]
-            self.pdfDocuments.append(PDFDocument(URL: url))
+            let pdfDoc = PDFDocument(URL: url)
+            self.pdfDocuments.append(pdfDoc)
+            
+            if let title = pdfDoc.documentAttributes()["Title"] {
+                self.titles.append(title as! String)
+            } else {
+                self.titles.append(url.lastPathComponent!)
+            }
         }
         totalNumberOfPDFs = pdfURLS.count
     }
