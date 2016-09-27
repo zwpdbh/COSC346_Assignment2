@@ -683,7 +683,7 @@
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="CCz-in-hNA">
                         <rect key="frame" x="0.0" y="540" width="971" height="40"/>
                         <subviews>
-                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3fA-HV-tIP">
+                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3fA-HV-tIP">
                                 <rect key="frame" x="18" y="7" width="78" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Option" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="km5-y3-gxY" id="qC0-E5-4EB">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -697,7 +697,7 @@
                                     </menu>
                                 </popUpButtonCell>
                             </popUpButton>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZsS-t2-Izz">
+                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZsS-t2-Izz">
                                 <rect key="frame" x="370" y="0.0" width="477" height="40"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MCT-hP-nhI">
@@ -764,15 +764,18 @@
                                     </textField>
                                 </subviews>
                             </customView>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sUz-LS-0qt">
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sUz-LS-0qt">
                                 <rect key="frame" x="855" y="9" width="96" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="96" id="Uaw-vl-RVd"/>
+                                </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="search" drawsBackground="YES" id="sqH-Pc-eK2">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HJN-Ja-95Z">
+                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HJN-Ja-95Z">
                                 <rect key="frame" x="176" y="0.0" width="186" height="40"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZA2-V1-CyG">
@@ -809,7 +812,22 @@
                             </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="ZsS-t2-Izz" firstAttribute="centerY" secondItem="sUz-LS-0qt" secondAttribute="centerY" id="0HE-qk-41J"/>
+                            <constraint firstItem="3fA-HV-tIP" firstAttribute="leading" secondItem="CCz-in-hNA" secondAttribute="leading" constant="20" id="1k8-ST-EtZ"/>
+                            <constraint firstItem="ZsS-t2-Izz" firstAttribute="top" secondItem="CCz-in-hNA" secondAttribute="top" id="3qy-tP-Ja1"/>
+                            <constraint firstItem="ZsS-t2-Izz" firstAttribute="height" secondItem="CCz-in-hNA" secondAttribute="height" id="4QV-Vn-7Qi"/>
                             <constraint firstAttribute="height" constant="40" id="9jo-3M-h9R"/>
+                            <constraint firstItem="HJN-Ja-95Z" firstAttribute="height" secondItem="CCz-in-hNA" secondAttribute="height" id="Jq1-Aa-ckh"/>
+                            <constraint firstItem="sUz-LS-0qt" firstAttribute="top" secondItem="CCz-in-hNA" secondAttribute="top" constant="9" id="KwB-QZ-Xua"/>
+                            <constraint firstItem="ZsS-t2-Izz" firstAttribute="leading" secondItem="HJN-Ja-95Z" secondAttribute="trailing" constant="8" id="NrY-a2-Nyk"/>
+                            <constraint firstItem="3fA-HV-tIP" firstAttribute="centerY" secondItem="HJN-Ja-95Z" secondAttribute="centerY" id="RIm-zb-pZI"/>
+                            <constraint firstItem="sUz-LS-0qt" firstAttribute="leading" secondItem="ZsS-t2-Izz" secondAttribute="trailing" constant="8" id="VD0-X6-5ZA"/>
+                            <constraint firstAttribute="bottom" secondItem="ZsS-t2-Izz" secondAttribute="bottom" id="YBa-i0-GKe"/>
+                            <constraint firstAttribute="trailing" secondItem="sUz-LS-0qt" secondAttribute="trailing" constant="20" id="bFF-Gy-RoV"/>
+                            <constraint firstItem="3fA-HV-tIP" firstAttribute="top" secondItem="CCz-in-hNA" secondAttribute="top" constant="9" id="lFv-Ge-ARP"/>
+                            <constraint firstItem="HJN-Ja-95Z" firstAttribute="top" secondItem="CCz-in-hNA" secondAttribute="top" id="p4F-II-OHC"/>
+                            <constraint firstAttribute="bottom" secondItem="HJN-Ja-95Z" secondAttribute="bottom" id="vEm-C9-SOb"/>
+                            <constraint firstItem="ZsS-t2-Izz" firstAttribute="centerY" secondItem="HJN-Ja-95Z" secondAttribute="centerY" id="vfe-4j-PB9"/>
                         </constraints>
                     </customView>
                     <pdfView autoresizesSubviews="NO" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y9H-yc-Eqd">
@@ -822,7 +840,7 @@
                     <constraint firstItem="CCz-in-hNA" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="heE-hE-EEl"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="744.5" y="14"/>
+            <point key="canvasLocation" x="736.5" y="39"/>
         </window>
     </objects>
 </document>
