@@ -28,6 +28,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    @IBAction func previousPage(sender: NSButton) {
+        
+    }
+    @IBAction func nextPage(sender: NSButton) {
+        
+    }
+    
+    @IBOutlet weak var currentPage: NSTextField!
+    
     @IBOutlet weak var pdfView: PDFView!
     
     @IBOutlet weak var window: NSWindow!

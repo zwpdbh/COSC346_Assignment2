@@ -11,7 +11,6 @@
 		DBC315571D9A05580036CE5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBC315561D9A05580036CE5A /* Assets.xcassets */; };
 		DBC3155A1D9A05580036CE5A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBC315581D9A05580036CE5A /* MainMenu.xib */; };
 		DBC315621D9A05700036CE5A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC315611D9A05700036CE5A /* Quartz.framework */; };
-		DBC315641D9A06610036CE5A /* Java_Foundations.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DBC315631D9A06610036CE5A /* Java_Foundations.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,7 +20,6 @@
 		DBC315591D9A05580036CE5A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		DBC3155B1D9A05580036CE5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBC315611D9A05700036CE5A /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
-		DBC315631D9A06610036CE5A /* Java_Foundations.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = Java_Foundations.pdf; path = ../../../../../Books/COSC/Java/Java_Foundations.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +54,6 @@
 		DBC315531D9A05580036CE5A /* MyPDFViewer */ = {
 			isa = PBXGroup;
 			children = (
-				DBC315631D9A06610036CE5A /* Java_Foundations.pdf */,
 				DBC315541D9A05580036CE5A /* AppDelegate.swift */,
 				DBC315561D9A05580036CE5A /* Assets.xcassets */,
 				DBC315581D9A05580036CE5A /* MainMenu.xib */,
@@ -125,7 +122,6 @@
 			files = (
 				DBC315571D9A05580036CE5A /* Assets.xcassets in Resources */,
 				DBC3155A1D9A05580036CE5A /* MainMenu.xib in Resources */,
-				DBC315641D9A06610036CE5A /* Java_Foundations.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
