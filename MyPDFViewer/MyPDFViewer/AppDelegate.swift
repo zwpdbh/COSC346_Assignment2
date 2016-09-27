@@ -23,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Action
     
-    // open file action
+    // open pdf files and put them into array
     @IBAction func openFile(sender: NSMenuItem) {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = true;
@@ -68,19 +68,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // if there is not one pdf, then click this can go to previous one
     @IBAction func goToPreviousPDF(sender: NSButton) {
-        if self.pdfSet?.index > 1 {
-            self.pdfSet?.index -= 1
-            self.currentPDFDocument = self.pdfSet?.currentPDF
+        if let set = self.pdfSet {
+            if (set.index - 1) >= 0 {
+                set.index -= 1
+                self.currentPDFDocument = set.currentPDF
+            }
         }
     }
     
     // if there is not one pdf, then click this can to to next one
     @IBAction func goToNextPDF(sender: NSButton) {
-        if self.pdfSet?.index < totalNumberOfPDFs {
-            self.pdfSet?.index += 1
-            self.currentPDFDocument = self.pdfSet?.currentPDF
+        if let set = self.pdfSet {
+            if (set.index + 1) < totalNumberOfPDFs {
+                set.index += 1
+                self.currentPDFDocument = set.currentPDF
+            }
         }
-        
     }
     
     
@@ -98,8 +101,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // current Viewing pdf
     var currentPDFDocument: PDFDocument? {
         didSet {
+            self.pdfView.setDocument(self.currentPDFDocument)
             currentPageNumber = 1
             totoalNumberOfPages = currentPDFDocument!.pageCount()
+            updateUI()
         }
     }
     // current pdf pages
@@ -107,12 +112,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // current viewing page
     var currentPageNumber: Int = 1 {
         didSet {
-            print("go to page: \(currentPageNumber)")
-            pdfView.goToPage(currentPDFDocument?.pageAtIndex(currentPageNumber))
-            currentPageDisplay.stringValue = "\(currentPageNumber)/\(totoalNumberOfPages)"
+            updateUI()
         }
     }
     
+    func updateUI() {
+        pdfView.goToPage(currentPDFDocument?.pageAtIndex(currentPageNumber))
+        currentPageDisplay.stringValue = "\(currentPageNumber)/\(totoalNumberOfPages)"
+    }
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application

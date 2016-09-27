@@ -22,6 +22,8 @@ class PDFSet {
     var totalNumberOfPDFs: Int
     
     var currentPDF: PDFDocument {
+        assert(index >= 0 && index < self.pdfDocuments.count, "invalid index is: \(index)")
+        print("move to \(index)th PDF")
         return pdfDocuments[index]
     }
     
