@@ -36,12 +36,12 @@ class PDFSet {
     
     // MARK: - PDFDoc operation
     internal func getPreviousPDFDoc() -> PDFDoc{
-        fileIndex = fileIndex - 1 < 0 ? (pdfDocSet.count - 1) : (fileIndex - 1)
+        self.fileIndex = self.fileIndex - 1 < 0 ? (pdfDocSet.count - 1) : (self.fileIndex - 1)
         return self.pdfDocSet[fileIndex]
     }
     
     internal func getNextPDFDoc() -> PDFDoc {
-        self.fileIndex = (fileIndex + 1) % self.pdfDocSet.count
+        self.fileIndex = (self.fileIndex + 1) % self.pdfDocSet.count
         return self.pdfDocSet[fileIndex]
     }
     
@@ -54,22 +54,25 @@ class PDFSet {
 
 class PDFDoc {
     private var pdfURL: NSURL
-    private var pdfDoc: PDFDocument
+    private var pdfDocument: PDFDocument
     private var title: String?
     private var totalPages: Int
-    private var currentPDFPage: PDFPage
-    private var currentPage: Int {
-        didSet {
-            self.currentPDFPage = self.pdfDoc.pageAtIndex(currentPage - 1)
-        }
+    
+    private var currentPage: Int = 1
+    
+    private var currentPageIndex: Int {
+        return self.currentPage - 1
     }
+    private var currentPDFPage: PDFPage {
+        return self.pdfDocument.pageAtIndex(self.currentPageIndex)
+    }
+
     
     init(pdfURL: NSURL) {
         self.pdfURL = pdfURL
-        self.pdfDoc = PDFDocument(URL: pdfURL)
-        self.totalPages = self.pdfDoc.pageCount()
+        self.pdfDocument = PDFDocument(URL: pdfURL)
+        self.totalPages = self.pdfDocument.pageCount()
         self.currentPage = 1
-        self.currentPDFPage = self.pdfDoc.pageAtIndex(currentPage - 1)
     }
     
     internal func getCurrentPage() -> Int {
@@ -77,12 +80,16 @@ class PDFDoc {
     }
     
     internal func moveToNextPage() -> PDFPage {
-        self.currentPage = (self.currentPage + 1) >= self.totalPages ? (self.totalPages - 1) : (self.currentPage + 1)
+        self.currentPage = (self.currentPage + 1) % self.totalPages
         return self.currentPDFPage
     }
     
     internal func moveToPreviouPage() -> PDFPage {
-        self.currentPage = (self.currentPage - 1) <= 0 ? 0 : (self.currentPage - 1)
+        if self.currentPage > 1 {
+            self.currentPage -= 1
+        } else {
+            self.currentPage = 1
+        }
         return self.currentPDFPage
     }
     
@@ -95,11 +102,15 @@ class PDFDoc {
         }
     }
     
+    internal func getCurrentPDFPage() -> PDFPage {
+        return self.pdfDocument.pageAtIndex(currentPageIndex)
+    }
+    
     internal func getTotalPages() -> Int {
         return self.totalPages
     }
     
     internal func getPDFDocument() ->PDFDocument {
-        return self.pdfDoc
+        return self.pdfDocument
     }
 }
