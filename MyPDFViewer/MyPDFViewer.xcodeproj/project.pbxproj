@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB2A94E41D9A4A88002B9083 /* PDFData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2A94E31D9A4A88002B9083 /* PDFData.swift */; };
 		DBC315551D9A05580036CE5A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC315541D9A05580036CE5A /* AppDelegate.swift */; };
 		DBC315571D9A05580036CE5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBC315561D9A05580036CE5A /* Assets.xcassets */; };
 		DBC3155A1D9A05580036CE5A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBC315581D9A05580036CE5A /* MainMenu.xib */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB2A94E31D9A4A88002B9083 /* PDFData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFData.swift; sourceTree = "<group>"; };
 		DBC315511D9A05580036CE5A /* MyPDFViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPDFViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBC315541D9A05580036CE5A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBC315561D9A05580036CE5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				DBC315541D9A05580036CE5A /* AppDelegate.swift */,
+				DB2A94E31D9A4A88002B9083 /* PDFData.swift */,
 				DBC315561D9A05580036CE5A /* Assets.xcassets */,
 				DBC315581D9A05580036CE5A /* MainMenu.xib */,
 				DBC3155B1D9A05580036CE5A /* Info.plist */,
@@ -132,6 +135,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB2A94E41D9A4A88002B9083 /* PDFData.swift in Sources */,
 				DBC315551D9A05580036CE5A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,6 +279,7 @@
 				DBC315601D9A05580036CE5A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
