@@ -133,6 +133,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    // update windown info to indicate selected pdf
     func updateWindow() {
         if let set = self.pdfSet {
             self.window.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
@@ -140,6 +141,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    // update view, set current pdf to certain page, and update current page info
     func updateView() {
         pdfView.goToPage(currentPDFDocument?.pageAtIndex(currentPageNumber))
         currentPageDisplay.stringValue = "\(currentPageNumber)/\(totoalNumberOfPages)"
