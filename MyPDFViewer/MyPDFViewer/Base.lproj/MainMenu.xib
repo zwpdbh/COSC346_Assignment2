@@ -689,6 +689,9 @@
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="goToGivenPage:" target="Voe-Tx-rLC" id="4fu-My-E3F"/>
+                                </connections>
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MCT-hP-nhI">
                                 <rect key="frame" x="353" y="2" width="49" height="32"/>

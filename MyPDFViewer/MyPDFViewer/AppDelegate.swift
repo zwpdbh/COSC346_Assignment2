@@ -60,6 +60,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             print("currentPage go to: \(currentPageIndex)")
         }
     }
+    
+    @IBAction func goToGivenPage(sender: NSTextField) {
+        if let pageNumber = Int(sender.stringValue) {
+            let page = self.pdfDoc?.pageAtIndex(pageNumber - 1)
+            self.pdfView.goToPage(page)
+            self.currentPageIndex = pageNumber
+        }
+    }
+    
+    
     @IBOutlet weak var currentPageDisplay: NSTextField!
     
     @IBOutlet weak var pdfView: PDFView!
