@@ -34,12 +34,7 @@ class PDFSet {
             let url = pdfURLS[i]
             let pdfDoc = PDFDocument(URL: url)
             self.pdfDocuments.append(pdfDoc)
-            
-            if let title = pdfDoc.documentAttributes()["Title"] {
-                self.titles.append(title as! String)
-            } else {
-                self.titles.append(url.lastPathComponent!)
-            }
+            self.titles.append(url.lastPathComponent!)
         }
         totalNumberOfPDFs = pdfURLS.count
     }

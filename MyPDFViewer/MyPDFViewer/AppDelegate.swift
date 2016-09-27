@@ -29,6 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         panel.beginWithCompletionHandler { (result) in
             if(result == NSFileHandlingPanelOKButton) {
+                self.selectPDFButton.removeAllItems()
                 self.pdfSet = PDFSet(pdfURLS: panel.URLs)
                 self.currentPDFDocument = self.pdfSet?.currentPDF
                 self.pdfView.setDocument(self.currentPDFDocument)
@@ -36,6 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 for title in self.pdfSet!.titles {
                     self.selectPDFButton.addItemWithTitle(title)
                 }
+                self.updateWindow()
             }
         }
     }
@@ -75,6 +77,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if (set.index - 1) >= 0 {
                 set.index -= 1
                 self.currentPDFDocument = set.currentPDF
+                self.selectPDFButton.selectItemAtIndex(set.index)
+                updateWindow()
             }
         }
     }
@@ -85,6 +89,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if (set.index + 1) < totalNumberOfPDFs {
                 set.index += 1
                 self.currentPDFDocument = set.currentPDF
+                self.selectPDFButton.selectItemAtIndex(set.index)
+                updateWindow()
             }
         }
     }
@@ -94,16 +100,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let selectedIndex = self.selectPDFButton.indexOfSelectedItem
             set.index = selectedIndex
             self.currentPDFDocument = set.currentPDF
+            self.window.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
+                + set.titles[set.index]
         }
     }
     
-    // MARK: - PDF Model variables
+    // MARK: - PDF Model Variables
     // a array of pdfs
     var pdfSet: PDFSet? {
         didSet {
             self.currentPDFDocument = self.pdfSet?.currentPDF
             self.totalNumberOfPDFs = self.pdfSet!.totalNumberOfPDFs
-            print("total number of pdfs is \(totalNumberOfPDFs)")
         }
     }
     // the total number of pdfs in the array
@@ -114,7 +121,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.pdfView.setDocument(self.currentPDFDocument)
             currentPageNumber = 1
             totoalNumberOfPages = currentPDFDocument!.pageCount()
-            updateUI()
+            updateView()
         }
     }
     // current pdf pages
@@ -122,11 +129,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // current viewing page
     var currentPageNumber: Int = 1 {
         didSet {
-            updateUI()
+            updateView()
         }
     }
     
-    func updateUI() {
+    func updateWindow() {
+        if let set = self.pdfSet {
+            self.window.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
+                + set.titles[set.index]
+        }
+    }
+    
+    func updateView() {
         pdfView.goToPage(currentPDFDocument?.pageAtIndex(currentPageNumber))
         currentPageDisplay.stringValue = "\(currentPageNumber)/\(totoalNumberOfPages)"
     }
