@@ -10,6 +10,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController" customModule="PDFViewer" customModuleProvider="target">
             <connections>
                 <outlet property="currentPageDisplay" destination="Dj8-HB-TrA" id="dMy-tm-8Fz"/>
+                <outlet property="outlineView" destination="hfp-Lr-kqT" id="h8z-D1-aPC"/>
                 <outlet property="pdfView" destination="rGX-jC-ItO" id="kJR-VF-bFe"/>
                 <outlet property="selectPDFButton" destination="zCm-O7-SH2" id="3NB-3h-Kbv"/>
                 <outlet property="window" destination="HyS-vU-HKh" id="ZuL-fK-VhN"/>
@@ -821,7 +822,7 @@
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aO4-P8-BEo">
                         <rect key="frame" x="0.0" y="0.0" width="168" height="419"/>
                         <clipView key="contentView" id="qkR-Ws-h4F">
-                            <rect key="frame" x="1" y="23" width="166" height="395"/>
+                            <rect key="frame" x="1" y="0.0" width="166" height="418"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="XsH-NY-7Cb" viewBased="YES" indentationPerLevel="16" outlineTableColumn="eJ5-Ba-PFx" id="hfp-Lr-kqT">

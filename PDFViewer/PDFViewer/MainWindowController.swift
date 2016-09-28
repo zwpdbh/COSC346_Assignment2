@@ -16,6 +16,7 @@ class MainWindowController: NSWindowController {
     
     @IBOutlet weak var pdfView: PDFView!
     
+    @IBOutlet weak var outlineView: NSOutlineView!
     
     @IBOutlet weak var selectPDFButton: NSPopUpButton!
     
