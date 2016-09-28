@@ -10,7 +10,7 @@ import Cocoa
 import Quartz
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     // MARK: - Outlet
     @IBOutlet weak var currentPageDisplay: NSTextField!
@@ -37,6 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 for title in self.pdfSet!.titles {
                     self.selectPDFButton.addItemWithTitle(title)
                 }
+                
                 self.updateWindow()
             }
         }
@@ -165,6 +166,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
 
+    // MARK: - Action Related to Window
+    func windowDidResize(notification: NSNotification) {
+        self.pdfView.setAutoScales(true)
+    }
 
 }
 
