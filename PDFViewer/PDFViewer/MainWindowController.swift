@@ -9,7 +9,7 @@
 import Cocoa
 import Quartz
 
-class MainWindowController: NSWindowController {
+class MainWindowController: NSWindowController, NSOutlineViewDataSource, NSOutlineViewDelegate {
 
     // MARK: - Outlet
     @IBOutlet weak var currentPageDisplay: NSTextField!
