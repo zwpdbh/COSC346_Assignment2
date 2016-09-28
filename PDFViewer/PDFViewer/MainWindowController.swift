@@ -9,7 +9,8 @@
 import Cocoa
 import Quartz
 
-class MainWindowController: NSWindowController, NSOutlineViewDataSource, NSOutlineViewDelegate {
+
+class MainWindowController: NSWindowController, PDFSetDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
 
     // MARK: - Outlet
     @IBOutlet weak var currentPageDisplay: NSTextField!
@@ -30,25 +31,24 @@ class MainWindowController: NSWindowController, NSOutlineViewDataSource, NSOutli
             if(result == NSFileHandlingPanelOKButton) {
                 self.selectPDFButton.removeAllItems()
                 self.pdfSet = PDFSet(pdfURLS: panel.URLs)
-                self.currentPDFDocument = self.pdfSet?.currentPDF
-                self.pdfView.setDocument(self.currentPDFDocument)
                 
-                for title in self.pdfSet!.titles {
-                    self.selectPDFButton.addItemWithTitle(title)
+                
+                if let set = self.pdfSet {
+                    for title in set.getTitlesOfPDFSet() {
+                        self.selectPDFButton.addItemWithTitle(title)
+                    }
+                    set.delegate = self
+                    self.pdfView.setDocument(set.moveToGivenPDF(0))
                 }
-                
-                self.updateWindow()
             }
         }
     }
     
     // go to previous page
     @IBAction func previousPage(sender: NSButton) {
-        if self.currentPDFDocument != nil {
-            if currentPageNumber > 1 {
-                currentPageNumber -= 1
-            } else {
-                currentPageNumber = 1
+        if let set = self.pdfSet {
+            if let page = set.moveToPreviousPage() {
+                self.pdfView.goToPage(page)
             }
         }
     }
@@ -56,16 +56,20 @@ class MainWindowController: NSWindowController, NSOutlineViewDataSource, NSOutli
     
     // go to the next page
     @IBAction func nextPage(sender: NSButton) {
-        if let doc = self.currentPDFDocument {
-            currentPageNumber = (currentPageNumber + 1) % doc.pageCount()
+        if let set = self.pdfSet {
+            if let page = set.moveToNextPage() {
+                self.pdfView.goToPage(page)
+            }
         }
     }
     
     // go to the Given page
     @IBAction func goToGivenPage(sender: NSTextField) {
-        if let pageNumber = Int(currentPageDisplay.stringValue) {
-            if pageNumber >= 1 && pageNumber <= totoalNumberOfPages {
-                currentPageNumber = pageNumber
+        if let set = self.pdfSet {
+            if let index = Int(sender.stringValue) {
+                if let page = set.moveToGivenPage(index) {
+                    self.pdfView.goToPage(page)
+                }
             }
         }
     }
@@ -73,36 +77,33 @@ class MainWindowController: NSWindowController, NSOutlineViewDataSource, NSOutli
     // if there is not one pdf, then click this can go to previous one
     @IBAction func goToPreviousPDF(sender: NSButton) {
         if let set = self.pdfSet {
-            if (set.index - 1) >= 0 {
-                set.index -= 1
-                self.currentPDFDocument = set.currentPDF
-                self.selectPDFButton.selectItemAtIndex(set.index)
-                updateWindow()
+            if let pdf = set.moveToPreviousPDF() {
+                self.pdfView.setDocument(pdf)
             }
         }
+
     }
     
     // if there is not one pdf, then click this can to to next one
     @IBAction func goToNextPDF(sender: NSButton) {
         if let set = self.pdfSet {
-            if (set.index + 1) < totalNumberOfPDFs {
-                set.index += 1
-                self.currentPDFDocument = set.currentPDF
-                self.selectPDFButton.selectItemAtIndex(set.index)
-                updateWindow()
+            if let pdf = set.moveToNextPDF() {
+                self.pdfView.setDocument(pdf)
             }
         }
     }
+    
     // move to selected pdf
     @IBAction func selectPDF(sender: NSPopUpButtonCell) {
         if let set = self.pdfSet {
             let selectedIndex = self.selectPDFButton.indexOfSelectedItem
-            set.index = selectedIndex
-            self.currentPDFDocument = set.currentPDF
-            self.window?.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
-                + set.titles[set.index]
+            if let pdf = set.moveToGivenPDF(selectedIndex) {
+                self.pdfView.setDocument(pdf)
+            }
         }
+        
     }
+    
     @IBAction func zoomIn(sender: NSButton) {
         self.pdfView.zoomIn(sender)
     }
@@ -117,44 +118,13 @@ class MainWindowController: NSWindowController, NSOutlineViewDataSource, NSOutli
     
     // MARK: - PDF Model Variables
     // a array of pdfs
-    var pdfSet: PDFSet? {
-        didSet {
-            self.currentPDFDocument = self.pdfSet?.currentPDF
-            self.totalNumberOfPDFs = self.pdfSet!.totalNumberOfPDFs
-        }
-    }
-    // the total number of pdfs in the array
-    var totalNumberOfPDFs = 0
-    // current Viewing pdf
-    var currentPDFDocument: PDFDocument? {
-        didSet {
-            self.pdfView.setDocument(self.currentPDFDocument)
-            currentPageNumber = 1
-            totoalNumberOfPages = currentPDFDocument!.pageCount()
-            updateView()
-        }
-    }
-    // current pdf pages
-    var totoalNumberOfPages = 0
-    // current viewing page
-    var currentPageNumber: Int = 1 {
-        didSet {
-            updateView()
-        }
-    }
+    var pdfSet: PDFSet?
     
-    // update windown info to indicate selected pdf
-    func updateWindow() {
-        if let set = self.pdfSet {
-            self.window?.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
-                + set.titles[set.index]
-        }
-    }
+    
     
     // update view, set current pdf to certain page, and update current page info
     func updateView() {
-        pdfView.goToPage(currentPDFDocument?.pageAtIndex(currentPageNumber))
-        currentPageDisplay.stringValue = "\(currentPageNumber)/\(totoalNumberOfPages)"
+
     }
     
     // MARK: - Action Related to Window
@@ -172,4 +142,9 @@ class MainWindowController: NSWindowController, NSOutlineViewDataSource, NSOutli
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     }
     
+    // MARK: - PDFSetDelegate
+    func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int) {
+        self.window?.title = "\(nthPDF)/\(totalPDFs)_" + title
+        self.currentPageDisplay.stringValue = "\(page)"
+    }
 }

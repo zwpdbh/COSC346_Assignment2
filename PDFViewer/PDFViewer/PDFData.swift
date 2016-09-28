@@ -9,24 +9,34 @@
 import Cocoa
 import Quartz
 
+public protocol PDFSetDelegate {
+    func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int)
+}
+
 class PDFSet {
     private var pdfDocuments: Array<PDFDocument> = [] {
         didSet {
             totalNumberOfPDFs = self.pdfDocuments.count
-            index = 0;
+            indexOfPDF = 0
+            currentPageNumber = 0
         }
     }
     
-    var titles: Array<String> = []
+    internal var delegate: PDFSetDelegate?
     
-    var index = 0
+    private var titles: Array<String> = []
     
-    var totalNumberOfPDFs: Int
+    private var currentPageNumber = 0
+    private var indexOfPDF = 0
     
-    var currentPDF: PDFDocument {
-        assert(index >= 0 && index < self.pdfDocuments.count, "invalid index is: \(index)")
-        return pdfDocuments[index]
+    private var currentPDF: PDFDocument {
+        didSet {
+            currentPageNumber = 1
+        }
     }
+    
+    private var totalNumberOfPDFs: Int
+    
     
     init(pdfURLS: Array<NSURL>) {
         for i in 0..<pdfURLS.count {
@@ -35,7 +45,76 @@ class PDFSet {
             self.pdfDocuments.append(pdfDoc)
             self.titles.append(url.lastPathComponent!)
         }
+        currentPDF = self.pdfDocuments[0]
         totalNumberOfPDFs = pdfURLS.count
+        currentPageNumber = 0
+    }
+    
+    func getTitlesOfPDFSet() -> [String] {
+        return self.titles
+    }
+    
+    func moveToNextPage() -> PDFPage? {
+        if (currentPageNumber + 1) <= currentPDF.pageCount() {
+            currentPageNumber += 1
+            updatePDFInfo()
+            return currentPDF.pageAtIndex(currentPageNumber)
+        }
+        return nil
+    }
+    
+    func moveToPreviousPage() -> PDFPage? {
+        
+        if (currentPageNumber - 1) >= 0 {
+            currentPageNumber -= 1
+            updatePDFInfo()
+            return currentPDF.pageAtIndex(currentPageNumber)
+        }
+        return nil
+    }
+    
+    func moveToGivenPage(page: Int) -> PDFPage? {
+        
+        if page>=0 && page<=currentPDF.pageCount()  {
+            currentPageNumber = page
+            updatePDFInfo()
+            return currentPDF.pageAtIndex(currentPageNumber)
+        }
+        return nil
+    }
+    
+    func moveToNextPDF() -> PDFDocument? {
+        if (indexOfPDF + 1) < totalNumberOfPDFs {
+            indexOfPDF += 1
+            currentPDF = self.pdfDocuments[indexOfPDF]
+            updatePDFInfo()
+            return currentPDF
+        }
+        return nil
+    }
+    
+    func moveToPreviousPDF() -> PDFDocument? {
+        if (indexOfPDF - 1) >= 0 {
+            indexOfPDF -= 1
+            currentPDF = self.pdfDocuments[indexOfPDF]
+            updatePDFInfo()
+            return currentPDF
+        }
+        return nil
+    }
+    
+    func moveToGivenPDF(pdfIndex: Int) -> PDFDocument? {
+        if (pdfIndex >= 0 && pdfIndex < totalNumberOfPDFs) {
+            indexOfPDF = pdfIndex
+            currentPDF = self.pdfDocuments[indexOfPDF]
+            updatePDFInfo()
+            return currentPDF
+        }
+        return nil
+    }
+ 
+    func updatePDFInfo() {
+        delegate?.pdfInfoNeedChangeTo(indexOfPDF + 1, totalPDFs: totalNumberOfPDFs, title: titles[indexOfPDF], page: currentPageNumber)
     }
     
 }
