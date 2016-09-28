@@ -1,26 +1,24 @@
 //
-//  AppDelegate.swift
-//  MyPDFViewer
+//  MainWindowController.swift
+//  PDFViewer
 //
-//  Created by zwpdbh on 9/27/16.
+//  Created by zwpdbh on 9/28/16.
 //  Copyright © 2016 Otago. All rights reserved.
 //
 
 import Cocoa
 import Quartz
 
-@NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
-    
+class MainWindowController: NSWindowController {
+
     // MARK: - Outlet
     @IBOutlet weak var currentPageDisplay: NSTextField!
     
     @IBOutlet weak var pdfView: PDFView!
     
-    @IBOutlet weak var window: NSWindow!
     
     @IBOutlet weak var selectPDFButton: NSPopUpButton!
-
+    
     // MARK: - Action
     // open pdf files and put them into array
     @IBAction func openFile(sender: NSMenuItem) {
@@ -100,7 +98,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             let selectedIndex = self.selectPDFButton.indexOfSelectedItem
             set.index = selectedIndex
             self.currentPDFDocument = set.currentPDF
-            self.window.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
+            self.window?.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
                 + set.titles[set.index]
         }
     }
@@ -147,7 +145,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     // update windown info to indicate selected pdf
     func updateWindow() {
         if let set = self.pdfSet {
-            self.window.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
+            self.window?.title = "Total:\(set.index + 1)/\(self.totalNumberOfPDFs) "
                 + set.titles[set.index]
         }
     }
@@ -157,18 +155,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         pdfView.goToPage(currentPDFDocument?.pageAtIndex(currentPageNumber))
         currentPageDisplay.stringValue = "\(currentPageNumber)/\(totoalNumberOfPages)"
     }
-
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
-    }
-
-    func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
-    }
-
+    
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
         self.pdfView.setAutoScales(true)
     }
-}
 
+    override var windowNibName: String? {
+        return "MainWindowController"
+    }
+    
+    override func windowDidLoad() {
+        super.windowDidLoad()
+
+        // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    }
+    
+}
