@@ -4,6 +4,7 @@
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
         <plugIn identifier="com.apple.pdfkit.ibplugin" version="10117"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -674,17 +675,17 @@
         <window title="MyPDFViewer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="971" height="580"/>
+            <rect key="contentRect" x="335" y="390" width="942" height="458"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="971" height="580"/>
+                <rect key="frame" x="0.0" y="0.0" width="942" height="458"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="CCz-in-hNA">
-                        <rect key="frame" x="0.0" y="540" width="971" height="40"/>
+                        <rect key="frame" x="0.0" y="418" width="942" height="40"/>
                         <subviews>
-                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZsS-t2-Izz">
-                                <rect key="frame" x="370" y="0.0" width="477" height="40"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZsS-t2-Izz">
+                                <rect key="frame" x="370" y="0.0" width="448" height="40"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MCT-hP-nhI">
                                         <rect key="frame" x="237" y="3" width="49" height="32"/>
@@ -750,7 +751,7 @@
                                     </textField>
                                 </subviews>
                             </customView>
-                            <customView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HJN-Ja-95Z">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="HJN-Ja-95Z">
                                 <rect key="frame" x="176" y="0.0" width="186" height="40"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZA2-V1-CyG">
@@ -787,28 +788,12 @@
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="xjx-iD-VmM">
                                 <rect key="frame" x="0.0" y="0.0" width="168" height="40"/>
-                                <subviews>
-                                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3fA-HV-tIP">
-                                        <rect key="frame" x="46" y="7" width="78" height="26"/>
-                                        <popUpButtonCell key="cell" type="push" title="Option" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="km5-y3-gxY" id="qC0-E5-4EB">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="menu"/>
-                                            <menu key="menu" id="tP2-Va-SCx">
-                                                <items>
-                                                    <menuItem title="Option" state="on" id="km5-y3-gxY"/>
-                                                    <menuItem title="Item 2" id="ygK-yF-J1J"/>
-                                                    <menuItem title="Item 3" id="mkc-43-C9T"/>
-                                                </items>
-                                            </menu>
-                                        </popUpButtonCell>
-                                    </popUpButton>
-                                </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="168" id="iEt-ko-Q5j"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="m8l-hW-PBW">
-                                <rect key="frame" x="855" y="0.0" width="116" height="40"/>
+                                <rect key="frame" x="826" y="0.0" width="116" height="40"/>
                                 <subviews>
                                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sUz-LS-0qt">
                                         <rect key="frame" x="10" y="9" width="96" height="22"/>
@@ -823,6 +808,20 @@
                                     <constraint firstAttribute="width" constant="116" id="lml-WN-BYq"/>
                                 </constraints>
                             </customView>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3fA-HV-tIP">
+                                <rect key="frame" x="32" y="7" width="105" height="26"/>
+                                <popUpButtonCell key="cell" type="push" title="Option" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="km5-y3-gxY" id="qC0-E5-4EB">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="tP2-Va-SCx">
+                                        <items>
+                                            <menuItem title="Option" state="on" id="km5-y3-gxY"/>
+                                            <menuItem title="Item 2" id="ygK-yF-J1J"/>
+                                            <menuItem title="Item 3" id="mkc-43-C9T"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                            </popUpButton>
                         </subviews>
                         <constraints>
                             <constraint firstItem="xjx-iD-VmM" firstAttribute="height" secondItem="CCz-in-hNA" secondAttribute="height" id="4id-MM-Uw0"/>
@@ -835,23 +834,35 @@
                             <constraint firstAttribute="trailing" secondItem="m8l-hW-PBW" secondAttribute="trailing" id="PWF-A1-RLj"/>
                             <constraint firstItem="HJN-Ja-95Z" firstAttribute="leading" secondItem="xjx-iD-VmM" secondAttribute="trailing" constant="8" id="Ss8-iV-caj"/>
                             <constraint firstItem="xjx-iD-VmM" firstAttribute="leading" secondItem="CCz-in-hNA" secondAttribute="leading" id="U6m-tN-bAW"/>
+                            <constraint firstItem="HJN-Ja-95Z" firstAttribute="width" secondItem="xjx-iD-VmM" secondAttribute="height" multiplier="93:20" id="cIf-gg-Tys"/>
                             <constraint firstItem="ZsS-t2-Izz" firstAttribute="height" secondItem="CCz-in-hNA" secondAttribute="height" id="h7e-PY-HPG"/>
                             <constraint firstItem="m8l-hW-PBW" firstAttribute="leading" secondItem="ZsS-t2-Izz" secondAttribute="trailing" constant="8" id="h8r-Ga-2NY"/>
                             <constraint firstItem="ZsS-t2-Izz" firstAttribute="leading" secondItem="HJN-Ja-95Z" secondAttribute="trailing" constant="8" id="jYk-Mb-QDT"/>
                             <constraint firstItem="HJN-Ja-95Z" firstAttribute="centerY" secondItem="CCz-in-hNA" secondAttribute="centerY" id="mQd-pT-ke5"/>
                         </constraints>
                     </customView>
-                    <pdfView autoresizesSubviews="NO" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y9H-yc-Eqd">
-                        <rect key="frame" x="281" y="183" width="547" height="349"/>
+                    <pdfView autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9H-yc-Eqd">
+                        <rect key="frame" x="148" y="0.0" width="794" height="419"/>
                     </pdfView>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="KTx-NW-G8W">
+                        <rect key="frame" x="0.0" y="0.0" width="168" height="419"/>
+                    </customView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="CCz-in-hNA" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="20Z-Ur-K6m"/>
+                    <constraint firstAttribute="bottom" secondItem="Y9H-yc-Eqd" secondAttribute="bottom" id="2u8-kl-8Uy"/>
                     <constraint firstAttribute="trailing" secondItem="CCz-in-hNA" secondAttribute="trailing" id="30p-kU-Uee"/>
+                    <constraint firstAttribute="bottom" secondItem="KTx-NW-G8W" secondAttribute="bottom" id="3bW-Dn-Dml"/>
+                    <constraint firstItem="Y9H-yc-Eqd" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="39" id="KaD-Ik-ro0"/>
+                    <constraint firstItem="KTx-NW-G8W" firstAttribute="width" secondItem="xjx-iD-VmM" secondAttribute="width" id="Kep-X0-vqa"/>
+                    <constraint firstAttribute="trailing" secondItem="Y9H-yc-Eqd" secondAttribute="trailing" id="W4q-1s-mCA"/>
+                    <constraint firstItem="KTx-NW-G8W" firstAttribute="top" secondItem="xjx-iD-VmM" secondAttribute="bottom" constant="-1" id="amQ-Li-TAV"/>
+                    <constraint firstItem="Y9H-yc-Eqd" firstAttribute="width" secondItem="CCz-in-hNA" secondAttribute="height" multiplier="397:20" id="dPV-xl-8Iu"/>
+                    <constraint firstItem="KTx-NW-G8W" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="fG2-v9-VWE"/>
                     <constraint firstItem="CCz-in-hNA" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="heE-hE-EEl"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="736.5" y="39"/>
+            <point key="canvasLocation" x="729" y="73"/>
         </window>
     </objects>
 </document>
