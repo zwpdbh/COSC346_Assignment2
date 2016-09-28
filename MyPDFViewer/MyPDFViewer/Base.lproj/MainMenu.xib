@@ -842,7 +842,7 @@
                         </constraints>
                     </customView>
                     <pdfView autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9H-yc-Eqd">
-                        <rect key="frame" x="148" y="0.0" width="794" height="419"/>
+                        <rect key="frame" x="176" y="0.0" width="766" height="419"/>
                     </pdfView>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="KTx-NW-G8W">
                         <rect key="frame" x="0.0" y="0.0" width="168" height="419"/>
@@ -855,9 +855,9 @@
                     <constraint firstAttribute="bottom" secondItem="KTx-NW-G8W" secondAttribute="bottom" id="3bW-Dn-Dml"/>
                     <constraint firstItem="Y9H-yc-Eqd" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="39" id="KaD-Ik-ro0"/>
                     <constraint firstItem="KTx-NW-G8W" firstAttribute="width" secondItem="xjx-iD-VmM" secondAttribute="width" id="Kep-X0-vqa"/>
+                    <constraint firstItem="Y9H-yc-Eqd" firstAttribute="leading" secondItem="KTx-NW-G8W" secondAttribute="trailing" constant="8" id="ToF-cd-UbT"/>
                     <constraint firstAttribute="trailing" secondItem="Y9H-yc-Eqd" secondAttribute="trailing" id="W4q-1s-mCA"/>
                     <constraint firstItem="KTx-NW-G8W" firstAttribute="top" secondItem="xjx-iD-VmM" secondAttribute="bottom" constant="-1" id="amQ-Li-TAV"/>
-                    <constraint firstItem="Y9H-yc-Eqd" firstAttribute="width" secondItem="CCz-in-hNA" secondAttribute="height" multiplier="397:20" id="dPV-xl-8Iu"/>
                     <constraint firstItem="KTx-NW-G8W" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="fG2-v9-VWE"/>
                     <constraint firstItem="CCz-in-hNA" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="heE-hE-EEl"/>
                 </constraints>
