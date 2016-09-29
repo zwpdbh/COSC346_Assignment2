@@ -39,6 +39,14 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     }
                     set.delegate = self
                     self.pdfView.setDocument(set.moveToGivenPDF(0))
+                    
+                    // dataSource for outline
+                    self.outlineView.setDataSource(self)
+                    self.notes = Note(title: "My Note")
+                    for i in 1...10 {
+                        self.notes?.subNote.append(Note(title: "note\(i)"))
+                    }
+                    self.outlineView.reloadItem(self.notes)
                 }
             }
         }
@@ -116,16 +124,14 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.pdfView.setAutoScales(true)
     }
     
-    // MARK: - PDF Model Variables
+    // MARK: - Model Variables
     // a array of pdfs
     var pdfSet: PDFSet?
     
+    var notes: Note? = Note(title: "Default Note")
     
     
-    // update view, set current pdf to certain page, and update current page info
-    func updateView() {
 
-    }
     
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
@@ -140,11 +146,62 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         super.windowDidLoad()
 
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+        NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
+        
+    }
+    // update view, set current pdf to certain page, and update current page info
+    func pageChangedAfterScroll() {
+        if let page = self.pdfView.currentPage() {
+            self.pdfSet!.setPage(page)
+        }
     }
     
     // MARK: - PDFSetDelegate
     func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int) {
         self.window?.title = "\(nthPDF)/\(totalPDFs)_" + title
         self.currentPageDisplay.stringValue = "\(page)"
+    }
+    
+    // MARK: - NSOutlineViewDataSource
+    
+    /**
+     If you are using conventional data sources for content you must implement the basic methods that provide the outline view with data: outlineView:child:ofItem:, outlineView:isItemExpandable:, outlineView:numberOfChildrenOfItem:, and outlineView:objectValueForTableColumn:byItem:.
+     */
+    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+        print("1")
+        if let notes = self.notes {
+            return notes.subNote.count
+        } else {
+            print("datasource for outline is not found!")
+            return 0
+        }
+    }
+    
+    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
+        print(2)
+        if let notes = self.notes {
+            return notes.isItemExpandable()
+        } else {
+            return false
+        }
+    }
+    
+    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
+        print(3)
+        if let childNote = self.notes?.childNoteAtIndex(index) {
+            return childNote
+        } else {
+            return self.notes!
+        }
+    }
+    
+    func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
+        print(4)
+        if let notes = self.notes {
+            return notes.title
+        } else {
+            return nil
+        }
     }
 }

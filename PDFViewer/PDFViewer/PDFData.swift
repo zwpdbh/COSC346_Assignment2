@@ -13,7 +13,7 @@ public protocol PDFViewerDelegate {
     func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int)
 }
 
-class PDFSet {
+class PDFSet: NSObject{
     private var pdfDocuments: Array<PDFDocument> = [] {
         didSet {
             totalNumberOfPDFs = self.pdfDocuments.count
@@ -111,6 +111,11 @@ class PDFSet {
             return currentPDF
         }
         return nil
+    }
+    
+    func setPage(page: PDFPage) {
+        currentPageNumber = currentPDF.indexForPage(page)
+        updatePDFInfo()
     }
  
     func updatePDFInfo() {

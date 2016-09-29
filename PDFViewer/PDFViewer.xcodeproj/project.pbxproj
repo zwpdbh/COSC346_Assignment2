@@ -14,6 +14,7 @@
 		DB3803931D9BCA7C002089FD /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB3803911D9BCA7C002089FD /* MainWindowController.xib */; };
 		DB3803961D9BCC3A002089FD /* PDFData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3803951D9BCC3A002089FD /* PDFData.swift */; };
 		DB3803981D9BCD71002089FD /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB3803971D9BCD71002089FD /* Quartz.framework */; };
+		DB584C801D9CC0FE00C460EE /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB584C7F1D9CC0FE00C460EE /* Note.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		DB3803911D9BCA7C002089FD /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = "<group>"; };
 		DB3803951D9BCC3A002089FD /* PDFData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFData.swift; sourceTree = "<group>"; };
 		DB3803971D9BCD71002089FD /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		DB584C7F1D9CC0FE00C460EE /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		DB38037E1D9BC9C1002089FD /* PDFViewer */ = {
 			isa = PBXGroup;
 			children = (
+				DB584C7F1D9CC0FE00C460EE /* Note.swift */,
 				DB3803951D9BCC3A002089FD /* PDFData.swift */,
 				DB3803901D9BCA7C002089FD /* MainWindowController.swift */,
 				DB3803911D9BCA7C002089FD /* MainWindowController.xib */,
@@ -150,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB584C801D9CC0FE00C460EE /* Note.swift in Sources */,
 				DB3803961D9BCC3A002089FD /* PDFData.swift in Sources */,
 				DB3803921D9BCA7C002089FD /* MainWindowController.swift in Sources */,
 				DB3803801D9BC9C1002089FD /* AppDelegate.swift in Sources */,
@@ -295,6 +299,7 @@
 				DB38038B1D9BC9C1002089FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
