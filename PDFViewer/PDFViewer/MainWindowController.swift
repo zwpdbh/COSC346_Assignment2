@@ -10,7 +10,7 @@ import Cocoa
 import Quartz
 
 
-class MainWindowController: NSWindowController, PDFSetDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
+class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
 
     // MARK: - Outlet
     @IBOutlet weak var currentPageDisplay: NSTextField!

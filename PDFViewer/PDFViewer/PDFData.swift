@@ -9,7 +9,7 @@
 import Cocoa
 import Quartz
 
-public protocol PDFSetDelegate {
+public protocol PDFViewerDelegate {
     func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int)
 }
 
@@ -22,7 +22,7 @@ class PDFSet {
         }
     }
     
-    internal var delegate: PDFSetDelegate?
+    internal var delegate: PDFViewerDelegate?
     
     private var titles: Array<String> = []
     
