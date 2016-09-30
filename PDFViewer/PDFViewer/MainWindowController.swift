@@ -12,13 +12,16 @@ import Quartz
 
 class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDataSource {
 
-    // MARK: - Outlet
+    // MARK: - Outlets and Actions
     @IBOutlet weak var currentPageDisplay: NSTextField!
     
     @IBOutlet weak var pdfView: PDFView!
     
     @IBOutlet weak var tableView: NSTableView!
     
+    @IBAction func addMark(sender: NSButton) {
+        
+    }
     
     @IBOutlet weak var selectPDFButton: NSPopUpButton!
     
@@ -127,8 +130,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
     var notes: Array<Note> = []
     
     
-
-    
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
         self.pdfView.setAutoScales(true)
@@ -142,9 +143,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
         super.windowDidLoad()
 
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+        // Notification
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
         
+        
+        // load data into tableView
         for i in 1...10 {
             self.notes.append(Note(name: "\(i)", value: "\(i * i)"))
         }
@@ -152,7 +156,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
         self.tableView.reloadData()
         
     }
-    // update view, set current pdf to certain page, and update current page info
+    
+    // Recieve notification: update view, set current pdf to certain page, and update current page info
     func pageChangedAfterScroll() {
         if let page = self.pdfView.currentPage() {
             self.pdfSet!.setPage(page)
@@ -166,17 +171,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
     }
     
     
+    // MARK: - NSTableViewDataSource
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return self.notes.count
     }
 
     func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-//        if tableColumn?.identifier == "key" {
-//            return self.notes[row].name
-//        } else {
-//            return self.notes[row].value
-//        }
-        
         return self.notes[row]
     }
 }
