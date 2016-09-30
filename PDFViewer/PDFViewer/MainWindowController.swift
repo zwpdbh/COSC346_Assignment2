@@ -171,11 +171,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
     }
 
     func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-        if tableColumn?.identifier == "key" {
-            return self.notes[row].name
-        } else {
-            return self.notes[row].value
-        }
+//        if tableColumn?.identifier == "key" {
+//            return self.notes[row].name
+//        } else {
+//            return self.notes[row].value
+//        }
         
+        return self.notes[row]
     }
 }

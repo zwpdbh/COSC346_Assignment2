@@ -835,7 +835,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="key" width="62" minWidth="40" maxWidth="1000" id="arN-HT-M8R">
+                                                <tableColumn identifier="" width="62" minWidth="40" maxWidth="1000" id="arN-HT-M8R">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="key">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -848,7 +848,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="key" id="Gaj-Ae-aoB">
+                                                        <tableCellView id="Gaj-Ae-aoB">
                                                             <rect key="frame" x="1" y="1" width="62" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -860,7 +860,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="Gaj-Ae-aoB" name="value" keyPath="objectValue" id="v5f-XP-Yqa"/>
+                                                                        <binding destination="Gaj-Ae-aoB" name="value" keyPath="objectValue.name" id="LE1-cM-AcB"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
@@ -870,7 +870,7 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="value" width="98" minWidth="10" maxWidth="3.4028234663852886e+38" id="cbj-bN-Mwa">
+                                                <tableColumn identifier="" width="98" minWidth="10" maxWidth="3.4028234663852886e+38" id="cbj-bN-Mwa">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="value">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -883,7 +883,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="value" id="cgo-kf-e5w">
+                                                        <tableCellView id="cgo-kf-e5w">
                                                             <rect key="frame" x="66" y="1" width="98" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -895,7 +895,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="cgo-kf-e5w" name="value" keyPath="objectValue" id="MGh-l4-iGO"/>
+                                                                        <binding destination="cgo-kf-e5w" name="value" keyPath="objectValue.value" id="KsS-s8-oOi"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
