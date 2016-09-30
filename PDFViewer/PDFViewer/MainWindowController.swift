@@ -146,7 +146,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
         
         for i in 1...10 {
-            self.notes.append(Note(name: "\(i * i)"))
+            self.notes.append(Note(name: "\(i)", value: "\(i * i)"))
         }
         self.tableView.setDataSource(self)
         self.tableView.reloadData()
@@ -171,6 +171,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
     }
 
     func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-        return self.notes[row].name
+        if tableColumn?.identifier == "key" {
+            return self.notes[row].name
+        } else {
+            return self.notes[row].value
+        }
+        
     }
 }

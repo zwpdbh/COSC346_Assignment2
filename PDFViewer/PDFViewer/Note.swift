@@ -10,8 +10,9 @@ import Foundation
 
 class Note: NSObject {
     var name: String
-    
-    init(name: String) {
+    var value: String
+    init(name: String, value: String) {
         self.name = name
+        self.value = value
     }
 }
