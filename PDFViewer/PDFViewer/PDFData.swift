@@ -125,6 +125,31 @@ class PDFSet: NSObject{
     func numberOfPDFs() -> Int {
         return self.totalNumberOfPDFs
     }
+    
+    func getCurrentPage() -> Int {
+        return self.currentPageNumber
+    }
+    
+    func getCurrentPDFTitle() -> String {
+        return self.titles[self.indexOfPDF]
+    }
+    
+//    func moveToBookMark(mark: Note) {
+//        if let pdf = getIndexByTitle(mark.name) {
+//            moveToGivenPDF(pdf)
+//            moveToGivenPage(Int(mark.value)!)
+//            updatePDFInfo()
+//        }
+//    }
+    
+    func getIndexByTitle(wanted: String) -> Int? {
+        for i in 0..<titles.count {
+            if wanted == titles[i] {
+                return i
+            }
+        }
+        return nil
+    }
 }
 
 

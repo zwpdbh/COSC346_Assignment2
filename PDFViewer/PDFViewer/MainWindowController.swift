@@ -10,7 +10,7 @@ import Cocoa
 import Quartz
 
 
-class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDataSource {
+class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDataSource, NSTableViewDelegate {
 
     // MARK: - Outlets and Actions
     @IBOutlet weak var currentPageDisplay: NSTextField!
@@ -20,7 +20,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
     @IBOutlet weak var tableView: NSTableView!
     
     @IBAction func addMark(sender: NSButton) {
-        
+        if let set = self.pdfSet {
+            let title = set.getCurrentPDFTitle()
+            let page = set.getCurrentPage()
+            self.notes.append(Note(name: title, value: "\(page)"))
+            self.tableView.reloadData()
+        }
     }
     
     @IBOutlet weak var selectPDFButton: NSPopUpButton!
@@ -129,7 +134,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
     
     var notes: Array<Note> = []
     
-    
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
         self.pdfView.setAutoScales(true)
@@ -179,4 +183,24 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDa
     func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
         return self.notes[row]
     }
+    
+    // MARK: - NSTableViewDelegate
+    func tableViewSelectionDidChange(notification: NSNotification) {
+        let row = tableView.selectedRow
+        if row == -1 {
+            return
+        } else {
+            let mark = self.notes[row]
+            let pdfIndex = self.pdfSet?.getIndexByTitle(mark.name)
+            
+            // simulate select popup button
+            self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
+            self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
+            // simulate go to a given page
+            self.currentPageDisplay.stringValue = mark.value
+            self.goToGivenPage(self.currentPageDisplay)
+        }
+        
+    }
+    
 }

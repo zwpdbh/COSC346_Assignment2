@@ -15,4 +15,14 @@ class Note: NSObject {
         self.name = name
         self.value = value
     }
+    
+    override var hashValue: Int {
+        get {
+            return (name + value).hashValue
+        }
+    }
+    
+    override var description: String {
+        return name + ": " + value
+    }
 }
