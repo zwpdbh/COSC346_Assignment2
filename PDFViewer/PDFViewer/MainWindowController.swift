@@ -10,14 +10,15 @@ import Cocoa
 import Quartz
 
 
-class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
+class MainWindowController: NSWindowController, PDFViewerDelegate, NSTableViewDataSource {
 
     // MARK: - Outlet
     @IBOutlet weak var currentPageDisplay: NSTextField!
     
     @IBOutlet weak var pdfView: PDFView!
     
-    @IBOutlet weak var outlineView: NSOutlineView!
+    @IBOutlet weak var tableView: NSTableView!
+    
     
     @IBOutlet weak var selectPDFButton: NSPopUpButton!
     
@@ -41,12 +42,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     self.pdfView.setDocument(set.moveToGivenPDF(0))
                     
                     // dataSource for outline
-                    self.outlineView.setDataSource(self)
-                    self.notes = Note(title: "My Note")
-                    for i in 1...10 {
-                        self.notes?.subNote.append(Note(title: "note\(i)"))
-                    }
-                    self.outlineView.reloadItem(self.notes)
+                    
                 }
             }
         }
@@ -128,7 +124,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // a array of pdfs
     var pdfSet: PDFSet?
     
-    var notes: Note? = Note(title: "Default Note")
+    var notes: Array<Note> = []
     
     
 
@@ -149,6 +145,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
         
+        for i in 1...10 {
+            self.notes.append(Note(name: "\(i * i)"))
+        }
+        self.tableView.setDataSource(self)
+        self.tableView.reloadData()
+        
     }
     // update view, set current pdf to certain page, and update current page info
     func pageChangedAfterScroll() {
@@ -163,45 +165,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.currentPageDisplay.stringValue = "\(page)"
     }
     
-    // MARK: - NSOutlineViewDataSource
     
-    /**
-     If you are using conventional data sources for content you must implement the basic methods that provide the outline view with data: outlineView:child:ofItem:, outlineView:isItemExpandable:, outlineView:numberOfChildrenOfItem:, and outlineView:objectValueForTableColumn:byItem:.
-     */
-    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
-        print("1")
-        if let notes = self.notes {
-            return notes.subNote.count
-        } else {
-            print("datasource for outline is not found!")
-            return 0
-        }
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return self.notes.count
     }
-    
-    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
-        print(2)
-        if let notes = self.notes {
-            return notes.isItemExpandable()
-        } else {
-            return false
-        }
-    }
-    
-    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
-        print(3)
-        if let childNote = self.notes?.childNoteAtIndex(index) {
-            return childNote
-        } else {
-            return self.notes!
-        }
-    }
-    
-    func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
-        print(4)
-        if let notes = self.notes {
-            return notes.title
-        } else {
-            return nil
-        }
+
+    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
+        return self.notes[row].name
     }
 }

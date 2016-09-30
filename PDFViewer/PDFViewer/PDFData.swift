@@ -122,6 +122,9 @@ class PDFSet: NSObject{
         delegate?.pdfInfoNeedChangeTo(indexOfPDF + 1, totalPDFs: totalNumberOfPDFs, title: titles[indexOfPDF], page: currentPageNumber)
     }
     
+    func numberOfPDFs() -> Int {
+        return self.totalNumberOfPDFs
+    }
 }
 
 
