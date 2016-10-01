@@ -32,8 +32,10 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         if let set = self.pdfSet {
             let page = set.getCurrentPage()
             let title = "page: \(page)"
-            let bookmark = Bookmark(page: page, title: title)
+            
             let note = self.notes[self.selectedPDF - 1]
+            let bookmark = Bookmark(page: page, title: title, parent: note)
+            
             if !note.alreadyHaveBookmark(bookmark) {
                 note.bookmarks.append(bookmark)
                 self.outlineView.reloadData()
@@ -45,8 +47,10 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         if let set = self.pdfSet {
             let title = set.getCurrentPDFTitle()
             let page = set.getCurrentPage()
+            
             let note = self.notes[self.selectedPDF - 1]
-            note.subnotes.append(NoteItem(page: page, title: title))
+            note.subnotes.append(NoteItem(page: page, title: title, parent: note))
+            
             self.outlineView.reloadData()
         }
     }
@@ -187,9 +191,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     // MARK: - PDFSetDelegate
-    func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int) {
+    func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int, totalPages: Int) {
         self.window?.title = "\(nthPDF)/\(totalPDFs)_" + title
-        self.currentPageDisplay.stringValue = "\(page)"
+        self.currentPageDisplay.stringValue = "\(page)/\(totalPages)"
         self.selectedPDF = nthPDF
         self.selectPDFButton.selectItemAtIndex(nthPDF - 1)
     }
@@ -251,9 +255,29 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         if let item = self.outlineView.itemAtRow(row) {
             if let bookmark = item as? Bookmark {
                 print(bookmark.page, bookmark.title)
-            } else if let note = item as? Note {
-                print(note.page, note.title)
+                if let parent = bookmark.parent {
+                    let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
+                    // simulate select popup button
+                    self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
+                    self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
+                    // simulate go to a given page
+                    self.currentPageDisplay.stringValue = "\(bookmark.page)"
+                    self.goToGivenPage(self.currentPageDisplay)
+
+                }
+            } else if let noteItem = item as? NoteItem {
+                if let parent = noteItem.parent {
+                    let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
+                    // simulate select popup button
+                    self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
+                    self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
+                    // simulate go to a given page
+                    self.currentPageDisplay.stringValue = "\(noteItem.page)"
+                    self.goToGivenPage(self.currentPageDisplay)
+                }
             }
         }
     }
+    
+
 }

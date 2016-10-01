@@ -818,7 +818,7 @@
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" title="outline options" id="YJK-nP-wTc">
                                         <items>
-                                            <menuItem title="bookmark" state="on" id="oWe-cI-bps"/>
+                                            <menuItem title="bookmark" id="oWe-cI-bps"/>
                                             <menuItem title="note" id="gDP-J1-DJG"/>
                                         </items>
                                     </menu>

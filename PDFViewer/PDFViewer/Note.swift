@@ -35,20 +35,24 @@ class Note: NSObject {
 class NoteItem: NSObject {
     let page: Int
     let title: String
+    weak var parent: Note?
     
-    init(page: Int, title: String) {
+    init(page: Int, title: String, parent: Note) {
         self.page = page
         self.title = title
+        self.parent = parent
     }
 }
 
 class Bookmark: NSObject {
     let title: String
     let page: Int
+    weak var parent: Note?
     
-    init(page: Int, title: String) {
+    init(page: Int, title: String, parent: Note) {
         self.page = page
         self.title = title
+        self.parent = parent
     }
     
     override var hashValue: Int {

@@ -10,7 +10,7 @@ import Cocoa
 import Quartz
 
 public protocol PDFViewerDelegate {
-    func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int)
+    func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int, totalPages: Int)
 }
 
 class PDFSet: NSObject{
@@ -119,7 +119,7 @@ class PDFSet: NSObject{
     }
  
     func updatePDFInfo() {
-        delegate?.pdfInfoNeedChangeTo(indexOfPDF + 1, totalPDFs: totalNumberOfPDFs, title: titles[indexOfPDF], page: currentPageNumber)
+        delegate?.pdfInfoNeedChangeTo(indexOfPDF + 1, totalPDFs: totalNumberOfPDFs, title: titles[indexOfPDF], page: currentPageNumber, totalPages: currentPDF.pageCount())
     }
     
     func numberOfPDFs() -> Int {
@@ -134,13 +134,6 @@ class PDFSet: NSObject{
         return self.titles[self.indexOfPDF]
     }
     
-//    func moveToBookMark(mark: Note) {
-//        if let pdf = getIndexByTitle(mark.name) {
-//            moveToGivenPDF(pdf)
-//            moveToGivenPage(Int(mark.value)!)
-//            updatePDFInfo()
-//        }
-//    }
     
     func getIndexByTitle(wanted: String) -> Int? {
         for i in 0..<titles.count {
