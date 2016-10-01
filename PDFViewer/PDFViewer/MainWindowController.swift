@@ -10,7 +10,7 @@ import Cocoa
 import Quartz
 
 
-class MainWindowController: NSWindowController, PDFViewerDelegate {
+class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
 
     // MARK: - Outlets and Actions
     @IBOutlet weak var currentPageDisplay: NSTextField!
@@ -200,5 +200,25 @@ class MainWindowController: NSWindowController, PDFViewerDelegate {
 //        }
 //        
 //    }
+    // MARK: - NSOutlineViewDataSource
+    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
+        if let note = item as? Note {
+            return note.subnotes[index]
+        }
+        return item as! Note
+    }
     
+    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
+        return (item as! Note).subnotes.count > 0
+    }
+    
+    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+        return (item as! Note).subnotes.count
+    }
+    
+    func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
+        return (item as! Note).title
+    }
+    
+    // MARK: - NSOutlineViewDelegate
 }
