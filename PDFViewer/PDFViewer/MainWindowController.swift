@@ -33,7 +33,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             let page = set.getCurrentPage()
             let title = "page: \(page)"
             
-            let note = self.notes[self.selectedPDF - 1]
+            let note = self.notes[self.indexOfSelectedPDF]
             let bookmark = Bookmark(page: page, title: title, parent: note)
             
             if !note.alreadyHaveBookmark(bookmark) {
@@ -48,7 +48,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             let title = set.getCurrentPDFTitle()
             let page = set.getCurrentPage()
             
-            let note = self.notes[self.selectedPDF - 1]
+            let note = self.notes[self.indexOfSelectedPDF]
+            
             note.subnotes.append(NoteItem(page: page, title: title, parent: note))
             
             self.outlineView.reloadData()
@@ -67,7 +68,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             if(result == NSFileHandlingPanelOKButton) {
                 self.selectPDFButton.removeAllItems()
                 self.pdfSet = PDFSet(pdfURLS: panel.URLs)
-                
+                self.notes = Array<Note>()
                 
                 if let set = self.pdfSet {
                     for title in set.getTitlesOfPDFSet() {
@@ -104,8 +105,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // go to the Given page
     @IBAction func goToGivenPage(sender: NSTextField) {
         if let set = self.pdfSet {
-            if let index = Int(sender.stringValue) {
-                if let page = set.moveToGivenPage(index) {
+            if let pageNumber = Int(sender.stringValue) {
+                if let page = set.moveToGivenPage(pageNumber) {
                     self.pdfView.goToPage(page)
                 }
             }
@@ -160,7 +161,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     var notes: Array<Note> = []
     
-    var selectedPDF = 0
+    var indexOfSelectedPDF = 1
     // 0 means viewing bookmarks, 1 means viewing notes
     var selectedOutLineOption = 0
     
@@ -194,7 +195,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int, totalPages: Int) {
         self.window?.title = "\(nthPDF)/\(totalPDFs)_" + title
         self.currentPageDisplay.stringValue = "\(page)/\(totalPages)"
-        self.selectedPDF = nthPDF
+        self.indexOfSelectedPDF = nthPDF - 1
         self.selectPDFButton.selectItemAtIndex(nthPDF - 1)
     }
     

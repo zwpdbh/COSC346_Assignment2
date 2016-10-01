@@ -18,7 +18,7 @@ class PDFSet: NSObject{
         didSet {
             totalNumberOfPDFs = self.pdfDocuments.count
             indexOfPDF = 0
-            currentPageNumber = 0
+            indexOfPage = 0
         }
     }
     
@@ -26,12 +26,12 @@ class PDFSet: NSObject{
     
     private var titles: Array<String> = []
     
-    private var currentPageNumber = 0
+    private var indexOfPage = 0
     private var indexOfPDF = 0
     
     private var currentPDF: PDFDocument {
         didSet {
-            currentPageNumber = 1
+            indexOfPage = 0
         }
     }
     
@@ -47,7 +47,7 @@ class PDFSet: NSObject{
         }
         currentPDF = self.pdfDocuments[0]
         totalNumberOfPDFs = pdfURLS.count
-        currentPageNumber = 0
+        indexOfPage = 0
     }
     
     func getTitlesOfPDFSet() -> [String] {
@@ -55,30 +55,30 @@ class PDFSet: NSObject{
     }
     
     func moveToNextPage() -> PDFPage? {
-        if (currentPageNumber + 1) <= currentPDF.pageCount() {
-            currentPageNumber += 1
+        if (indexOfPage + 1) < currentPDF.pageCount() {
+            indexOfPage += 1
             updatePDFInfo()
-            return currentPDF.pageAtIndex(currentPageNumber)
+            return currentPDF.pageAtIndex(indexOfPage)
         }
         return nil
     }
     
     func moveToPreviousPage() -> PDFPage? {
         
-        if (currentPageNumber - 1) >= 0 {
-            currentPageNumber -= 1
+        if (indexOfPage - 1) >= 0 {
+            indexOfPage -= 1
             updatePDFInfo()
-            return currentPDF.pageAtIndex(currentPageNumber)
+            return currentPDF.pageAtIndex(indexOfPage)
         }
         return nil
     }
     
     func moveToGivenPage(page: Int) -> PDFPage? {
         
-        if page>=0 && page<=currentPDF.pageCount()  {
-            currentPageNumber = page
+        if page>=1 && page<=currentPDF.pageCount()  {
+            indexOfPage = page - 1
             updatePDFInfo()
-            return currentPDF.pageAtIndex(currentPageNumber)
+            return currentPDF.pageAtIndex(indexOfPage)
         }
         return nil
     }
@@ -114,12 +114,12 @@ class PDFSet: NSObject{
     }
     
     func setPage(page: PDFPage) {
-        currentPageNumber = currentPDF.indexForPage(page)
+        indexOfPage = currentPDF.indexForPage(page)
         updatePDFInfo()
     }
  
     func updatePDFInfo() {
-        delegate?.pdfInfoNeedChangeTo(indexOfPDF + 1, totalPDFs: totalNumberOfPDFs, title: titles[indexOfPDF], page: currentPageNumber, totalPages: currentPDF.pageCount())
+        delegate?.pdfInfoNeedChangeTo(indexOfPDF + 1, totalPDFs: totalNumberOfPDFs, title: titles[indexOfPDF], page: indexOfPage + 1, totalPages: currentPDF.pageCount())
     }
     
     func numberOfPDFs() -> Int {
@@ -127,7 +127,7 @@ class PDFSet: NSObject{
     }
     
     func getCurrentPage() -> Int {
-        return self.currentPageNumber
+        return self.indexOfPage + 1
     }
     
     func getCurrentPDFTitle() -> String {
