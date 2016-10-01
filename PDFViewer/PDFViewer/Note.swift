@@ -34,10 +34,12 @@ class NoteItem: NSObject {
 }
 
 class Bookmark: NSObject {
+    let title: String
     let page: Int
     
-    init(page: Int) {
+    init(page: Int, title: String) {
         self.page = page
+        self.title = title
     }
     
     override var hashValue: Int {

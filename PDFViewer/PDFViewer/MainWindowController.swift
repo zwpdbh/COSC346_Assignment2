@@ -24,19 +24,27 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     
     @IBAction func selectOutlineOption(sender: NSPopUpButton) {
-        
+        self.selectedOutLineOption = self.outlineOption.indexOfSelectedItem
+        self.outlineView.reloadData()
     }
     
     @IBAction func addBookmark(sender: NSButton) {
+        if let set = self.pdfSet {
+            let page = set.getCurrentPage()
+            let title = "\(page):" + " change this later"
+            let bookmark = Bookmark(page: page, title: title)
+            let note = self.notes[self.selectedPDF - 1]
+            note.bookmarks.insert(bookmark)
+            self.outlineView.reloadData()
+        }
         
     }
     @IBAction func addNote(sender: NSButton) {
         if let set = self.pdfSet {
             let title = set.getCurrentPDFTitle()
             let page = set.getCurrentPage()
-            
-            let noteItem = self.notes[self.selectedPDF - 1]
-            noteItem.subnotes.append(NoteItem(page: page, title: title))
+            let note = self.notes[self.selectedPDF - 1]
+            note.subnotes.append(NoteItem(page: page, title: title))
             self.outlineView.reloadData()
         }
     }
@@ -147,6 +155,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     var notes: Array<Note> = []
     
     var selectedPDF = 0
+    // 0 means viewing bookmarks, 1 means viewing notes
+    var selectedOutLineOption = 0
     
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
@@ -186,29 +196,38 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
 
     // MARK: - NSOutlineViewDataSource
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
-        if let note = item as? Note {
-            print(note.subnotes.count)
-            return note.subnotes.count
+        
+        if let note = item as? Note{
+            if selectedOutLineOption == 1 {
+                return note.subnotes.count
+            } else if selectedOutLineOption == 1 {
+                return note.bookmarks.count
+            }
         }
-        print("have \(self.notes.count) notes")
         return self.notes.count
     }
     
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
         if let note = item as? Note {
-            print("note: \(note.title) has \(note.subnotes.count) children")
-            return note.subnotes[index]
+            if selectedOutLineOption == 1 {
+                return note.subnotes[index]
+            } else if selectedOutLineOption == 0 {
+                return note.bookmarks.first!
+            }
         }
-        print("the item at index: \(index) is \(self.notes[index])")
+        
         return self.notes[index]
     }
     
     func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
         if let note = item as? Note {
-            print(note.subnotes.count > 0)
-            return note.subnotes.count > 0
+            if selectedOutLineOption == 1 {
+                return note.subnotes.count > 0
+            } else if selectedOutLineOption == 0 {
+                return note.bookmarks.count > 0
+            }
+            
         }
-        print("becuase there is not note, so not expendable")
         return false
     }
     
@@ -217,6 +236,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             return note
         } else if let noteItem = item as? NoteItem {
             return noteItem
+        } else if let bookmark = item as? Bookmark {
+            return bookmark
         }
         return nil
     }

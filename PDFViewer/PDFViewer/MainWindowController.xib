@@ -855,7 +855,7 @@
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLj-lx-4M2">
                                 <rect key="frame" x="0.0" y="0.0" width="168" height="419"/>
                                 <clipView key="contentView" id="tia-Lu-FFP">
-                                    <rect key="frame" x="1" y="23" width="166" height="395"/>
+                                    <rect key="frame" x="1" y="0.0" width="166" height="418"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Hb0-hC-Bls" viewBased="YES" indentationPerLevel="16" outlineTableColumn="bDC-c5-Opd" id="TIC-u3-Vky">
