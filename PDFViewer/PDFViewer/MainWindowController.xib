@@ -813,13 +813,13 @@
                             </customView>
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tTg-kC-1ka">
                                 <rect key="frame" x="32" y="7" width="105" height="26"/>
-                                <popUpButtonCell key="cell" type="push" title="note" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="gDP-J1-DJG" id="SVt-za-hhF">
+                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="SVt-za-hhF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
-                                    <menu key="menu" id="YJK-nP-wTc">
+                                    <menu key="menu" title="outline options" id="YJK-nP-wTc">
                                         <items>
-                                            <menuItem title="bookmark" id="oWe-cI-bps"/>
-                                            <menuItem title="note" state="on" id="gDP-J1-DJG"/>
+                                            <menuItem title="bookmark" state="on" id="oWe-cI-bps"/>
+                                            <menuItem title="note" id="gDP-J1-DJG"/>
                                         </items>
                                     </menu>
                                 </popUpButtonCell>

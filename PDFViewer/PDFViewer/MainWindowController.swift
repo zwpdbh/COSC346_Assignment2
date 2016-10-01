@@ -31,11 +31,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     @IBAction func addBookmark(sender: NSButton) {
         if let set = self.pdfSet {
             let page = set.getCurrentPage()
-            let title = "\(page):" + " change this later"
+            let title = "page: \(page)"
             let bookmark = Bookmark(page: page, title: title)
             let note = self.notes[self.selectedPDF - 1]
-            note.bookmarks.insert(bookmark)
-            self.outlineView.reloadData()
+            if !note.alreadyHaveBookmark(bookmark) {
+                note.bookmarks.append(bookmark)
+                self.outlineView.reloadData()
+            }
         }
         
     }
@@ -200,7 +202,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         if let note = item as? Note{
             if selectedOutLineOption == 1 {
                 return note.subnotes.count
-            } else if selectedOutLineOption == 1 {
+            } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count
             }
         }
@@ -212,7 +214,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             if selectedOutLineOption == 1 {
                 return note.subnotes[index]
             } else if selectedOutLineOption == 0 {
-                return note.bookmarks.first!
+                return note.bookmarks[index]
             }
         }
         

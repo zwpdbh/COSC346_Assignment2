@@ -12,7 +12,7 @@ class Note: NSObject {
     let title: String
     let page = ""
     var subnotes = Array<NoteItem>()
-    var bookmarks = Set<Bookmark>()
+    var bookmarks = Array<Bookmark>()
     
     init(title: String) {
         self.title = title
@@ -20,6 +20,15 @@ class Note: NSObject {
     
     override var description: String {
         return self.title
+    }
+    
+    func alreadyHaveBookmark(bookmark: Bookmark) -> Bool {
+        for i in 0..<self.bookmarks.count {
+            if self.bookmarks[i].page == bookmark.page {
+                return true
+            }
+        }
+        return false
     }
 }
 
@@ -43,6 +52,6 @@ class Bookmark: NSObject {
     }
     
     override var hashValue: Int {
-        return self.page
+        return page
     }
 }
