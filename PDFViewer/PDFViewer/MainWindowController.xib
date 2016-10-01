@@ -852,7 +852,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="116" minWidth="40" maxWidth="1000" id="bDC-c5-Opd">
+                                                <tableColumn width="163" minWidth="40" maxWidth="1000" id="bDC-c5-Opd">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Notes">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -865,24 +865,24 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView id="UNe-JY-70o">
-                                                            <rect key="frame" x="1" y="1" width="116" height="17"/>
+                                                        <tableCellView id="s5l-p7-iYB">
+                                                            <rect key="frame" x="1" y="1" width="163" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tsL-fA-TRA">
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dGK-pq-yfa">
                                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="vBO-sL-36r">
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Omd-J9-XAc">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="UNe-JY-70o" name="value" keyPath="objectValue" id="w29-7H-fx4"/>
+                                                                        <binding destination="s5l-p7-iYB" name="value" keyPath="objectValue.title" id="Nhp-7Q-qV5"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
                                                             <connections>
-                                                                <outlet property="textField" destination="tsL-fA-TRA" id="qcx-9q-ELd"/>
+                                                                <outlet property="textField" destination="dGK-pq-yfa" id="Xc0-H3-REi"/>
                                                             </connections>
                                                         </tableCellView>
                                                     </prototypeCellViews>
@@ -900,7 +900,7 @@
                                     <rect key="frame" x="1" y="403" width="160" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="hkh-Uc-0te">
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="hkh-Uc-0te">
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>

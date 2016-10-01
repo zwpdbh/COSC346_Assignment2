@@ -10,7 +10,8 @@ import Foundation
 
 class Note: NSObject {
     let title: String
-    var children = Array<NoteItem>()
+    let page = ""
+    var subnotes = Array<NoteItem>()
     
     init(title: String) {
         self.title = title
@@ -30,3 +31,4 @@ class NoteItem: NSObject {
         self.title = title
     }
 }
+

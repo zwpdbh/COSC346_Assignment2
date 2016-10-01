@@ -26,7 +26,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             let page = set.getCurrentPage()
             
             let noteItem = self.notes[self.selectedPDF - 1]
-            noteItem.children.append(NoteItem(page: page, title: "\(page): " + title))
+            noteItem.subnotes.append(NoteItem(page: page, title: title))
             self.outlineView.reloadData()
         }
     }
@@ -177,8 +177,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // MARK: - NSOutlineViewDataSource
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
         if let note = item as? Note {
-            print(note.children.count)
-            return note.children.count
+            print(note.subnotes.count)
+            return note.subnotes.count
         }
         print("have \(self.notes.count) notes")
         return self.notes.count
@@ -186,8 +186,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
         if let note = item as? Note {
-            print("note: \(note.title) has \(note.children.count) children")
-            return note.children[index]
+            print("note: \(note.title) has \(note.subnotes.count) children")
+            return note.subnotes[index]
         }
         print("the item at index: \(index) is \(self.notes[index])")
         return self.notes[index]
@@ -195,8 +195,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
         if let note = item as? Note {
-            print(note.children.count > 0)
-            return note.children.count > 0
+            print(note.subnotes.count > 0)
+            return note.subnotes.count > 0
         }
         print("becuase there is not note, so not expendable")
         return false
@@ -204,17 +204,14 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
         if let note = item as? Note {
-            return note.title
+            return note
         } else if let noteItem = item as? NoteItem {
-            return noteItem.title
+            return noteItem
         }
         return nil
     }
+    
+    
     // MARK: - NSOutlineViewDelegate
-//    func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
-//        if let note = item as? Note {
-//            view = outlineView.makeViewWithIdentifier(<#T##identifier: String##String#>, owner: <#T##AnyObject?#>)
-//        }
-//        return view
-//    }
+
 }
