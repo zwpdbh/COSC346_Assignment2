@@ -24,7 +24,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     
     @IBAction func selectOutlineOption(sender: NSPopUpButton) {
+        
         self.selectedOutLineOption = self.outlineOption.indexOfSelectedItem
+        
         self.outlineView.reloadData()
     }
     
@@ -37,7 +39,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             let bookmark = Bookmark(page: page, title: title, parent: note)
             
             if !note.alreadyHaveBookmark(bookmark) {
+                
                 note.bookmarks.append(bookmark)
+                
                 self.outlineView.reloadData()
             }
         }
@@ -49,6 +53,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             let page = set.getCurrentPage()
             
             let note = self.notes[self.indexOfSelectedPDF]
+            
             
             note.subnotes.append(NoteItem(page: page, title: title, parent: note))
             
@@ -264,7 +269,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     // simulate go to a given page
                     self.currentPageDisplay.stringValue = "\(bookmark.page)"
                     self.goToGivenPage(self.currentPageDisplay)
-
                 }
             } else if let noteItem = item as? NoteItem {
                 if let parent = noteItem.parent {
@@ -280,5 +284,28 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         }
     }
     
-
+    // MARK: - key event
+    override func keyDown(theEvent: NSEvent) {
+        interpretKeyEvents([theEvent])
+    }
+    
+    override func deleteBackward(sender: AnyObject?) {
+        print("try to delete")
+        let row = self.outlineView.selectedRow
+        if row == -1 {
+            return
+        }
+        if let item = self.outlineView.itemAtRow(row) {
+            if let bookmark = item as? Bookmark {
+                if let parent = bookmark.parent {
+                    parent.removeBookmarkWithPage(bookmark.page)
+                }
+            } else if let noteItem = item as? NoteItem {
+                if let parent = noteItem.parent {
+                    parent.removeSubnotesWithPageAndTitle(noteItem.page, title: noteItem.title)
+                }
+            }
+        }
+        self.outlineView.reloadData()
+    }
 }

@@ -30,6 +30,29 @@ class Note: NSObject {
         }
         return false
     }
+    
+    func removeBookmarkWithPage(page: Int) -> Bool {
+        for i in 0..<self.bookmarks.count {
+            if page == self.bookmarks[i].page {
+                self.bookmarks.removeAtIndex(i)
+                print(self.bookmarks)
+                return true
+            }
+        }
+        return false
+    }
+    
+    func removeSubnotesWithPageAndTitle(page: Int, title: String) -> Bool {
+        for i in 0..<self.subnotes.count{
+            let noteitem = self.subnotes[i]
+            if page == noteitem.page && title == noteitem.title {
+                self.subnotes.removeAtIndex(i)
+                print(self.subnotes)
+                return true
+            }
+        }
+        return false
+    }
 }
 
 class NoteItem: NSObject {
@@ -41,6 +64,10 @@ class NoteItem: NSObject {
         self.page = page
         self.title = title
         self.parent = parent
+    }
+    
+    override var description: String {
+        return "title: " + title + ", page: " + "\(page)"
     }
 }
 
@@ -57,5 +84,9 @@ class Bookmark: NSObject {
     
     override var hashValue: Int {
         return page
+    }
+    
+    override var description: String {
+        return "page: " + "\(page)"
     }
 }
