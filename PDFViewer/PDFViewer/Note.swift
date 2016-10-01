@@ -12,6 +12,7 @@ class Note: NSObject {
     let title: String
     let page = ""
     var subnotes = Array<NoteItem>()
+    var bookmarks = Set<Bookmark>()
     
     init(title: String) {
         self.title = title
@@ -32,3 +33,14 @@ class NoteItem: NSObject {
     }
 }
 
+class Bookmark: NSObject {
+    let page: Int
+    
+    init(page: Int) {
+        self.page = page
+    }
+    
+    override var hashValue: Int {
+        return self.page
+    }
+}

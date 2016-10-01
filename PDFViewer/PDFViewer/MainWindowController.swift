@@ -20,7 +20,17 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     @IBOutlet weak var outlineView: NSOutlineView!
     
-    @IBAction func addMark(sender: NSButton) {
+    @IBOutlet weak var outlineOption: NSPopUpButton!
+    
+    
+    @IBAction func selectOutlineOption(sender: NSPopUpButton) {
+        
+    }
+    
+    @IBAction func addBookmark(sender: NSButton) {
+        
+    }
+    @IBAction func addNote(sender: NSButton) {
         if let set = self.pdfSet {
             let title = set.getCurrentPDFTitle()
             let page = set.getCurrentPage()

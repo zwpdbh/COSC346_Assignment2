@@ -10,6 +10,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController" customModule="PDFViewer" customModuleProvider="target">
             <connections>
                 <outlet property="currentPageDisplay" destination="Dj8-HB-TrA" id="dMy-tm-8Fz"/>
+                <outlet property="outlineOption" destination="tTg-kC-1ka" id="kmT-em-znO"/>
                 <outlet property="outlineView" destination="TIC-u3-Vky" id="RjJ-mG-Mns"/>
                 <outlet property="pdfView" destination="rGX-jC-ItO" id="kJR-VF-bFe"/>
                 <outlet property="selectPDFButton" destination="zCm-O7-SH2" id="3NB-3h-Kbv"/>
@@ -654,7 +655,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="SgW-QG-TJk">
                 <rect key="frame" x="0.0" y="0.0" width="942" height="458"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="8ul-KE-lXv">
                         <rect key="frame" x="0.0" y="418" width="942" height="40"/>
@@ -728,13 +729,23 @@
                                         </connections>
                                     </textField>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VPv-Bt-7ov">
-                                        <rect key="frame" x="14" y="2" width="49" height="32"/>
-                                        <buttonCell key="cell" type="push" title="📌" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="d17-Av-zav">
+                                        <rect key="frame" x="-6" y="2" width="48" height="32"/>
+                                        <buttonCell key="cell" type="push" title="📝" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="d17-Av-zav">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
-                                            <action selector="addMark:" target="-2" id="1OP-bU-YSV"/>
+                                            <action selector="addNote:" target="-2" id="9KT-Jx-hH5"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogE-29-AQz">
+                                        <rect key="frame" x="42" y="2" width="46" height="32"/>
+                                        <buttonCell key="cell" type="push" title="📌" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BB4-xb-wlS">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="addBookmark:" target="-2" id="vMT-pG-0sF"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -802,17 +813,19 @@
                             </customView>
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tTg-kC-1ka">
                                 <rect key="frame" x="32" y="7" width="105" height="26"/>
-                                <popUpButtonCell key="cell" type="push" title="Option" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="oWe-cI-bps" id="SVt-za-hhF">
+                                <popUpButtonCell key="cell" type="push" title="note" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="gDP-J1-DJG" id="SVt-za-hhF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" id="YJK-nP-wTc">
                                         <items>
-                                            <menuItem title="Option" state="on" id="oWe-cI-bps"/>
-                                            <menuItem title="Item 2" id="gDP-J1-DJG"/>
-                                            <menuItem title="Item 3" id="F3n-Uo-hT4"/>
+                                            <menuItem title="bookmark" id="oWe-cI-bps"/>
+                                            <menuItem title="note" state="on" id="gDP-J1-DJG"/>
                                         </items>
                                     </menu>
                                 </popUpButtonCell>
+                                <connections>
+                                    <action selector="selectOutlineOption:" target="-2" id="a23-2b-bXp"/>
+                                </connections>
                             </popUpButton>
                         </subviews>
                         <constraints>
