@@ -21,12 +21,14 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     @IBOutlet weak var outlineView: NSOutlineView!
     
     @IBAction func addMark(sender: NSButton) {
-//        if let set = self.pdfSet {
-//            let title = set.getCurrentPDFTitle()
-//            let page = set.getCurrentPage()
-//            self.notes.append(Note(name: title, value: "\(page)"))
-//            self.tableView.reloadData()
-//        }
+        if let set = self.pdfSet {
+            let title = set.getCurrentPDFTitle()
+            let page = set.getCurrentPage()
+            
+            let noteItem = self.notes[self.selectedPDF - 1]
+            noteItem.children.append(NoteItem(page: page, title: "\(page): " + title))
+            self.outlineView.reloadData()
+        }
     }
     
     @IBOutlet weak var selectPDFButton: NSPopUpButton!
@@ -46,10 +48,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 if let set = self.pdfSet {
                     for title in set.getTitlesOfPDFSet() {
                         self.selectPDFButton.addItemWithTitle(title)
+                        self.notes.append(Note(title: title))
                     }
                     set.delegate = self
                     self.pdfView.setDocument(set.moveToGivenPDF(0))
                 }
+                self.outlineView.reloadData()
             }
         }
     }
@@ -132,6 +136,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     var notes: Array<Note> = []
     
+    var selectedPDF = 0
+    
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
         self.pdfView.setAutoScales(true)
@@ -149,14 +155,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
         
-        
-        // load data into tableView
-//        for i in 1...10 {
-//            self.notes.append(Note(name: "\(i)", value: "\(i * i)"))
-//        }
-//        self.tableView.setDataSource(self)
-//        self.tableView.reloadData()
-        
     }
     
     // Recieve notification: update view, set current pdf to certain page, and update current page info
@@ -170,55 +168,53 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int) {
         self.window?.title = "\(nthPDF)/\(totalPDFs)_" + title
         self.currentPageDisplay.stringValue = "\(page)"
+        self.selectedPDF = nthPDF
+        self.selectPDFButton.selectItemAtIndex(nthPDF - 1)
     }
     
     
-//    // MARK: - NSTableViewDataSource
-//    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-//        return self.notes.count
-//    }
-//
-//    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-//        return self.notes[row]
-//    }
-//    
-//    // MARK: - NSTableViewDelegate
-//    func tableViewSelectionDidChange(notification: NSNotification) {
-//        let row = tableView.selectedRow
-//        if row == -1 {
-//            return
-//        } else {
-//            let mark = self.notes[row]
-//            let pdfIndex = self.pdfSet?.getIndexByTitle(mark.name)
-//            
-//            // simulate select popup button
-//            self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
-//            self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
-//            // simulate go to a given page
-//            self.currentPageDisplay.stringValue = mark.value
-//            self.goToGivenPage(self.currentPageDisplay)
-//        }
-//        
-//    }
+
     // MARK: - NSOutlineViewDataSource
+    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+        if let note = item as? Note {
+            print(note.children.count)
+            return note.children.count
+        }
+        print("have \(self.notes.count) notes")
+        return self.notes.count
+    }
+    
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
         if let note = item as? Note {
-            return note.subnotes[index]
+            print("note: \(note.title) has \(note.children.count) children")
+            return note.children[index]
         }
-        return item as! Note
+        print("the item at index: \(index) is \(self.notes[index])")
+        return self.notes[index]
     }
     
     func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
-        return (item as! Note).subnotes.count > 0
-    }
-    
-    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
-        return (item as! Note).subnotes.count
+        if let note = item as? Note {
+            print(note.children.count > 0)
+            return note.children.count > 0
+        }
+        print("becuase there is not note, so not expendable")
+        return false
     }
     
     func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
-        return (item as! Note).title
+        if let note = item as? Note {
+            return note.title
+        } else if let noteItem = item as? NoteItem {
+            return noteItem.title
+        }
+        return nil
     }
-    
     // MARK: - NSOutlineViewDelegate
+//    func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
+//        if let note = item as? Note {
+//            view = outlineView.makeViewWithIdentifier(<#T##identifier: String##String#>, owner: <#T##AnyObject?#>)
+//        }
+//        return view
+//    }
 }

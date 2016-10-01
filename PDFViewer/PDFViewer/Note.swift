@@ -9,32 +9,24 @@
 import Foundation
 
 class Note: NSObject {
-    var title: String
-    var content: String
-    var parent: Note?
-    var subnotes: Array<Note> = []
-    var indexAmongSiblings: Int
-    var depth: Int {
-        if let parent = self.parent {
-            return parent.depth
-        } else {
-            return 0
-        }
-    }
+    let title: String
+    var children = Array<NoteItem>()
     
-    init(title: String, content: String, index: Int) {
+    init(title: String) {
         self.title = title
-        self.content = content
-        self.indexAmongSiblings = index
-    }
-    
-    override var hashValue: Int {
-        get {
-            return (title + content).hashValue
-        }
     }
     
     override var description: String {
-        return title + ": " + content
+        return self.title
+    }
+}
+
+class NoteItem: NSObject {
+    let page: Int
+    let title: String
+    
+    init(page: Int, title: String) {
+        self.page = page
+        self.title = title
     }
 }

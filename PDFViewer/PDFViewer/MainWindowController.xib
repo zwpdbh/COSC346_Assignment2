@@ -889,7 +889,7 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <outlet property="dataSource" destination="-2" id="gt2-37-BhG"/>
+                                                <outlet property="dataSource" destination="-2" id="DzX-q2-XQk"/>
                                                 <outlet property="delegate" destination="-2" id="mKG-NJ-N4a"/>
                                             </connections>
                                         </outlineView>
