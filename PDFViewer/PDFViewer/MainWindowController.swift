@@ -246,5 +246,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     
     // MARK: - NSOutlineViewDelegate
-
+    func outlineViewSelectionDidChange(notification: NSNotification) {
+        <#code#>
+    }
 }
