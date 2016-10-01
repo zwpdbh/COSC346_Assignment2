@@ -11,6 +11,8 @@ import Foundation
 class Note: NSObject {
     var name: String
     var value: String
+    
+    var subnotes: Array<Note> = []
     init(name: String, value: String) {
         self.name = name
         self.value = value
