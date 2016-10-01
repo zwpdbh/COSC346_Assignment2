@@ -247,6 +247,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     // MARK: - NSOutlineViewDelegate
     func outlineViewSelectionDidChange(notification: NSNotification) {
-        <#code#>
+        let row = self.outlineView.selectedRow
+        if let item = self.outlineView.itemAtRow(row) {
+            if let bookmark = item as? Bookmark {
+                print(bookmark.page, bookmark.title)
+            } else if let note = item as? Note {
+                print(note.page, note.title)
+            }
+        }
     }
 }
