@@ -57,7 +57,8 @@ class Note: NSObject {
 
 class NoteItem: NSObject {
     let page: Int
-    let title: String
+    var title: String
+    var content: String?
     weak var parent: Note?
     
     init(page: Int, title: String, parent: Note) {
@@ -65,6 +66,7 @@ class NoteItem: NSObject {
         self.title = title
         self.parent = parent
     }
+    
     
     override var description: String {
         return "title: " + title + ", page: " + "\(page)"

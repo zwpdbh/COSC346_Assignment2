@@ -9,6 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController" customModule="PDFViewer" customModuleProvider="target">
             <connections>
+                <outlet property="addNoteButton" destination="VPv-Bt-7ov" id="71J-eA-3va"/>
                 <outlet property="currentPageDisplay" destination="Dj8-HB-TrA" id="dMy-tm-8Fz"/>
                 <outlet property="outlineOption" destination="tTg-kC-1ka" id="kmT-em-znO"/>
                 <outlet property="outlineView" destination="TIC-u3-Vky" id="RjJ-mG-Mns"/>

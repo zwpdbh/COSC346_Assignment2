@@ -10,13 +10,14 @@ import Cocoa
 import Quartz
 
 
-class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
+class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSPopoverDelegate {
 
     // MARK: - Outlets and Actions
     @IBOutlet weak var currentPageDisplay: NSTextField!
     
     @IBOutlet weak var pdfView: PDFView!
     
+    @IBOutlet weak var addNoteButton: NSButton!
     
     @IBOutlet weak var outlineView: NSOutlineView!
     
@@ -47,17 +48,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         }
         
     }
+    
     @IBAction func addNote(sender: NSButton) {
-        if let set = self.pdfSet {
-            let title = set.getCurrentPDFTitle()
-            let page = set.getCurrentPage()
-            
-            let note = self.notes[self.indexOfSelectedPDF]
-            
-            
-            note.subnotes.append(NoteItem(page: page, title: title, parent: note))
-            
-            self.outlineView.reloadData()
+        if let _ = self.pdfSet {
+            // show popover when click addnote button
+            popover.showRelativeToRect(self.addNoteButton.bounds, ofView: self.addNoteButton, preferredEdge: NSRectEdge.MinY)
         }
     }
     
@@ -73,6 +68,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             if(result == NSFileHandlingPanelOKButton) {
                 self.selectPDFButton.removeAllItems()
                 self.pdfSet = PDFSet(pdfURLS: panel.URLs)
+                // one pdf file for one note
                 self.notes = Array<Note>()
                 
                 if let set = self.pdfSet {
@@ -170,6 +166,10 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // 0 means viewing bookmarks, 1 means viewing notes
     var selectedOutLineOption = 0
     
+    let popover = NSPopover()
+    
+    var popoverViewController : PopoverViewController?
+    
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
         self.pdfView.setAutoScales(true)
@@ -186,6 +186,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         // Notification
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
+        
+        // set up popover controller
+        self.popoverViewController = PopoverViewController(nibName: "PopoverViewController", bundle: nil)!
+        self.popover.contentViewController = self.popoverViewController
+        self.popover.behavior = NSPopoverBehavior.Transient
+        self.popover.delegate = self
         
     }
     
@@ -279,10 +285,15 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     // simulate go to a given page
                     self.currentPageDisplay.stringValue = "\(noteItem.page)"
                     self.goToGivenPage(self.currentPageDisplay)
+                    
+
+                    popover.showRelativeToRect(self.outlineView.frameOfOutlineCellAtRow(row), ofView: self.outlineView.viewAtColumn(0, row: row, makeIfNecessary: false)!, preferredEdge: NSRectEdge.MinY)
                 }
             }
         }
     }
+    
+    
     
     // MARK: - key event
     override func keyDown(theEvent: NSEvent) {
@@ -306,6 +317,38 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 }
             }
         }
+        self.outlineView.reloadData()
+    }
+    
+    
+    // MARK: - Popover
+    // show popover at selected item
+    
+    func popoverWillShow(notification: NSNotification) {
+        
+    }
+    
+    func popoverWillClose(notification: NSNotification) {
+        if let set = self.pdfSet {
+            //            let title = set.getCurrentPDFTitle()
+            // get the current viewing pdf page
+            let page = set.getCurrentPage()
+            // get the current note
+            let note = self.notes[self.indexOfSelectedPDF]
+            
+            print("prepare to get content and title")
+            if let title = self.popoverViewController?.noteTitle.stringValue {
+                let noteItem = NoteItem(page: page, title: title, parent: note)
+                if let content = self.popoverViewController?.noteContent.stringValue {
+                    noteItem.content = content
+                }
+                note.subnotes.append(noteItem)
+                print(note.subnotes)
+            }
+        }
+    }
+    
+    func popoverDidClose(notification: NSNotification) {
         self.outlineView.reloadData()
     }
 }
