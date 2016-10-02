@@ -53,6 +53,16 @@ class Note: NSObject {
         }
         return false
     }
+    
+    func insertSubnote(item: NoteItem) {
+        for i in 0..<self.subnotes.count {
+            if self.subnotes[i].page == item.page && item.title == self.subnotes[i].title {
+                self.subnotes[i].content = item.content
+                return
+            }
+        }
+        self.subnotes.append(item)
+    }
 }
 
 class NoteItem: NSObject {

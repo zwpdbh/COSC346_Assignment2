@@ -52,6 +52,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     @IBAction func addNote(sender: NSButton) {
         if let _ = self.pdfSet {
             // show popover when click addnote button
+            isAdding = true
             popover.showRelativeToRect(self.addNoteButton.bounds, ofView: self.addNoteButton, preferredEdge: NSRectEdge.MinY)
         }
     }
@@ -170,6 +171,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     var popoverViewController : PopoverViewController?
     
+    var isAdding = true
+    var editingNoteItem: NoteItem?
+    
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
         self.pdfView.setAutoScales(true)
@@ -277,6 +281,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     self.goToGivenPage(self.currentPageDisplay)
                 }
             } else if let noteItem = item as? NoteItem {
+                // prepare to go to certian page within certain PDF
                 if let parent = noteItem.parent {
                     let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
                     // simulate select popup button
@@ -286,13 +291,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     self.currentPageDisplay.stringValue = "\(noteItem.page)"
                     self.goToGivenPage(self.currentPageDisplay)
                     
-
+                    isAdding = false
+                    editingNoteItem = noteItem
                     popover.showRelativeToRect(self.outlineView.frameOfOutlineCellAtRow(row), ofView: self.outlineView.viewAtColumn(0, row: row, makeIfNecessary: false)!, preferredEdge: NSRectEdge.MinY)
                 }
             }
         }
     }
-    
     
     
     // MARK: - key event
@@ -325,26 +330,29 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // show popover at selected item
     
     func popoverWillShow(notification: NSNotification) {
-        
+        if isAdding {
+            self.popoverViewController?.noteTitle.stringValue = ""
+            self.popoverViewController?.noteContent.stringValue = ""
+        } else if let item = self.editingNoteItem {
+            self.popoverViewController?.noteTitle.stringValue = item.title
+            if let conent = item.content {
+                self.popoverViewController?.noteContent.stringValue = conent
+            }
+        }
     }
     
     func popoverWillClose(notification: NSNotification) {
-        if let set = self.pdfSet {
-            //            let title = set.getCurrentPDFTitle()
-            // get the current viewing pdf page
-            let page = set.getCurrentPage()
-            // get the current note
-            let note = self.notes[self.indexOfSelectedPDF]
-            
-            print("prepare to get content and title")
-            if let title = self.popoverViewController?.noteTitle.stringValue {
-                let noteItem = NoteItem(page: page, title: title, parent: note)
-                if let content = self.popoverViewController?.noteContent.stringValue {
-                    noteItem.content = content
-                }
-                note.subnotes.append(noteItem)
-                print(note.subnotes)
+        // get the current viewing pdf page
+        let page = self.pdfSet!.getCurrentPage()
+        // get the current note
+        let note = self.notes[self.indexOfSelectedPDF]
+        
+        if let title = self.popoverViewController?.noteTitle.stringValue {
+            let noteItem = NoteItem(page: page, title: title, parent: note)
+            if let content = self.popoverViewController?.noteContent.stringValue {
+                noteItem.content = content
             }
+            note.insertSubnote(noteItem)
         }
     }
     
