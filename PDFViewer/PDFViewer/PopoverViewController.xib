@@ -60,6 +60,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="deleteNoteItem:" target="-2" id="OyP-iJ-Tla"/>
+                    </connections>
                 </button>
             </subviews>
         </customView>

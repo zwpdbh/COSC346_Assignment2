@@ -190,6 +190,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         // Notification
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(deleteNoteItem), name: "DeleteNoteItemNotification", object: nil)
         
         // set up popover controller
         self.popoverViewController = PopoverViewController(nibName: "PopoverViewController", bundle: nil)!
@@ -317,16 +318,16 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     parent.removeBookmarkWithPage(bookmark.page)
                 }
             }
-//            else if let noteItem = item as? NoteItem {
-//                print("try to delete note")
-//                if let parent = noteItem.parent {
-//                    parent.removeSubnotesWithPageAndTitle(noteItem.page, title: noteItem.title)
-//                }
-//            }
         }
         self.outlineView.reloadData()
     }
     
+    func deleteNoteItem() {
+
+        self.popover.close()
+        self.outlineView.reloadData()
+        print("received notitifcation")
+    }
     
     // MARK: - Popover
     // show popover at selected item
