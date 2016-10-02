@@ -187,10 +187,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         super.windowDidLoad()
 
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-        // Notification
+        // Notification for scroll of pages
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(deleteNoteItem), name: "DeleteNoteItemNotification", object: nil)
+        
+        // Notification for delete action on popup view
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(deleteNoteItemWithNotification), name: "DeleteNoteItemFromPopupViewNotification", object: nil)
         
         // set up popover controller
         self.popoverViewController = PopoverViewController(nibName: "PopoverViewController", bundle: nil)!
@@ -272,7 +274,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         let row = self.outlineView.selectedRow
         if let item = self.outlineView.itemAtRow(row) {
             if let bookmark = item as? Bookmark {
-                print(bookmark.page, bookmark.title)
                 if let parent = bookmark.parent {
                     let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
                     // simulate select popup button
@@ -294,8 +295,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     self.currentPageDisplay.stringValue = "\(noteItem.page)"
                     self.goToGivenPage(self.currentPageDisplay)
                     
+                    // record the noteitem which will be changed
                     editingNoteItem = noteItem
                     popover.showRelativeToRect(self.outlineView.frameOfOutlineCellAtRow(row), ofView: self.outlineView.viewAtColumn(0, row: row, makeIfNecessary: false)!, preferredEdge: NSRectEdge.MinY)
+                    
+                    let noteItemInfo = ["noteItem": noteItem]
+                    NSNotificationCenter.defaultCenter().postNotificationName("AboutToEditNoteItemNotification", object: self, userInfo: noteItemInfo as [NSObject : AnyObject])
                 }
             }
         }
@@ -321,12 +326,16 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         }
         self.outlineView.reloadData()
     }
-    
-    func deleteNoteItem() {
 
+    // when receive notification from delete button in the popup view:
+    func deleteNoteItemWithNotification(note: NSNotification) {
+        let itemInfo = note.userInfo! as! [String: NoteItem]
+        if let item = itemInfo["noteItem"]{
+            if let parent = item.parent {
+                parent.removeSubnotesWithPageAndTitle(item.page, title: item.title)
+            }
+        }
         self.popover.close()
-        self.outlineView.reloadData()
-        print("received notitifcation")
     }
     
     // MARK: - Popover
@@ -334,9 +343,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     func popoverWillShow(notification: NSNotification) {
         if isAdding {
+            self.popoverViewController?.deleteButton.enabled = false
             self.popoverViewController?.noteTitle.stringValue = ""
             self.popoverViewController?.noteContent.string = ""
         } else if let item = self.editingNoteItem {
+            self.popoverViewController?.deleteButton.enabled = true
             self.popoverViewController?.noteTitle.stringValue = item.title
             if let conent = item.content {
                 self.popoverViewController?.noteContent.string = conent
@@ -355,6 +366,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             if let content = self.popoverViewController?.noteContent.string {
                 noteItem.content = content
             }
+            
+            // when popup view is closing, do append or update depend on it is save or add
             if isAdding {
                 note.insertSubnote(noteItem)
             } else {

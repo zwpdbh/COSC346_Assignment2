@@ -35,7 +35,6 @@ class Note: NSObject {
         for i in 0..<self.bookmarks.count {
             if page == self.bookmarks[i].page {
                 self.bookmarks.removeAtIndex(i)
-                print(self.bookmarks)
                 return true
             }
         }
@@ -47,7 +46,6 @@ class Note: NSObject {
             let noteitem = self.subnotes[i]
             if page == noteitem.page && title == noteitem.title {
                 self.subnotes.removeAtIndex(i)
-                print(self.subnotes)
                 return true
             }
         }

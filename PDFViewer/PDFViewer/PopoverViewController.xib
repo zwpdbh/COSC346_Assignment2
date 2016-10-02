@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PopoverViewController" customModule="PDFViewer" customModuleProvider="target">
             <connections>
+                <outlet property="deleteButton" destination="OLW-1m-IrD" id="k8v-cX-Eb4"/>
                 <outlet property="noteContent" destination="YhL-sb-ALo" id="eYR-B2-huN"/>
                 <outlet property="noteTitle" destination="Wby-wI-lhS" id="E9r-Jn-h0n"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
