@@ -256,8 +256,10 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count
             }
+        } else if let result = item as? SearchResult {
+            return result.resultItems.count
         }
-        return self.notes.count
+        return 0
     }
     
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
@@ -267,9 +269,15 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks[index]
             }
+        } else if let result = item as? SearchResult {
+            return result.resultItems[index]
         }
         
-        return self.notes[index]
+        if self.selectedOutLineOption == 2 {
+            return self.results[index]
+        } else {
+            return self.notes[index]
+        }
     }
     
     func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
@@ -279,19 +287,26 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count > 0
             }
-            
+        } else if let result = item as? SearchResult {
+            return result.resultItems.count > 0
         }
+        
         return false
     }
     
     func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
         if let note = item as? Note {
             return note
+        } else if let result = item as? SearchResult {
+            return result
         } else if let noteItem = item as? NoteItem {
             return noteItem
         } else if let bookmark = item as? Bookmark {
             return bookmark
+        } else if let resultItem = item as? PDFSelection {
+            return resultItem
         }
+        
         return nil
     }
     
@@ -419,10 +434,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         print("end")
     }
     
-//    func didFindMatch(note: NSNotification) {
-//        print("find")
-//    }
-//    
     override func didMatchString(instance: PDFSelection!) {
         self.results[0].addSearchResultItem(instance)
         self.outlineView.reloadData()

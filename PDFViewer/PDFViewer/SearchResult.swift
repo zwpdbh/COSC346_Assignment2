@@ -24,15 +24,15 @@ class SearchResult: NSObject {
     }
 }
 
-class ResultItem: NSObject {
-    var page: Int
-    var key: String
-    var occurence: Int = 0
-    weak var parent: SearchResult?
-    
-    init(page: Int, key: String, parent: SearchResult) {
-        self.key = key
-        self.page = page
-        self.parent = parent
-    }
-}
+//class ResultItem: NSObject {
+//    var page: Int
+//    var title: String
+//    var occurence: Int = 0
+//    weak var parent: SearchResult?
+//    
+//    init(page: Int, title: String, parent: SearchResult) {
+//        self.title = title
+//        self.page = page
+//        self.parent = parent
+//    }
+//}
