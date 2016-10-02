@@ -14,6 +14,7 @@
                 <outlet property="outlineOption" destination="tTg-kC-1ka" id="kmT-em-znO"/>
                 <outlet property="outlineView" destination="TIC-u3-Vky" id="RjJ-mG-Mns"/>
                 <outlet property="pdfView" destination="rGX-jC-ItO" id="kJR-VF-bFe"/>
+                <outlet property="searchTextField" destination="mPC-Yl-yVr" id="03v-27-nvf"/>
                 <outlet property="selectPDFButton" destination="zCm-O7-SH2" id="3NB-3h-Kbv"/>
                 <outlet property="window" destination="HyS-vU-HKh" id="ZuL-fK-VhN"/>
             </connections>
@@ -806,6 +807,9 @@
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <connections>
+                                            <action selector="search:" target="-2" id="DpT-51-CFr"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <constraints>

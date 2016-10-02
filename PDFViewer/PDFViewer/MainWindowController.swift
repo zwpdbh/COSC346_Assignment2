@@ -23,6 +23,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     @IBOutlet weak var outlineOption: NSPopUpButton!
     
+    @IBOutlet weak var searchTextField: NSTextField!
     
     @IBAction func selectOutlineOption(sender: NSPopUpButton) {
         
@@ -163,11 +164,16 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.pdfView.setAutoScales(true)
     }
     
+    @IBAction func search(sender: NSTextField) {
+        print("searching")
+        
+    }
     // MARK: - Model Variables
     // a array of pdfs
     var pdfSet: PDFSet?
     
     var notes: Array<Note> = []
+    var results: Array<SearchResult> = []
     
     var indexOfSelectedPDF = 1
     // 0 means viewing bookmarks, 1 means viewing notes
