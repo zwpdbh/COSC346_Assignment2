@@ -7,15 +7,20 @@
 //
 
 import Cocoa
+import Quartz
 
 class SearchResult: NSObject {
     let title: String
     let page = "" // dummy data for outlineView's second column
     
-    var resultItems = Array<ResultItem>()
+    var resultItems = Array<PDFSelection>()
     
     init(title: String) {
         self.title = title
+    }
+    
+    func addSearchResultItem(selection: PDFSelection) {
+        self.resultItems.append(selection)
     }
 }
 

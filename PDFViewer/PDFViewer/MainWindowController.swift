@@ -85,6 +85,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                         self.notes.append(Note(title: title))
                         self.results.append(SearchResult(title: title))
                     }
+                    set.setPDFDocumentsDelegate(self)
                     set.delegate = self
                     self.pdfView.setDocument(set.moveToGivenPDF(0))
                 }
@@ -222,7 +223,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         // setup notifications for search
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didBeginFind), name: PDFDocumentDidBeginFindNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndFind), name: PDFDocumentDidEndFindNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didFindMatch), name: PDFDocumentDidFindMatchNotification, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didFindMatch), name: PDFDocumentDidFindMatchNotification, object: nil)
         
     }
     
@@ -415,8 +416,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         print("end")
     }
     
-    func didFindMatch(note: NSNotification) {
-        print("find")
+//    func didFindMatch(note: NSNotification) {
+//        print("find")
+//    }
+//    
+    override func didMatchString(instance: PDFSelection!) {
+        self.results[0].addSearchResultItem(instance)
     }
-    
 }

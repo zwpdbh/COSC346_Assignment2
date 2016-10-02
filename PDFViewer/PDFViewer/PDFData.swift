@@ -14,7 +14,7 @@ public protocol PDFViewerDelegate {
 }
 
 class PDFSet: NSObject{
-    private var pdfDocuments: Array<PDFDocument> = [] {
+    internal var pdfDocuments: Array<PDFDocument> = [] {
         didSet {
             totalNumberOfPDFs = self.pdfDocuments.count
             indexOfPDF = 0
@@ -29,7 +29,7 @@ class PDFSet: NSObject{
     private var indexOfPage = 0
     private var indexOfPDF = 0
     
-    private var currentPDF: PDFDocument {
+    internal var currentPDF: PDFDocument {
         didSet {
             indexOfPage = 0
         }
@@ -142,6 +142,12 @@ class PDFSet: NSObject{
             }
         }
         return nil
+    }
+    
+    func setPDFDocumentsDelegate(controller: MainWindowController) {
+        for each in self.pdfDocuments {
+            each.setDelegate(controller)
+        }
     }
 }
 
