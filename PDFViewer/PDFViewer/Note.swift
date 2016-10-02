@@ -11,10 +11,17 @@ import Quartz
 
 class Note: NSObject {
     let title: String
-    let page = ""   // this empty string is dummy data for outlineView's second column
     var subnotes = Array<NoteItem>()
     var bookmarks = Array<Bookmark>()
     var resultGroup = Array<SearchResult>()
+    
+    var col1: String {
+        return title
+    }
+    var col2: String {
+        return ""
+    }
+    
     
     init(title: String) {
         self.title = title
@@ -22,6 +29,21 @@ class Note: NSObject {
     
     override var description: String {
         return self.title
+    }
+    
+    func addResultSelections(instance: PDFSelection, parent: Note) {
+        if let item = instance.pages().first as? PDFPage {
+            print(item)
+            for each in self.resultGroup {
+                if Int(item.label()) == each.page {
+                    each.results.append(instance)
+                    return
+                }
+            }
+            let searchResult = SearchResult(page: Int(item.label())!, parent: parent)
+            searchResult.results.append(instance)
+            self.resultGroup.append(searchResult)
+        }
     }
     
     func alreadyHaveBookmark(bookmark: Bookmark) -> Bool {
@@ -81,6 +103,8 @@ class Note: NSObject {
             }
         }
     }
+    
+
 }
 
 class NoteItem: NSObject {
@@ -88,6 +112,13 @@ class NoteItem: NSObject {
     var title: String
     var content: String?
     weak var parent: Note?
+    
+    var col1: String {
+        return title
+    }
+    var col2: String {
+        return "\(page)"
+    }
     
     init(page: Int, title: String, parent: Note) {
         self.page = page
@@ -110,6 +141,14 @@ class Bookmark: NSObject {
     let page: Int
     weak var parent: Note?
     
+    var col1: String {
+        return title
+    }
+    var col2: String {
+        return "\(page)"
+    }
+    
+    
     init(page: Int, title: String, parent: Note) {
         self.page = page
         self.title = title
@@ -127,26 +166,24 @@ class Bookmark: NSObject {
 
 class SearchResult: NSObject {
     let page: Int
-    let times: Int
-    var title: String {
+    var times: Int {
+        return results.count
+    }
+    
+    var col1: String {
         return "\(page)"
     }
+    var col2: String {
+        return "\(times)"
+    }
+
     weak var parent: Note?
     var results = Array<PDFSelection>()
     
     
-    init(page: Int, times: Int, parent: Note) {
+    init(page: Int, parent: Note) {
         self.page = page
-        self.times = times
         self.parent = parent
     }
 }
 
-//extension PDFSelection {
-//    var title: String {
-//        return "selection title"
-//    }
-//    var page: String  {
-//        return "selection page"
-//    }
-//}

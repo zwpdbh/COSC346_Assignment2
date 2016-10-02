@@ -66,8 +66,8 @@
 		DB38037E1D9BC9C1002089FD /* PDFViewer */ = {
 			isa = PBXGroup;
 			children = (
-				DB584C7F1D9CC0FE00C460EE /* Note.swift */,
 				DB3803951D9BCC3A002089FD /* PDFData.swift */,
+				DB584C7F1D9CC0FE00C460EE /* Note.swift */,
 				DB3803901D9BCA7C002089FD /* MainWindowController.swift */,
 				DB3803911D9BCA7C002089FD /* MainWindowController.xib */,
 				DB4F2A511DA0560900EF2C1E /* PopoverViewController.swift */,

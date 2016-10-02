@@ -35,8 +35,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             self.outlineView.tableColumns[0].title = "note title"
             self.outlineView.tableColumns[1].title = "at page"
         } else if self.selectedOutLineOption == 2 {
-            self.outlineView.tableColumns[0].title = "result"
-            self.outlineView.tableColumns[1].title = "at page"
+            self.outlineView.tableColumns[0].title = "at page"
+            self.outlineView.tableColumns[1].title = "times"
         }
         self.outlineView.reloadData()
     }
@@ -375,7 +375,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     // MARK: - Popover
     // show popover at selected item
-    
     func popoverWillShow(notification: NSNotification) {
         if isAdding {
             self.popoverViewController?.deleteButton.enabled = false
@@ -419,21 +418,15 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     // Selector for receive notification from search
     func didBeginFind(note: NSNotification) {
-        print("begin")
+        self.outlineView.reloadData()
     }
     
     func didEndFind(note: NSNotification) {
-        print("end")
+        self.outlineView.reloadData()
     }
     
-//    func didFindMatch(note: NSNotification) {
-//        print("find")
-//    }
-//    
     override func didMatchString(instance: PDFSelection!) {
-        
-        if let item = instance.pages().first {
-            print(item)
-        }
+        self.notes[0].addResultSelections(instance, parent: self.notes[0])
+        self.outlineView.reloadData()
     }
 }
