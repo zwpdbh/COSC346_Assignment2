@@ -34,6 +34,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         } else if self.selectedOutLineOption == 1{
             self.outlineView.tableColumns[0].title = "note title"
             self.outlineView.tableColumns[1].title = "at page"
+        } else if self.selectedOutLineOption == 2 {
+            self.outlineView.tableColumns[0].title = "result"
+            self.outlineView.tableColumns[1].title = "at page"
         }
         self.outlineView.reloadData()
     }
@@ -422,5 +425,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
 //    
     override func didMatchString(instance: PDFSelection!) {
         self.results[0].addSearchResultItem(instance)
+        self.outlineView.reloadData()
     }
 }

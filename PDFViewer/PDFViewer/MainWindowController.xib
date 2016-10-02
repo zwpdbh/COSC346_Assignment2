@@ -823,8 +823,11 @@
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" title="outline options" id="YJK-nP-wTc">
                                         <items>
-                                            <menuItem title="bookmark" id="oWe-cI-bps"/>
+                                            <menuItem title="bookmark" state="on" id="oWe-cI-bps"/>
                                             <menuItem title="note" id="gDP-J1-DJG"/>
+                                            <menuItem title="search" id="EZC-Io-hBe">
+                                                <modifierMask key="keyEquivalentModifierMask"/>
+                                            </menuItem>
                                         </items>
                                     </menu>
                                 </popUpButtonCell>
@@ -985,7 +988,7 @@
                     <constraint firstAttribute="bottom" secondItem="rGX-jC-ItO" secondAttribute="bottom" id="kXN-Qq-PKq"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="1006" y="7"/>
+            <point key="canvasLocation" x="1458" y="26"/>
         </window>
     </objects>
 </document>
