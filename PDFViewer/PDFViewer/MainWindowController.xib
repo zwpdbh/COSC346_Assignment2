@@ -818,7 +818,7 @@
                             </customView>
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tTg-kC-1ka">
                                 <rect key="frame" x="32" y="7" width="105" height="26"/>
-                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="SVt-za-hhF">
+                                <popUpButtonCell key="cell" type="push" title="bookmark" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="oWe-cI-bps" id="SVt-za-hhF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" title="outline options" id="YJK-nP-wTc">
@@ -898,7 +898,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="s5l-p7-iYB" name="value" keyPath="objectValue.title" id="Nhp-7Q-qV5"/>
+                                                                        <binding destination="s5l-p7-iYB" name="value" keyPath="objectValue" id="uxJ-tY-YHq"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
@@ -933,7 +933,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="WDS-pf-8GR" name="value" keyPath="objectValue.page" id="P6n-tj-tcU"/>
+                                                                        <binding destination="WDS-pf-8GR" name="value" keyPath="objectValue" id="fMD-xi-PzI"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
