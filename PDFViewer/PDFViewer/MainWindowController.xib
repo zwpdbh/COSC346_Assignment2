@@ -898,7 +898,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="s5l-p7-iYB" name="value" keyPath="objectValue" id="uxJ-tY-YHq"/>
+                                                                        <binding destination="s5l-p7-iYB" name="value" keyPath="objectValue.title" id="oRb-jB-hyZ"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
@@ -933,7 +933,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="WDS-pf-8GR" name="value" keyPath="objectValue" id="fMD-xi-PzI"/>
+                                                                        <binding destination="WDS-pf-8GR" name="value" keyPath="objectValue.page" id="xN7-Mr-71T"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
