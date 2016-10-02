@@ -171,7 +171,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     var popoverViewController : PopoverViewController?
     
-    var isAdding = true
+    var isAdding: Bool =  false
     var editingNoteItem: NoteItem?
     
     // MARK: - Action Related to Window
@@ -282,6 +282,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     self.goToGivenPage(self.currentPageDisplay)
                 }
             } else if let noteItem = item as? NoteItem {
+                isAdding = false
                 // prepare to go to certian page within certain PDF
                 if let parent = noteItem.parent {
                     let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
@@ -292,7 +293,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     self.currentPageDisplay.stringValue = "\(noteItem.page)"
                     self.goToGivenPage(self.currentPageDisplay)
                     
-                    isAdding = false
                     editingNoteItem = noteItem
                     popover.showRelativeToRect(self.outlineView.frameOfOutlineCellAtRow(row), ofView: self.outlineView.viewAtColumn(0, row: row, makeIfNecessary: false)!, preferredEdge: NSRectEdge.MinY)
                 }
@@ -353,8 +353,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             if let content = self.popoverViewController?.noteContent.string {
                 noteItem.content = content
             }
-            note.insertSubnote(noteItem)
-            print(note.subnotes)
+            if isAdding {
+                note.insertSubnote(noteItem)
+            } else {
+                if let item = editingNoteItem {
+                    note.updateSubnote(withitem: noteItem, orignalTitle: item.title, orignalPage: item.page)
+                }
+            }
         }
     }
     

@@ -57,16 +57,28 @@ class Note: NSObject {
     func insertSubnote(item: NoteItem) {
         for i in 0..<self.subnotes.count {
             if self.subnotes[i].page == item.page && item.title == self.subnotes[i].title {
-                self.subnotes[i].content = item.content
                 return
             }
         }
         self.subnotes.append(item)
     }
+    
+    func updateSubnote(withitem item: NoteItem, orignalTitle title: String, orignalPage page: Int) {
+        for i in 0..<self.subnotes.count {
+            let subnote = self.subnotes[i]
+            if subnote.page == page && title == subnote.title {
+                subnote.title = item.title
+                subnote.page = item.page
+                if let content = item.content {
+                    subnote.content = content
+                }
+            }
+        }
+    }
 }
 
 class NoteItem: NSObject {
-    let page: Int
+    var page: Int
     var title: String
     var content: String?
     weak var parent: Note?
