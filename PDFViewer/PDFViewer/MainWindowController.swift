@@ -27,7 +27,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     @IBAction func selectOutlineOption(sender: NSPopUpButton) {
         
         self.selectedOutLineOption = self.outlineOption.indexOfSelectedItem
-        
+        if self.selectedOutLineOption == 0 {
+            self.outlineView.tableColumns[0].title = "time"
+            self.outlineView.tableColumns[1].title = "at page"
+        } else if self.selectedOutLineOption == 1{
+            self.outlineView.tableColumns[0].title = "note title"
+            self.outlineView.tableColumns[1].title = "at page"
+        }
         self.outlineView.reloadData()
     }
     
