@@ -83,6 +83,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     for title in set.getTitlesOfPDFSet() {
                         self.selectPDFButton.addItemWithTitle(title)
                         self.notes.append(Note(title: title))
+                        self.results.append(SearchResult(title: title))
                     }
                     set.delegate = self
                     self.pdfView.setDocument(set.moveToGivenPDF(0))
@@ -165,7 +166,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     @IBAction func search(sender: NSTextField) {
-        print("searching")
+        if self.pdfView.document().isFinding() {
+            pdfView.document().cancelFindString()
+        }
+        for result in self.results {
+            result.resultItems = []
+        }
+        self.pdfView.document().beginFindString(sender.stringValue, withOptions: 1)
         
     }
     // MARK: - Model Variables
@@ -211,6 +218,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.popover.contentViewController = self.popoverViewController
         self.popover.behavior = NSPopoverBehavior.Transient
         self.popover.delegate = self
+        
+        // setup notifications for search
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didBeginFind), name: PDFDocumentDidBeginFindNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndFind), name: PDFDocumentDidEndFindNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didFindMatch), name: PDFDocumentDidFindMatchNotification, object: nil)
         
     }
     
@@ -393,4 +405,18 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     func popoverDidClose(notification: NSNotification) {
         self.outlineView.reloadData()
     }
+    
+    // Selector for receive notification from search
+    func didBeginFind(note: NSNotification) {
+        print("begin")
+    }
+    
+    func didEndFind(note: NSNotification) {
+        print("end")
+    }
+    
+    func didFindMatch(note: NSNotification) {
+        print("find")
+    }
+    
 }
