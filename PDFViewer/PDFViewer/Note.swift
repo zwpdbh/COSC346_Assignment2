@@ -14,7 +14,7 @@ class Note: NSObject {
     let page = ""   // this empty string is dummy data for outlineView's second column
     var subnotes = Array<NoteItem>()
     var bookmarks = Array<Bookmark>()
-    var searchResults = Array<PDFSelection>()
+    var resultGroup = Array<SearchResult>()
     
     init(title: String) {
         self.title = title
@@ -132,6 +132,8 @@ class SearchResult: NSObject {
         return "\(page)"
     }
     weak var parent: Note?
+    var results = Array<PDFSelection>()
+    
     
     init(page: Int, times: Int, parent: Note) {
         self.page = page
@@ -140,11 +142,11 @@ class SearchResult: NSObject {
     }
 }
 
-extension PDFSelection {
-    var title: String {
-        return "selection title"
-    }
-    var page: String  {
-        return "selection page"
-    }
-}
+//extension PDFSelection {
+//    var title: String {
+//        return "selection title"
+//    }
+//    var page: String  {
+//        return "selection page"
+//    }
+//}

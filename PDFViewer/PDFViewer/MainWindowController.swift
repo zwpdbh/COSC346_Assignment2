@@ -174,7 +174,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         }
         // reset seach result
         for each in self.notes {
-            each.searchResults = []
+            each.resultGroup = []
         }
         
         self.pdfView.document().beginFindString(sender.stringValue, withOptions: 1)
@@ -256,7 +256,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count
             } else if selectedOutLineOption == 2 {
-                return note.searchResults.count
+                return note.resultGroup.count
             }
         }
         return self.notes.count
@@ -269,7 +269,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks[index]
             } else if selectedOutLineOption == 2 {
-                return note.searchResults[index]
+                return note.resultGroup[index]
             }
         }
         
@@ -283,9 +283,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count > 0
             } else if selectedOutLineOption == 2 {
-                return note.searchResults.count > 0
+                return note.resultGroup.count > 0
             }
-            
         }
         return false
     }
@@ -297,7 +296,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             return noteItem
         } else if let bookmark = item as? Bookmark {
             return bookmark
-        } else if let result = item as? PDFSelection {
+        } else if let result = item as? SearchResult {
             return result
         }
         return nil
@@ -432,7 +431,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
 //    }
 //    
     override func didMatchString(instance: PDFSelection!) {
-        self.notes[0].searchResults.append(instance)
-        self.outlineView.reloadData()
+        
+        if let item = instance.pages().first {
+            print(item)
+        }
     }
 }
