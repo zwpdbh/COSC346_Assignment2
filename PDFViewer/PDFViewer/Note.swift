@@ -7,12 +7,14 @@
 //
 
 import Foundation
+import Quartz
 
 class Note: NSObject {
     let title: String
     let page = ""   // this empty string is dummy data for outlineView's second column
     var subnotes = Array<NoteItem>()
     var bookmarks = Array<Bookmark>()
+    var searchResults = Array<PDFSelection>()
     
     init(title: String) {
         self.title = title
@@ -120,5 +122,14 @@ class Bookmark: NSObject {
     
     override var description: String {
         return "page: " + "\(page)"
+    }
+}
+
+extension PDFSelection {
+    var title: String {
+        return "selection title"
+    }
+    var page: String  {
+        return "selection page"
     }
 }

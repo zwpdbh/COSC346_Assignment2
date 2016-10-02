@@ -86,7 +86,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     for title in set.getTitlesOfPDFSet() {
                         self.selectPDFButton.addItemWithTitle(title)
                         self.notes.append(Note(title: title))
-                        self.results.append(SearchResult(title: title))
                     }
                     set.setPDFDocumentsDelegate(self)
                     set.delegate = self
@@ -173,9 +172,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         if self.pdfView.document().isFinding() {
             pdfView.document().cancelFindString()
         }
-        for result in self.results {
-            result.resultItems = []
+        // reset seach result
+        for each in self.notes {
+            each.searchResults = []
         }
+        
         self.pdfView.document().beginFindString(sender.stringValue, withOptions: 1)
         
     }
@@ -184,7 +185,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     var pdfSet: PDFSet?
     
     var notes: Array<Note> = []
-    var results: Array<SearchResult> = []
     
     var indexOfSelectedPDF = 1
     // 0 means viewing bookmarks, 1 means viewing notes
@@ -237,7 +237,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         }
     }
     
-    // MARK: - PDFSetDelegate
+    // MARK: - PDFSetDelegate A self defined protocol to sync info
     func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int, totalPages: Int) {
         self.window?.title = "\(nthPDF)/\(totalPDFs)_" + title
         self.currentPageDisplay.stringValue = "\(page)/\(totalPages)"
@@ -255,6 +255,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 return note.subnotes.count
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count
+            } else if selectedOutLineOption == 2 {
+                return note.searchResults.count
             }
         }
         return self.notes.count
@@ -266,6 +268,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 return note.subnotes[index]
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks[index]
+            } else if selectedOutLineOption == 2 {
+                return note.searchResults[index]
             }
         }
         
@@ -278,6 +282,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 return note.subnotes.count > 0
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count > 0
+            } else if selectedOutLineOption == 2 {
+                return note.searchResults.count > 0
             }
             
         }
@@ -291,6 +297,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             return noteItem
         } else if let bookmark = item as? Bookmark {
             return bookmark
+        } else if let result = item as? PDFSelection {
+            return result
         }
         return nil
     }
@@ -424,7 +432,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
 //    }
 //    
     override func didMatchString(instance: PDFSelection!) {
-        self.results[0].addSearchResultItem(instance)
+        self.notes[0].searchResults.append(instance)
         self.outlineView.reloadData()
     }
 }
