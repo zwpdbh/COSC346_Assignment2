@@ -337,6 +337,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     let noteItemInfo = ["noteItem": noteItem]
                     NSNotificationCenter.defaultCenter().postNotificationName("AboutToEditNoteItemNotification", object: self, userInfo: noteItemInfo as [NSObject : AnyObject])
                 }
+            } else if let searchResult = item as? SearchResult {
+                if let selection = searchResult.results.first {
+                    self.pdfView.setCurrentSelection(selection)
+                    self.pdfView.scrollSelectionToVisible(self)
+                }
             }
         }
     }
@@ -416,7 +421,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.outlineView.reloadData()
     }
     
-    // Selector for receive notification from search
+    // MARK: - Selector for Search Notification
     func didBeginFind(note: NSNotification) {
         self.outlineView.reloadData()
     }
