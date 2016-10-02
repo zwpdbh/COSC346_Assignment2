@@ -55,6 +55,9 @@ class Note: NSObject {
     }
     
     func insertSubnote(item: NoteItem) {
+        if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+            return
+        }
         for i in 0..<self.subnotes.count {
             if self.subnotes[i].page == item.page && item.title == self.subnotes[i].title {
                 return
@@ -64,6 +67,9 @@ class Note: NSObject {
     }
     
     func updateSubnote(withitem item: NoteItem, orignalTitle title: String, orignalPage page: Int) {
+        if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+            return
+        }
         for i in 0..<self.subnotes.count {
             let subnote = self.subnotes[i]
             if subnote.page == page && title == subnote.title {
