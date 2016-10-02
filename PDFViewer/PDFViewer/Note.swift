@@ -125,6 +125,21 @@ class Bookmark: NSObject {
     }
 }
 
+class SearchResult: NSObject {
+    let page: Int
+    let times: Int
+    var title: String {
+        return "\(page)"
+    }
+    weak var parent: Note?
+    
+    init(page: Int, times: Int, parent: Note) {
+        self.page = page
+        self.times = times
+        self.parent = parent
+    }
+}
+
 extension PDFSelection {
     var title: String {
         return "selection title"
