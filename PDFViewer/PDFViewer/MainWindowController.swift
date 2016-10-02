@@ -266,6 +266,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     
     // MARK: - NSOutlineViewDelegate
+    
     func outlineViewSelectionDidChange(notification: NSNotification) {
         let row = self.outlineView.selectedRow
         if let item = self.outlineView.itemAtRow(row) {
@@ -332,11 +333,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     func popoverWillShow(notification: NSNotification) {
         if isAdding {
             self.popoverViewController?.noteTitle.stringValue = ""
-            self.popoverViewController?.noteContent.stringValue = ""
+            self.popoverViewController?.noteContent.string = ""
         } else if let item = self.editingNoteItem {
             self.popoverViewController?.noteTitle.stringValue = item.title
             if let conent = item.content {
-                self.popoverViewController?.noteContent.stringValue = conent
+                self.popoverViewController?.noteContent.string = conent
             }
         }
     }
@@ -349,10 +350,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         
         if let title = self.popoverViewController?.noteTitle.stringValue {
             let noteItem = NoteItem(page: page, title: title, parent: note)
-            if let content = self.popoverViewController?.noteContent.stringValue {
+            if let content = self.popoverViewController?.noteContent.string {
                 noteItem.content = content
             }
             note.insertSubnote(noteItem)
+            print(note.subnotes)
         }
     }
     

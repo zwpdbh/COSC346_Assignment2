@@ -79,7 +79,11 @@ class NoteItem: NSObject {
     
     
     override var description: String {
-        return "title: " + title + ", page: " + "\(page)"
+        if let content = self.content {
+            return "title: " + title + "\npage: " + "\(page)" + "\nconent: \(content)"
+        } else {
+            return "title: " + title + ", page: " + "\(page)"
+        }
     }
 }
 

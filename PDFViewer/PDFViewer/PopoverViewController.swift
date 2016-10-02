@@ -11,8 +11,10 @@ import Cocoa
 class PopoverViewController: NSViewController {
 
     
-    @IBOutlet weak var noteContent: NSTextField!
+    
     @IBOutlet weak var noteTitle: NSTextField!
+    
+    @IBOutlet var noteContent: NSTextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
