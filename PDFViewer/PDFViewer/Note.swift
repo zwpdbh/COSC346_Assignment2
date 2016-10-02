@@ -10,7 +10,7 @@ import Foundation
 
 class Note: NSObject {
     let title: String
-    let page = ""
+    let page = ""   // this empty string is dummy data for outlineView's second column
     var subnotes = Array<NoteItem>()
     var bookmarks = Array<Bookmark>()
     
