@@ -307,7 +307,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     override func deleteBackward(sender: AnyObject?) {
-        print("try to delete")
         let row = self.outlineView.selectedRow
         if row == -1 {
             return
@@ -317,11 +316,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 if let parent = bookmark.parent {
                     parent.removeBookmarkWithPage(bookmark.page)
                 }
-            } else if let noteItem = item as? NoteItem {
-                if let parent = noteItem.parent {
-                    parent.removeSubnotesWithPageAndTitle(noteItem.page, title: noteItem.title)
-                }
             }
+//            else if let noteItem = item as? NoteItem {
+//                print("try to delete note")
+//                if let parent = noteItem.parent {
+//                    parent.removeSubnotesWithPageAndTitle(noteItem.page, title: noteItem.title)
+//                }
+//            }
         }
         self.outlineView.reloadData()
     }
