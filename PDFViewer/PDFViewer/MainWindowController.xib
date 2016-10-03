@@ -818,22 +818,22 @@
                             </customView>
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tTg-kC-1ka">
                                 <rect key="frame" x="32" y="7" width="105" height="26"/>
-                                <popUpButtonCell key="cell" type="push" title="bookmark" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="oWe-cI-bps" id="SVt-za-hhF">
+                                <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="SVt-za-hhF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
                                     <menu key="menu" title="outline options" id="YJK-nP-wTc">
                                         <items>
-                                            <menuItem title="bookmark" state="on" id="oWe-cI-bps"/>
+                                            <menuItem title="bookmark" id="oWe-cI-bps"/>
                                             <menuItem title="note" id="gDP-J1-DJG"/>
                                             <menuItem title="search" id="EZC-Io-hBe">
                                                 <modifierMask key="keyEquivalentModifierMask"/>
                                             </menuItem>
                                         </items>
                                     </menu>
+                                    <connections>
+                                        <action selector="outlineOptionSelect:" target="-2" id="xiF-Wc-7fd"/>
+                                    </connections>
                                 </popUpButtonCell>
-                                <connections>
-                                    <action selector="selectOutlineOption:" target="-2" id="a23-2b-bXp"/>
-                                </connections>
                             </popUpButton>
                         </subviews>
                         <constraints>
@@ -898,7 +898,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="s5l-p7-iYB" name="value" keyPath="objectValue.title" id="oRb-jB-hyZ"/>
+                                                                        <binding destination="s5l-p7-iYB" name="value" keyPath="objectValue.col1" id="4Rr-5d-jla"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
@@ -933,7 +933,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <binding destination="WDS-pf-8GR" name="value" keyPath="objectValue.page" id="xN7-Mr-71T"/>
+                                                                        <binding destination="WDS-pf-8GR" name="value" keyPath="objectValue.col2" id="kNB-z8-fXy"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>

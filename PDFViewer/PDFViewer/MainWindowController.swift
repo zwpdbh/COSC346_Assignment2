@@ -25,8 +25,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     @IBOutlet weak var searchTextField: NSTextField!
     
-    @IBAction func selectOutlineOption(sender: NSPopUpButton) {
-        
+    @IBAction func outlineOptionSelect(sender: NSPopUpButtonCell) {
         self.selectedOutLineOption = self.outlineOption.indexOfSelectedItem
         if self.selectedOutLineOption == 0 {
             self.outlineView.tableColumns[0].title = "time"
@@ -35,8 +34,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             self.outlineView.tableColumns[0].title = "note title"
             self.outlineView.tableColumns[1].title = "at page"
         } else if self.selectedOutLineOption == 2 {
-            self.outlineView.tableColumns[0].title = "result"
-            self.outlineView.tableColumns[1].title = "at page"
+            self.outlineView.tableColumns[0].title = "at page"
+            self.outlineView.tableColumns[1].title = "times"
         }
         self.outlineView.reloadData()
     }
@@ -86,7 +85,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     for title in set.getTitlesOfPDFSet() {
                         self.selectPDFButton.addItemWithTitle(title)
                         self.notes.append(Note(title: title))
-                        self.results.append(SearchResult(title: title))
                     }
                     set.setPDFDocumentsDelegate(self)
                     set.delegate = self
@@ -169,22 +167,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.pdfView.setAutoScales(true)
     }
     
-    @IBAction func search(sender: NSTextField) {
-        if self.pdfView.document().isFinding() {
-            pdfView.document().cancelFindString()
-        }
-        for result in self.results {
-            result.resultItems = []
-        }
-        self.pdfView.document().beginFindString(sender.stringValue, withOptions: 1)
-        
-    }
     // MARK: - Model Variables
     // a array of pdfs
     var pdfSet: PDFSet?
-    
     var notes: Array<Note> = []
-    var results: Array<SearchResult> = []
+    // use this index to put search result into separete note
+    var indexOfNote: Int = 0
     
     var indexOfSelectedPDF = 1
     // 0 means viewing bookmarks, 1 means viewing notes
@@ -208,7 +196,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     override func windowDidLoad() {
         super.windowDidLoad()
-
+        
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
         // Notification for scroll of pages
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
@@ -237,7 +225,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         }
     }
     
-    // MARK: - PDFSetDelegate
+    // MARK: - PDFSetDelegate A self defined protocol to sync info
     func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int, totalPages: Int) {
         self.window?.title = "\(nthPDF)/\(totalPDFs)_" + title
         self.currentPageDisplay.stringValue = "\(page)/\(totalPages)"
@@ -255,11 +243,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 return note.subnotes.count
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count
+            } else if selectedOutLineOption == 2 {
+                return note.resultGroup.count
             }
-        } else if let result = item as? SearchResult {
-            return result.resultItems.count
         }
-        return 0
+        return self.notes.count
     }
     
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
@@ -268,16 +256,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 return note.subnotes[index]
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks[index]
+            } else if selectedOutLineOption == 2 {
+                return note.resultGroup[index]
             }
-        } else if let result = item as? SearchResult {
-            return result.resultItems[index]
         }
         
-        if self.selectedOutLineOption == 2 {
-            return self.results[index]
-        } else {
-            return self.notes[index]
-        }
+        return self.notes[index]
     }
     
     func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
@@ -286,27 +270,23 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 return note.subnotes.count > 0
             } else if selectedOutLineOption == 0 {
                 return note.bookmarks.count > 0
+            } else if selectedOutLineOption == 2 {
+                return note.resultGroup.count > 0
             }
-        } else if let result = item as? SearchResult {
-            return result.resultItems.count > 0
         }
-        
         return false
     }
     
     func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
         if let note = item as? Note {
             return note
-        } else if let result = item as? SearchResult {
-            return result
         } else if let noteItem = item as? NoteItem {
             return noteItem
         } else if let bookmark = item as? Bookmark {
             return bookmark
-        } else if let resultItem = item as? PDFSelection {
-            return resultItem
+        } else if let result = item as? SearchResult {
+            return result
         }
-        
         return nil
     }
     
@@ -344,6 +324,17 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     
                     let noteItemInfo = ["noteItem": noteItem]
                     NSNotificationCenter.defaultCenter().postNotificationName("AboutToEditNoteItemNotification", object: self, userInfo: noteItemInfo as [NSObject : AnyObject])
+                }
+            } else if let searchResult = item as? SearchResult {
+                if let parent = searchResult.parent {
+                    let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
+                    // simulate select popup button
+                    self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
+                    self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
+                }
+                if let selection = searchResult.results.first {
+                    self.pdfView.setCurrentSelection(selection)
+                    self.pdfView.scrollSelectionToVisible(self)
                 }
             }
         }
@@ -383,7 +374,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     // MARK: - Popover
     // show popover at selected item
-    
     func popoverWillShow(notification: NSNotification) {
         if isAdding {
             self.popoverViewController?.deleteButton.enabled = false
@@ -425,17 +415,37 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.outlineView.reloadData()
     }
     
-    // Selector for receive notification from search
+    // MARK: - Search Functions
+    @IBAction func search(sender: NSTextField) {
+        if let set = self.pdfSet {
+            self.outlineOption.selectItemAtIndex(2)
+            self.outlineOptionSelect(self.outlineOption.selectedCell() as! NSPopUpButtonCell)
+            
+            for eachNote in self.notes {
+                eachNote.resultGroup = []
+            }
+            for i in 0..<set.pdfDocuments.count {
+                if let pdf = self.pdfSet?.pdfDocuments[i] {
+                    self.indexOfNote = i
+                    pdf.findString(sender.stringValue, withOptions: 1)
+                }
+            }
+        }
+    }
+    
     func didBeginFind(note: NSNotification) {
-        print("begin")
+        self.outlineView.reloadData()
     }
     
     func didEndFind(note: NSNotification) {
-        print("end")
+        self.outlineView.reloadData()
+        for each in self.notes {
+            self.outlineView.expandItem(each, expandChildren: true)
+        }
     }
     
     override func didMatchString(instance: PDFSelection!) {
-        self.results[0].addSearchResultItem(instance)
-        self.outlineView.reloadData()
+        self.notes[indexOfNote].addResultSelections(instance, parent: self.notes[indexOfNote])
     }
+    
 }
