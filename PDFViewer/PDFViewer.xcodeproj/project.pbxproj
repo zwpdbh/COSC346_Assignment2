@@ -17,6 +17,7 @@
 		DB4F2A531DA0560900EF2C1E /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F2A511DA0560900EF2C1E /* PopoverViewController.swift */; };
 		DB4F2A541DA0560900EF2C1E /* PopoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB4F2A521DA0560900EF2C1E /* PopoverViewController.xib */; };
 		DB584C801D9CC0FE00C460EE /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB584C7F1D9CC0FE00C460EE /* Note.swift */; };
+		DB76E0A81DA2751000C1D046 /* introductory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DB76E0A71DA2751000C1D046 /* introductory.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		DB4F2A511DA0560900EF2C1E /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		DB4F2A521DA0560900EF2C1E /* PopoverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopoverViewController.xib; sourceTree = "<group>"; };
 		DB584C7F1D9CC0FE00C460EE /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		DB76E0A71DA2751000C1D046 /* introductory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = introductory.pdf; path = ../../../../../../Downloads/introductory.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 		DB38037E1D9BC9C1002089FD /* PDFViewer */ = {
 			isa = PBXGroup;
 			children = (
+				DB76E0A71DA2751000C1D046 /* introductory.pdf */,
 				DB3803951D9BCC3A002089FD /* PDFData.swift */,
 				DB584C7F1D9CC0FE00C460EE /* Note.swift */,
 				DB3803901D9BCA7C002089FD /* MainWindowController.swift */,
@@ -146,6 +149,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB76E0A81DA2751000C1D046 /* introductory.pdf in Resources */,
 				DB4F2A541DA0560900EF2C1E /* PopoverViewController.xib in Resources */,
 				DB3803821D9BC9C1002089FD /* Assets.xcassets in Resources */,
 				DB3803931D9BCA7C002089FD /* MainWindowController.xib in Resources */,

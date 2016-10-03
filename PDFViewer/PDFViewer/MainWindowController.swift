@@ -296,6 +296,33 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndFind), name: PDFDocumentDidEndFindNotification, object: nil)
         
         // Set up introductory startup page to your application
+        if let path = NSBundle.mainBundle().pathForResource("introductory", ofType: "pdf") {
+            let startUpPDFURL = NSURL(fileURLWithPath: path)
+            var error: NSError?
+            if startUpPDFURL.checkResourceIsReachableAndReturnError(&error) {
+                self.pdfSet = PDFSet(pdfURLS: [startUpPDFURL])
+                // one pdf file for one note, reset notes
+                self.notes = Array<Note>()
+                if let set = self.pdfSet {
+                    for url in set.addresses {
+                        self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
+                        if let note = self.getNoteFromURL(url) {
+                            self.notes.append(note)
+                        } else {
+                            self.notes.append(Note(url: url))
+                        }
+                    }
+                    set.setPDFDocumentsDelegate(self)
+                    set.delegate = self
+                    self.pdfView.setDocument(set.moveToGivenPDF(0))
+                }
+                self.outlineView.reloadData()
+            } else {
+                print(startUpPDFURL)
+            }
+        }
+
+
     }
     
     // Recieve notification: update view, set current pdf to certain page, and update current page info
