@@ -25,8 +25,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     @IBOutlet weak var searchTextField: NSTextField!
     
-    @IBAction func selectOutlineOption(sender: NSPopUpButton) {
-        
+    @IBAction func outlineOptionSelect(sender: NSPopUpButtonCell) {
         self.selectedOutLineOption = self.outlineOption.indexOfSelectedItem
         if self.selectedOutLineOption == 0 {
             self.outlineView.tableColumns[0].title = "time"
@@ -197,7 +196,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     override func windowDidLoad() {
         super.windowDidLoad()
-
+        
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
         // Notification for scroll of pages
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
@@ -419,6 +418,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // MARK: - Search Functions
     @IBAction func search(sender: NSTextField) {
         if let set = self.pdfSet {
+            self.outlineOption.selectItemAtIndex(2)
+            self.outlineOptionSelect(self.outlineOption.selectedCell() as! NSPopUpButtonCell)
+            
             for eachNote in self.notes {
                 eachNote.resultGroup = []
             }
@@ -437,9 +439,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     func didEndFind(note: NSNotification) {
         self.outlineView.reloadData()
+        for each in self.notes {
+            self.outlineView.expandItem(each, expandChildren: true)
+        }
     }
     
     override func didMatchString(instance: PDFSelection!) {
         self.notes[indexOfNote].addResultSelections(instance, parent: self.notes[indexOfNote])
     }
+    
 }

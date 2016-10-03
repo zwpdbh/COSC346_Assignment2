@@ -830,10 +830,10 @@
                                             </menuItem>
                                         </items>
                                     </menu>
+                                    <connections>
+                                        <action selector="outlineOptionSelect:" target="-2" id="xiF-Wc-7fd"/>
+                                    </connections>
                                 </popUpButtonCell>
-                                <connections>
-                                    <action selector="selectOutlineOption:" target="-2" id="a23-2b-bXp"/>
-                                </connections>
                             </popUpButton>
                         </subviews>
                         <constraints>
