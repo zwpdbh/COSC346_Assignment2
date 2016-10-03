@@ -168,23 +168,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.pdfView.setAutoScales(true)
     }
     
-    @IBAction func search(sender: NSTextField) {
-        if self.pdfView.document().isFinding() {
-            pdfView.document().cancelFindString()
-        }
-        // reset seach result
-        for each in self.notes {
-            each.resultGroup = []
-        }
-        
-        self.pdfView.document().beginFindString(sender.stringValue, withOptions: 1)
-        
-    }
     // MARK: - Model Variables
     // a array of pdfs
     var pdfSet: PDFSet?
-    
     var notes: Array<Note> = []
+    // use this index to put search result into separete note
+    var indexOfNote: Int = 0
     
     var indexOfSelectedPDF = 1
     // 0 means viewing bookmarks, 1 means viewing notes
@@ -338,6 +327,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     NSNotificationCenter.defaultCenter().postNotificationName("AboutToEditNoteItemNotification", object: self, userInfo: noteItemInfo as [NSObject : AnyObject])
                 }
             } else if let searchResult = item as? SearchResult {
+                if let parent = searchResult.parent {
+                    let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
+                    // simulate select popup button
+                    self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
+                    self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
+                }
                 if let selection = searchResult.results.first {
                     self.pdfView.setCurrentSelection(selection)
                     self.pdfView.scrollSelectionToVisible(self)
@@ -421,7 +416,21 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.outlineView.reloadData()
     }
     
-    // MARK: - Selector for Search Notification
+    // MARK: - Search Functions
+    @IBAction func search(sender: NSTextField) {
+        if let set = self.pdfSet {
+            for eachNote in self.notes {
+                eachNote.resultGroup = []
+            }
+            for i in 0..<set.pdfDocuments.count {
+                if let pdf = self.pdfSet?.pdfDocuments[i] {
+                    self.indexOfNote = i
+                    pdf.findString(sender.stringValue, withOptions: 1)
+                }
+            }
+        }
+    }
+    
     func didBeginFind(note: NSNotification) {
         self.outlineView.reloadData()
     }
@@ -431,7 +440,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     override func didMatchString(instance: PDFSelection!) {
-        self.notes[0].addResultSelections(instance, parent: self.notes[0])
-        self.outlineView.reloadData()
+        self.notes[indexOfNote].addResultSelections(instance, parent: self.notes[indexOfNote])
     }
 }
