@@ -294,8 +294,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         // setup notifications for search
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didBeginFind), name: PDFDocumentDidBeginFindNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndFind), name: PDFDocumentDidEndFindNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didFindMatch), name: PDFDocumentDidFindMatchNotification, object: nil)
         
+        // Set up introductory startup page to your application
     }
     
     // Recieve notification: update view, set current pdf to certain page, and update current page info
