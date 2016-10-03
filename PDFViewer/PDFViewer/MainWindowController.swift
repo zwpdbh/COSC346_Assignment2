@@ -77,6 +77,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         }
     }
     
+    // save ntoes
     func createSavedFileURL(url: NSURL) -> String {
         var savingURL = ""
         if let parts = url.pathComponents {
@@ -93,6 +94,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         return savingURL
     }
     
+    // open notes
     @IBAction func openNotes(sender: NSMenuItem) {
         // open notes and load associated files
         let panel = NSOpenPanel()
@@ -100,7 +102,25 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         
         panel.beginWithCompletionHandler { (result) in
             if result == NSFileHandlingPanelOKButton {
+                var pdfURLs: Array<NSURL> = []
+                self.notes = []
+                for url in panel.URLs {
+                    if let note = NSKeyedUnarchiver.unarchiveObjectWithFile(url.path!) as? Note {
+                        self.notes.append(note)
+                        pdfURLs.append(note.pdfURL)
+                    }
+                }
+                self.pdfSet = PDFSet(pdfURLS: pdfURLs)
                 
+                if let set = self.pdfSet {
+                    for url in set.addresses {
+                        self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
+                    }
+                    set.setPDFDocumentsDelegate(self)
+                    set.delegate = self
+                    self.pdfView.setDocument(set.moveToGivenPDF(0))
+                }
+                self.outlineView.reloadData()
             }
         }
     }

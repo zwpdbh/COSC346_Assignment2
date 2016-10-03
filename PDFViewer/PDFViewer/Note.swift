@@ -30,17 +30,18 @@ class Note: NSObject, NSCoding {
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.title, forKey: "zwpdbh.Note.title")
+        aCoder.encodeObject(self.pdfURL, forKey: "zwpdbh.Note.pdfURL")
         aCoder.encodeObject(self.subnotes, forKey: "zwpdbh.Note.subnotes")
         aCoder.encodeObject(self.bookmarks, forKey: "zwpdbh.Note.bookmarks")
         aCoder.encodeObject(self.resultGroup, forKey: "zwpdbh.Note.resultsGroup")
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         self.pdfURL = aDecoder.decodeObjectForKey("zwpdbh.Note.pdfURL") as! NSURL
         self.subnotes = aDecoder.decodeObjectForKey("zwpdbh.Note.subnotes") as! Array<NoteItem>
         self.bookmarks = aDecoder.decodeObjectForKey("zwpdbh.Note.bookmarks") as! Array<Bookmark>
         self.resultGroup = aDecoder.decodeObjectForKey("zwpdbh.Note.resultsGroup") as! Array<SearchResult>
+        super.init()
     }
     
     override var description: String {
@@ -158,11 +159,12 @@ class NoteItem: NSObject, NSCoding {
         aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.NoteItem.parent")
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         self.page = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.page") as! Int
         self.title = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.title") as! String
         self.content = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.content") as? String
         self.parent = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.parent") as? Note
+        super.init()
     }
 }
 
@@ -190,10 +192,13 @@ class Bookmark: NSObject, NSCoding {
         aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.Bookmark.parent")
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    
+    
+    required init(coder aDecoder: NSCoder) {
         self.title = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.title") as! String
         self.page = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.page") as! Int
         self.parent = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.parent") as? Note
+        super.init()
     }
     
     override var hashValue: Int {
@@ -236,6 +241,7 @@ class SearchResult: NSObject, NSCoding {
         self.page = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.page") as! Int
         self.results = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.results") as! Array<PDFSelection>
         self.parent = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.parent") as? Note
+        
     }
 }
 
