@@ -99,6 +99,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     @IBAction func openNotes(sender: NSMenuItem) {
         // open notes and load associated files
         let panel = NSOpenPanel()
+        panel.allowedFileTypes = ["note"]
         panel.allowsMultipleSelection = true;
         
         panel.beginWithCompletionHandler { (result) in
@@ -134,6 +135,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     @IBAction func openFile(sender: NSMenuItem) {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = true;
+        panel.allowedFileTypes = ["pdf"]
         
         panel.beginWithCompletionHandler { (result) in
             if(result == NSFileHandlingPanelOKButton) {
