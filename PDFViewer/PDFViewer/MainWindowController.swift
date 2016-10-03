@@ -67,18 +67,19 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     @IBAction func saveNotes(sender: NSMenuItem) {
         // should save all notes under the same direcotry with pdfs
         for eachNote in self.notes {
-            let savingURL = createSavedFileURL(eachNote.pdfURL)
-            let result = NSKeyedArchiver.archiveRootObject(eachNote, toFile: savingURL)
-            if result {
-                print("save note succeed, at: " + savingURL)
-            } else {
-                print("save note failed, when try to save note at: " + savingURL)
+            if let savingURL = getNoteURLFromPDFURL(eachNote.pdfURL).path {
+                let result = NSKeyedArchiver.archiveRootObject(eachNote, toFile: savingURL)
+                if result {
+                    print("save note succeed, at: " + savingURL)
+                } else {
+                    print("save note failed, when try to save note at: " + savingURL)
+                }
             }
         }
     }
     
     // save ntoes
-    func createSavedFileURL(url: NSURL) -> String {
+    func getNoteURLFromPDFURL(url: NSURL) -> NSURL {
         var savingURL = ""
         if let parts = url.pathComponents {
             for  i in 1..<parts.count-1 {
@@ -91,7 +92,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             savingURL = "/" + savingURL + "/" + parts[parts.count-1] + ".note"
         }
         
-        return savingURL
+        return NSURL(fileURLWithPath: savingURL)
     }
     
     // open notes
@@ -145,7 +146,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 if let set = self.pdfSet {
                     for url in set.addresses {
                         self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
-                        self.notes.append(Note(url: url))
+                        if let note = self.getNoteFromURL(url) {
+                            self.notes.append(note)
+                        } else {
+                            self.notes.append(Note(url: url))
+                        }
                     }
                     
                     set.setPDFDocumentsDelegate(self)
@@ -154,6 +159,17 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 }
                 self.outlineView.reloadData()
             }
+        }
+    }
+    
+    func getNoteFromURL(pdfURL: NSURL) -> Note? {
+        let noteURL = getNoteURLFromPDFURL(pdfURL)
+        var error: NSError?
+        let noteExist = noteURL.checkResourceIsReachableAndReturnError(&error)
+        if noteExist {
+            return NSKeyedUnarchiver.unarchiveObjectWithFile(noteURL.path!) as? Note
+        } else {
+            return nil
         }
     }
     
