@@ -55,7 +55,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 self.outlineView.reloadData()
             }
         }
-        
     }
     
     @IBAction func addNote(sender: NSButton) {
@@ -67,8 +66,28 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     @IBAction func saveNotes(sender: NSMenuItem) {
         // should save all notes under the same direcotry with pdfs
-        
+        for eachNote in self.notes {
+            let savingURL = createSavedFileURL(eachNote.pdfURL)
+            print(savingURL)
+        }
     }
+    
+    func createSavedFileURL(url: NSURL) -> NSURL {
+        var savingURL = ""
+        if let parts = url.pathComponents {
+            for  i in 1..<parts.count-1 {
+                if i == 1 {
+                    savingURL += parts[i]
+                } else {
+                    savingURL += ("/" + parts[i])
+                }
+            }
+            savingURL = "/" + savingURL + parts[parts.count-1] + ".note"
+        }
+        
+        return NSURL(fileURLWithPath: savingURL)
+    }
+    
     @IBAction func openNotes(sender: NSMenuItem) {
         // open notes and load associated files
         let panel = NSOpenPanel()

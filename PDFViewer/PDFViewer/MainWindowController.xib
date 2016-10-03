@@ -106,7 +106,7 @@
                                     <action selector="performClose:" target="-1" id="hew-ni-lJV"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Save…" keyEquivalent="s" id="zFr-Zy-bT2">
+                            <menuItem title="Save Notes" keyEquivalent="s" id="zFr-Zy-bT2">
                                 <connections>
                                     <action selector="saveNotes:" target="-2" id="o8b-3S-v0A"/>
                                 </connections>
