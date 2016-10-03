@@ -81,6 +81,12 @@
                                     <action selector="openFile:" target="-2" id="8yD-GM-ISL"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Open Notes" id="hgg-W9-ktK">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="openNotes:" target="-2" id="Je1-Zf-NMK"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Open Recent" id="5Ec-BR-uuy">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="bpj-e7-c95">
@@ -102,7 +108,7 @@
                             </menuItem>
                             <menuItem title="Save…" keyEquivalent="s" id="zFr-Zy-bT2">
                                 <connections>
-                                    <action selector="saveDocument:" target="-1" id="wRv-U0-CpO"/>
+                                    <action selector="saveNotes:" target="-2" id="o8b-3S-v0A"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Save As…" keyEquivalent="S" id="8j8-iE-ikM">

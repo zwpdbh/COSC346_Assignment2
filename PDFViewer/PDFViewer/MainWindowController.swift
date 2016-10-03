@@ -65,6 +65,21 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             popover.showRelativeToRect(self.addNoteButton.bounds, ofView: self.addNoteButton, preferredEdge: NSRectEdge.MinY)
         }
     }
+    @IBAction func saveNotes(sender: NSMenuItem) {
+        // should save all notes under the same direcotry with pdfs
+        
+    }
+    @IBAction func openNotes(sender: NSMenuItem) {
+        // open notes and load associated files
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = true;
+        
+        panel.beginWithCompletionHandler { (result) in
+            if result == NSFileHandlingPanelOKButton {
+                
+            }
+        }
+    }
     
     @IBOutlet weak var selectPDFButton: NSPopUpButton!
     
@@ -82,10 +97,16 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 self.notes = Array<Note>()
                 
                 if let set = self.pdfSet {
-                    for title in set.getTitlesOfPDFSet() {
-                        self.selectPDFButton.addItemWithTitle(title)
-                        self.notes.append(Note(title: title))
+                    for url in set.addresses {
+                        self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
+                        self.notes.append(Note(url: url))
                     }
+                    
+//                    for title in set.getTitlesOfPDFSet() {
+//                        self.selectPDFButton.addItemWithTitle(title)
+//                        self.notes.append(Note(title: title))
+//                    }
+                    
                     set.setPDFDocumentsDelegate(self)
                     set.delegate = self
                     self.pdfView.setDocument(set.moveToGivenPDF(0))

@@ -10,10 +10,13 @@ import Foundation
 import Quartz
 
 class Note: NSObject, NSCoding {
-    let title: String
+    var pdfURL: NSURL
     var subnotes = Array<NoteItem>()
     var bookmarks = Array<Bookmark>()
     var resultGroup = Array<SearchResult>()
+    var title: String {
+        return self.pdfURL.lastPathComponent!
+    }
     
     var col1: String {
         return title
@@ -22,8 +25,8 @@ class Note: NSObject, NSCoding {
         return ""
     }
     
-    init(title: String) {
-        self.title = title
+    init(url: NSURL) {
+        self.pdfURL = url
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -34,7 +37,7 @@ class Note: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.title = aDecoder.decodeObjectForKey("zwpdbh.Note.title") as! String
+        self.pdfURL = aDecoder.decodeObjectForKey("zwpdbh.Note.pdfURL") as! NSURL
         self.subnotes = aDecoder.decodeObjectForKey("zwpdbh.Note.subnotes") as! Array<NoteItem>
         self.bookmarks = aDecoder.decodeObjectForKey("zwpdbh.Note.bookmarks") as! Array<Bookmark>
         self.resultGroup = aDecoder.decodeObjectForKey("zwpdbh.Note.resultsGroup") as! Array<SearchResult>

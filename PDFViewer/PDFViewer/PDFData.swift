@@ -25,6 +25,7 @@ class PDFSet: NSObject{
     internal var delegate: PDFViewerDelegate?
     
     private var titles: Array<String> = []
+    var addresses: Array<NSURL> = []
     
     private var indexOfPage = 0
     private var indexOfPDF = 0
@@ -44,6 +45,7 @@ class PDFSet: NSObject{
             let pdfDoc = PDFDocument(URL: url)
             self.pdfDocuments.append(pdfDoc)
             self.titles.append(url.lastPathComponent!)
+            self.addresses.append(url)
         }
         currentPDF = self.pdfDocuments[0]
         totalNumberOfPDFs = pdfURLS.count
