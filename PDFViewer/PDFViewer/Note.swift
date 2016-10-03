@@ -9,7 +9,7 @@
 import Foundation
 import Quartz
 
-class Note: NSObject {
+class Note: NSObject, NSCoding {
     let title: String
     var subnotes = Array<NoteItem>()
     var bookmarks = Array<Bookmark>()
@@ -22,9 +22,22 @@ class Note: NSObject {
         return ""
     }
     
-    
     init(title: String) {
         self.title = title
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.title, forKey: "zwpdbh.Note.title")
+        aCoder.encodeObject(self.subnotes, forKey: "zwpdbh.Note.subnotes")
+        aCoder.encodeObject(self.bookmarks, forKey: "zwpdbh.Note.bookmarks")
+        aCoder.encodeObject(self.resultGroup, forKey: "zwpdbh.Note.resultsGroup")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.title = aDecoder.decodeObjectForKey("zwpdbh.Note.title") as! String
+        self.subnotes = aDecoder.decodeObjectForKey("zwpdbh.Note.subnotes") as! Array<NoteItem>
+        self.bookmarks = aDecoder.decodeObjectForKey("zwpdbh.Note.bookmarks") as! Array<Bookmark>
+        self.resultGroup = aDecoder.decodeObjectForKey("zwpdbh.Note.resultsGroup") as! Array<SearchResult>
     }
     
     override var description: String {
@@ -107,7 +120,7 @@ class Note: NSObject {
 
 }
 
-class NoteItem: NSObject {
+class NoteItem: NSObject, NSCoding {
     var page: Int
     var title: String
     var content: String?
@@ -134,11 +147,25 @@ class NoteItem: NSObject {
             return "title: " + title + ", page: " + "\(page)"
         }
     }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.page, forKey: "zwpdbh.NoteItem.page")
+        aCoder.encodeObject(self.title, forKey: "zwpdbh.NoteItem.title")
+        aCoder.encodeObject(self.content, forKey: "zwpdbh.NoteItem.content")
+        aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.NoteItem.parent")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.page = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.page") as! Int
+        self.title = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.title") as! String
+        self.content = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.content") as? String
+        self.parent = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.parent") as? Note
+    }
 }
 
-class Bookmark: NSObject {
-    let title: String
-    let page: Int
+class Bookmark: NSObject, NSCoding {
+    var title: String
+    var page: Int
     weak var parent: Note?
     
     var col1: String {
@@ -148,11 +175,22 @@ class Bookmark: NSObject {
         return "\(page)"
     }
     
-    
     init(page: Int, title: String, parent: Note) {
         self.page = page
         self.title = title
         self.parent = parent
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.title, forKey: "zwpdbh.Bookmark.title")
+        aCoder.encodeObject(self.page, forKey: "zwpdbh.Bookmark.page")
+        aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.Bookmark.parent")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.title = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.title") as! String
+        self.page = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.page") as! Int
+        self.parent = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.parent") as? Note
     }
     
     override var hashValue: Int {
@@ -164,8 +202,11 @@ class Bookmark: NSObject {
     }
 }
 
-class SearchResult: NSObject {
+class SearchResult: NSObject, NSCoding {
     let page: Int
+    var results = Array<PDFSelection>()
+
+    weak var parent: Note?
     var times: Int {
         return results.count
     }
@@ -176,14 +217,22 @@ class SearchResult: NSObject {
     var col2: String {
         return "\(times)"
     }
-
-    weak var parent: Note?
-    var results = Array<PDFSelection>()
-    
     
     init(page: Int, parent: Note) {
         self.page = page
         self.parent = parent
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.page, forKey: "zwpdbh.SearchResult.page")
+        aCoder.encodeObject(self.results, forKey: "zwpdbh.SearchResult.results")
+        aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.SearchResult.parent")
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        self.page = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.page") as! Int
+        self.results = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.results") as! Array<PDFSelection>
+        self.parent = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.parent") as? Note
     }
 }
 
