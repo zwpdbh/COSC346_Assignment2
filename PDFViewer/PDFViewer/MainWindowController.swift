@@ -102,6 +102,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         
         panel.beginWithCompletionHandler { (result) in
             if result == NSFileHandlingPanelOKButton {
+                self.pdfSet = nil
                 var pdfURLs: Array<NSURL> = []
                 self.notes = []
                 for url in panel.URLs {
