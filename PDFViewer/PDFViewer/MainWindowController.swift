@@ -117,7 +117,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             if(result == NSFileHandlingPanelOKButton) {
                 self.selectPDFButton.removeAllItems()
                 self.pdfSet = PDFSet(pdfURLS: panel.URLs)
-                // one pdf file for one note
+                
+                // one pdf file for one note, reset notes
                 self.notes = Array<Note>()
                 
                 if let set = self.pdfSet {
@@ -125,11 +126,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                         self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
                         self.notes.append(Note(url: url))
                     }
-                    
-//                    for title in set.getTitlesOfPDFSet() {
-//                        self.selectPDFButton.addItemWithTitle(title)
-//                        self.notes.append(Note(title: title))
-//                    }
                     
                     set.setPDFDocumentsDelegate(self)
                     set.delegate = self
