@@ -68,11 +68,16 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         // should save all notes under the same direcotry with pdfs
         for eachNote in self.notes {
             let savingURL = createSavedFileURL(eachNote.pdfURL)
-            print(savingURL)
+            let result = NSKeyedArchiver.archiveRootObject(eachNote, toFile: savingURL)
+            if result {
+                print("save note succeed, at: " + savingURL)
+            } else {
+                print("save note failed, when try to save note at: " + savingURL)
+            }
         }
     }
     
-    func createSavedFileURL(url: NSURL) -> NSURL {
+    func createSavedFileURL(url: NSURL) -> String {
         var savingURL = ""
         if let parts = url.pathComponents {
             for  i in 1..<parts.count-1 {
@@ -82,10 +87,10 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     savingURL += ("/" + parts[i])
                 }
             }
-            savingURL = "/" + savingURL + parts[parts.count-1] + ".note"
+            savingURL = "/" + savingURL + "/" + parts[parts.count-1] + ".note"
         }
         
-        return NSURL(fileURLWithPath: savingURL)
+        return savingURL
     }
     
     @IBAction func openNotes(sender: NSMenuItem) {
