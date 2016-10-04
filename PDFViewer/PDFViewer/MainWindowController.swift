@@ -129,15 +129,18 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     if let note = NSKeyedUnarchiver.unarchiveObjectWithFile(url.path!) as? Note {
                         var error: NSError?
                         if note.pdfURL.checkResourceIsReachableAndReturnError(&error) {
+                            print(note.pdfURL)
                             self.notes.append(note)
                             pdfURLs.append(note.pdfURL)
                         } else {
+                            // create a window to alert user!
                             print("can not find pdf at: \(note.pdfURL)")
                         }
                     }
                 }
-                self.pdfSet = PDFSet(pdfURLS: pdfURLs)
-                
+                if pdfURLs.count > 0 {
+                    self.pdfSet = PDFSet(pdfURLS: pdfURLs)
+                }
                 if let set = self.pdfSet {
                     for url in set.addresses {
                         self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
@@ -166,7 +169,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 self.selectPDFButton.removeAllItems()
                 self.pdfSet = PDFSet(pdfURLS: panel.URLs)
                 
-                // one pdf file for one note, reset notes
+                // one pdf file for one note, if there has been a note with current pdf, then load it, 
+                // otherwise, create a new one with pdf' url
                 self.notes = Array<Note>()
                 
                 if let set = self.pdfSet {

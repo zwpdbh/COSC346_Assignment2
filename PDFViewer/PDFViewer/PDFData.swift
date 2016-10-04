@@ -42,13 +42,10 @@ class PDFSet: NSObject{
     init(pdfURLS: Array<NSURL>) {
         for i in 0..<pdfURLS.count {
             let url = pdfURLS[i]
-            var error: NSError?
-            if url.checkResourceIsReachableAndReturnError(&error) {
-                let pdfDoc = PDFDocument(URL: url)
-                self.pdfDocuments.append(pdfDoc)
-                self.titles.append(url.lastPathComponent!)
-                self.addresses.append(url)
-            }
+            let pdfDoc = PDFDocument(URL: url)
+            self.pdfDocuments.append(pdfDoc)
+            self.titles.append(url.lastPathComponent!)
+            self.addresses.append(url)
         }
         currentPDF = self.pdfDocuments[0]
         totalNumberOfPDFs = pdfURLS.count
