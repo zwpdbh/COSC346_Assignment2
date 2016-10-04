@@ -30,7 +30,7 @@
                             <menuItem title="About PDFViewer" id="2g0-L1-GeC">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="orderFrontStandardAboutPanel:" target="-1" id="zca-O3-5hv"/>
+                                    <action selector="createAboutWindow:" target="-2" id="NO2-Ko-wKz"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="AUA-sZ-EiN"/>
@@ -994,7 +994,7 @@
                     <constraint firstAttribute="bottom" secondItem="rGX-jC-ItO" secondAttribute="bottom" id="kXN-Qq-PKq"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="1458" y="26"/>
+            <point key="canvasLocation" x="1374" y="12"/>
         </window>
     </objects>
 </document>

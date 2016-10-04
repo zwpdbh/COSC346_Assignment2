@@ -13,6 +13,13 @@ import Quartz
 class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSPopoverDelegate {
 
     // MARK: - Outlets and Actions
+    @IBAction func createAboutWindow(sender: NSMenuItem) {
+        let aboutWindowController = AboutWindowController()
+        
+        aboutWindowController.showWindow(self)
+        self.aboutWindowController = aboutWindowController
+    }
+    
     @IBOutlet weak var currentPageDisplay: NSTextField!
     
     @IBOutlet weak var pdfView: PDFView!
@@ -265,6 +272,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     var isAdding: Bool =  false
     var editingNoteItem: NoteItem?
     
+    
+    var aboutWindowController: AboutWindowController?
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
         self.pdfView.setAutoScales(true)

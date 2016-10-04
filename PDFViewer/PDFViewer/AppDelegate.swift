@@ -14,6 +14,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var mainWindowController: MainWindowController?
 
     @IBOutlet weak var window: NSWindow!
+    
+    
 
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
