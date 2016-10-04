@@ -51,14 +51,15 @@ class Note: NSObject, NSCoding {
     func addResultSelections(instance: PDFSelection, parent: Note) {
         if let item = instance.pages().first as? PDFPage {
             print(item)
+            instance.setColor(NSColor.yellowColor())
             for each in self.resultGroup {
                 if Int(item.label()) == each.page {
-                    each.results.append(instance)
+                    each.addSelections(instance)
                     return
                 }
             }
             let searchResult = SearchResult(page: Int(item.label())!, parent: parent)
-            searchResult.results.append(instance)
+            searchResult.addSelections(instance)
             self.resultGroup.append(searchResult)
         }
     }
@@ -213,7 +214,7 @@ class Bookmark: NSObject, NSCoding {
 class SearchResult: NSObject, NSCoding {
     let page: Int
     var results = Array<PDFSelection>()
-
+    
     weak var parent: Note?
     var times: Int {
         return results.count
@@ -242,6 +243,13 @@ class SearchResult: NSObject, NSCoding {
         self.results = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.results") as! Array<PDFSelection>
         self.parent = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.parent") as? Note
         
+    }
+    
+    func addSelections(selection: PDFSelection) {
+        if self.results.count > 1 {
+            self.results[0].addSelection(selection)
+        }
+        self.results.append(selection)
     }
 }
 
