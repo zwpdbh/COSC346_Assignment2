@@ -50,11 +50,10 @@ class Note: NSObject, NSCoding {
     
     func addResultSelections(instance: PDFSelection, parent: Note) {
         if let item = instance.pages().first as? PDFPage {
-            print(item)
             instance.setColor(NSColor.yellowColor())
-            for each in self.resultGroup {
-                if Int(item.label()) == each.page {
-                    each.addSelections(instance)
+            for eachSearchResult in self.resultGroup {
+                if Int(item.label()) == eachSearchResult.page {
+                    eachSearchResult.addSelections(instance)
                     return
                 }
             }
@@ -246,7 +245,7 @@ class SearchResult: NSObject, NSCoding {
     }
     
     func addSelections(selection: PDFSelection) {
-        if self.results.count > 1 {
+        if self.results.count > 0 {
             self.results[0].addSelection(selection)
         }
         self.results.append(selection)
