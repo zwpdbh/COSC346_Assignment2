@@ -127,8 +127,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 self.notes = []
                 for url in panel.URLs {
                     if let note = NSKeyedUnarchiver.unarchiveObjectWithFile(url.path!) as? Note {
-                        self.notes.append(note)
-                        pdfURLs.append(note.pdfURL)
+                        var error: NSError?
+                        if note.pdfURL.checkResourceIsReachableAndReturnError(&error) {
+                            self.notes.append(note)
+                            pdfURLs.append(note.pdfURL)
+                        } else {
+                            print("can not find pdf at: \(note.pdfURL)")
+                        }
                     }
                 }
                 self.pdfSet = PDFSet(pdfURLS: pdfURLs)
