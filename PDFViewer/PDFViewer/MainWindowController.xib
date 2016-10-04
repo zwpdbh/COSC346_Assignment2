@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="addNoteButton" destination="VPv-Bt-7ov" id="71J-eA-3va"/>
                 <outlet property="currentPageDisplay" destination="Dj8-HB-TrA" id="dMy-tm-8Fz"/>
+                <outlet property="newMainWindowButton" destination="Dba-dv-b2n" id="Sct-rj-mMT"/>
                 <outlet property="outlineOption" destination="tTg-kC-1ka" id="kmT-em-znO"/>
                 <outlet property="outlineView" destination="TIC-u3-Vky" id="RjJ-mG-Mns"/>
                 <outlet property="pdfView" destination="rGX-jC-ItO" id="kJR-VF-bFe"/>
@@ -71,9 +72,9 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="File" id="XiM-7w-pL5">
                         <items>
-                            <menuItem title="New" keyEquivalent="n" id="Dba-dv-b2n">
+                            <menuItem title="New MainWindow" keyEquivalent="n" id="Dba-dv-b2n">
                                 <connections>
-                                    <action selector="newDocument:" target="-1" id="ZFu-Fr-WvQ"/>
+                                    <action selector="createNewMainWindow:" target="-2" id="m15-pX-NSc"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Open PDFs" keyEquivalent="o" id="kdn-fJ-x7d">
@@ -87,19 +88,6 @@
                                     <action selector="openNotes:" target="-2" id="Je1-Zf-NMK"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Open Recent" id="5Ec-BR-uuy">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="bpj-e7-c95">
-                                    <items>
-                                        <menuItem title="Clear Menu" id="iWK-CM-Oxa">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="clearRecentDocuments:" target="-1" id="sIU-hC-288"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="ntr-VV-g6a"/>
                             <menuItem title="Close" keyEquivalent="w" id="Stz-AC-hX9">
                                 <connections>
@@ -111,24 +99,7 @@
                                     <action selector="saveNotes:" target="-2" id="o8b-3S-v0A"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Save As…" keyEquivalent="S" id="8j8-iE-ikM">
-                                <connections>
-                                    <action selector="saveDocumentAs:" target="-1" id="8sX-EL-VKA"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Revert to Saved" id="9PN-Wr-mHp">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="revertDocumentToSaved:" target="-1" id="l5b-HI-Omr"/>
-                                </connections>
-                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="DHi-La-Pfx"/>
-                            <menuItem title="Page Setup…" keyEquivalent="P" id="GGl-Bc-QyW">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
-                                <connections>
-                                    <action selector="runPageLayout:" target="-1" id="0GN-3D-LbF"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Print…" keyEquivalent="p" id="SaQ-rT-a2X">
                                 <connections>
                                     <action selector="print:" target="-1" id="mWQ-Ii-wj1"/>

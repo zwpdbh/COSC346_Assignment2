@@ -15,12 +15,23 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // MARK: - Outlets and Actions
     @IBAction func createAboutWindow(sender: NSMenuItem) {
         let aboutWindowController = AboutWindowController()
-        
         aboutWindowController.showWindow(self)
         self.aboutWindowController = aboutWindowController
     }
     
+    @IBAction func createNewMainWindow(sender: NSMenuItem) {
+        
+        if !self.isMainWindowOpening {
+            let mainWindowController = MainWindowController()
+            mainWindowController.showWindow(self)
+            self.mainWindowController = mainWindowController
+            self.newMainWindowButton.hidden = false;
+        }
+    }
+    
     @IBOutlet weak var currentPageDisplay: NSTextField!
+    
+    @IBOutlet weak var newMainWindowButton: NSMenuItem!
     
     @IBOutlet weak var pdfView: PDFView!
     
@@ -140,6 +151,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // MARK: - Action
     // open pdf files and put them into array
     @IBAction func openFile(sender: NSMenuItem) {
+    
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = true;
         panel.allowedFileTypes = ["pdf"]
@@ -269,14 +281,26 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     var popoverViewController : PopoverViewController?
     
-    var isAdding: Bool =  false
+    var isAdding: Bool =  true
     var editingNoteItem: NoteItem?
     
-    
     var aboutWindowController: AboutWindowController?
+    
+    var mainWindowController: MainWindowController?
+    var isMainWindowOpening: Bool = false
+    
     // MARK: - Action Related to Window
     func windowDidResize(notification: NSNotification) {
         self.pdfView.setAutoScales(true)
+    }
+    
+    func mainWindowDidClose(notice: NSNotification) {
+        if let object = notice.object {
+            if String(object.dynamicType) == "NSKVONotifying_NSWindow" {
+                isMainWindowOpening = false
+                self.newMainWindowButton.hidden = false
+            }
+        }
     }
 
     override var windowNibName: String? {
@@ -285,8 +309,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     override func windowDidLoad() {
         super.windowDidLoad()
+        self.isMainWindowOpening = true
+        self.newMainWindowButton.hidden = true
         
-        // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+        // Notification for window
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainWindowDidClose(_:)), name: NSWindowWillCloseNotification, object: nil)
+        
         // Notification for scroll of pages
         NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
