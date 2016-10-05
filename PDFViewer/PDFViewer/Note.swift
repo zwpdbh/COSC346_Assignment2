@@ -93,16 +93,17 @@ class Note: NSObject, NSCoding {
         return false
     }
     
-    func insertSubnote(item: NoteItem) {
+    func insertSubnote(item: NoteItem) -> Int {
         if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
-            return
+            return -1
         }
         for i in 0..<self.subnotes.count {
             if self.subnotes[i].page == item.page && item.title == self.subnotes[i].title {
-                return
+                return -2
             }
         }
         self.subnotes.append(item)
+        return 1
     }
     
     func updateSubnote(withitem item: NoteItem, orignalTitle title: String, orignalPage page: Int) {

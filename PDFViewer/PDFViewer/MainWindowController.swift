@@ -310,6 +310,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     var aboutWindowController: AboutWindowController?
     var errorWindowController: ErrorWindowController?
     var mainWindowController: MainWindowController?
+    var errorMessageWindowController: ErrorMessageWindowController?
     var isMainWindowOpening: Bool = false
     
     // MARK: - Action Related to Window
@@ -576,7 +577,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             
             // when popup view is closing, do append or update depend on it is save or add
             if isAdding {
-                note.insertSubnote(noteItem)
+                let result = note.insertSubnote(noteItem)
+                if result != 1 {
+                    let errorMessageWindowController = ErrorMessageWindowController()
+                    errorMessageWindowController.showWindow(self)
+                    self.errorMessageWindowController = errorMessageWindowController
+                }
             } else {
                 if let item = editingNoteItem {
                     note.updateSubnote(withitem: noteItem, orignalTitle: item.title, orignalPage: item.page)
