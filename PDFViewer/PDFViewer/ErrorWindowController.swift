@@ -10,7 +10,10 @@ import Cocoa
 
 class ErrorWindowController: NSWindowController {
 
-    @IBOutlet weak var errorMessageLabel: NSTextField!
+    
+    @IBOutlet weak var errorTableView: NSScrollView!
+    
+    var errorURLs = Array<NSURL>()
     
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -22,8 +25,8 @@ class ErrorWindowController: NSWindowController {
         return "ErrorWindowController"
     }
     
-    func updateError(error: String) {
-        self.errorMessageLabel.stringValue = error
+    func updateError(invalidURLs urls: Array<NSURL>) {
+        self.errorURLs = urls
     }
     
 }

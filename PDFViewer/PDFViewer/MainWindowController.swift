@@ -148,11 +148,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     errorWindowController.showWindow(self)
                     self.errorWindowController = errorWindowController
         
-                    var errorString = "Can not find associated PDF files as below: \n"
-                    for each in invalidURLs {
-                        errorString += each.absoluteString + "\n"
-                    }
-                    self.errorWindowController!.updateError(errorString)
+                    self.errorWindowController!.updateError(invalidURLs: invalidURLs)
                 }
                 
                 
