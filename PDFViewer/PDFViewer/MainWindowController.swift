@@ -500,7 +500,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
                 }
                 if let selection = searchResult.results.first {
-                    selection.setColor(NSColor.yellowColor())
                     if let page = selection.pages().first as? PDFPage {
                         if let pageNumber = Int(page.label()) {
                             // simulate go to a given page
