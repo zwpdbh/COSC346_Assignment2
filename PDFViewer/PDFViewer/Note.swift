@@ -53,12 +53,12 @@ class Note: NSObject, NSCoding {
             instance.setColor(NSColor.yellowColor())
             for eachSearchResult in self.resultGroup {
                 if Int(item.label()) == eachSearchResult.page {
-                    eachSearchResult.addSelections(instance)
+                    eachSearchResult.addSelectionsIntoGroup(instance)
                     return
                 }
             }
             let searchResult = SearchResult(page: Int(item.label())!, parent: parent)
-            searchResult.addSelections(instance)
+            searchResult.addSelectionsIntoGroup(instance)
             self.resultGroup.append(searchResult)
         }
     }
@@ -244,7 +244,7 @@ class SearchResult: NSObject, NSCoding {
         
     }
     
-    func addSelections(selection: PDFSelection) {
+    func addSelectionsIntoGroup(selection: PDFSelection) {
         if self.results.count > 0 {
             self.results[0].addSelection(selection)
         }
