@@ -135,7 +135,6 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     if let note = NSKeyedUnarchiver.unarchiveObjectWithFile(url.path!) as? Note {
                         var error: NSError?
                         if note.pdfURL.checkResourceIsReachableAndReturnError(&error) {
-                            print(note.pdfURL)
                             self.notes.append(note)
                             pdfURLs.append(note.pdfURL)
                         } else {
