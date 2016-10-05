@@ -965,7 +965,7 @@
                     <constraint firstAttribute="bottom" secondItem="rGX-jC-ItO" secondAttribute="bottom" id="kXN-Qq-PKq"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="1201" y="51"/>
+            <point key="canvasLocation" x="1421" y="159"/>
         </window>
     </objects>
 </document>
