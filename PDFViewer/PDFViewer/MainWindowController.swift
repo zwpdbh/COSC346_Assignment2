@@ -9,6 +9,9 @@
 import Cocoa
 import Quartz
 
+//public protocol MainWindowErrorDelegate {
+//    func updateError(error: String)
+//}
 
 class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSPopoverDelegate {
 
@@ -125,6 +128,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 self.pdfSet = nil
                 var pdfURLs: Array<NSURL> = []
                 self.notes = []
+                
+                var invalidURLs = Array<NSURL>()
+                
                 for url in panel.URLs {
                     if let note = NSKeyedUnarchiver.unarchiveObjectWithFile(url.path!) as? Note {
                         var error: NSError?
@@ -133,11 +139,24 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                             self.notes.append(note)
                             pdfURLs.append(note.pdfURL)
                         } else {
-                            // create a window to alert user!
-                            print("can not find pdf at: \(note.pdfURL)")
+                            invalidURLs.append(note.pdfURL)
                         }
                     }
                 }
+                if invalidURLs.count > 0 {
+                    // create a window to alert user!
+                    let errorWindowController = ErrorWindowController()
+                    errorWindowController.showWindow(self)
+                    self.errorWindowController = errorWindowController
+        
+                    var errorString = "Can not find associated PDF files as below: \n"
+                    for each in invalidURLs {
+                        errorString += each.absoluteString + "\n"
+                    }
+                    self.errorWindowController!.updateError(errorString)
+                }
+                
+                
                 if pdfURLs.count > 0 {
                     self.pdfSet = PDFSet(pdfURLS: pdfURLs)
                 }
@@ -294,7 +313,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     var editingNoteItem: NoteItem?
     
     var aboutWindowController: AboutWindowController?
-    
+    var errorWindowController: ErrorWindowController?
     var mainWindowController: MainWindowController?
     var isMainWindowOpening: Bool = false
     

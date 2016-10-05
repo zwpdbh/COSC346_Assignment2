@@ -20,6 +20,8 @@
 		DB53F8D01DA3276D00984B55 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB53F8CE1DA3276D00984B55 /* AboutWindowController.xib */; };
 		DB584C801D9CC0FE00C460EE /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB584C7F1D9CC0FE00C460EE /* Note.swift */; };
 		DB76E0A81DA2751000C1D046 /* introductory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DB76E0A71DA2751000C1D046 /* introductory.pdf */; };
+		DBB75D991DA474480054FCB8 /* ErrorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */; };
+		DBB75D9A1DA474480054FCB8 /* ErrorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		DB53F8CE1DA3276D00984B55 /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
 		DB584C7F1D9CC0FE00C460EE /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		DB76E0A71DA2751000C1D046 /* introductory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = introductory.pdf; path = ../../../../../../Downloads/introductory.pdf; sourceTree = "<group>"; };
+		DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorWindowController.swift; sourceTree = "<group>"; };
+		DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,8 @@
 				DB4F2A521DA0560900EF2C1E /* PopoverViewController.xib */,
 				DB53F8CD1DA3276D00984B55 /* AboutWindowController.swift */,
 				DB53F8CE1DA3276D00984B55 /* AboutWindowController.xib */,
+				DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */,
+				DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */,
 				DB3803941D9BCBFD002089FD /* supporting files */,
 			);
 			path = PDFViewer;
@@ -159,6 +165,7 @@
 				DB4F2A541DA0560900EF2C1E /* PopoverViewController.xib in Resources */,
 				DB3803821D9BC9C1002089FD /* Assets.xcassets in Resources */,
 				DB53F8D01DA3276D00984B55 /* AboutWindowController.xib in Resources */,
+				DBB75D9A1DA474480054FCB8 /* ErrorWindowController.xib in Resources */,
 				DB3803931D9BCA7C002089FD /* MainWindowController.xib in Resources */,
 				DB3803851D9BC9C1002089FD /* MainMenu.xib in Resources */,
 			);
@@ -171,6 +178,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBB75D991DA474480054FCB8 /* ErrorWindowController.swift in Sources */,
 				DB584C801D9CC0FE00C460EE /* Note.swift in Sources */,
 				DB3803961D9BCC3A002089FD /* PDFData.swift in Sources */,
 				DB4F2A531DA0560900EF2C1E /* PopoverViewController.swift in Sources */,
