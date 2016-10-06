@@ -14,7 +14,7 @@ import Quartz
  * My notes model. Each opened PDF file will associated with one note.
  * Each note contains:
  * pdfURL: indicate where the PDF has been loaded
- * subnotes: is an array of NoteItem. Once user use popup window to write down a note, it is saved as NoteItem.
+ * subnotes: is an array of NoteItem. Once user use popover view to write down a note, it is saved as NoteItem.
  * bookmask: is an array of Bookmark. Once user use button to add one bookmark, it is saved as a Bookmark
  * resultGroup: is an array of SearchResult. Each SearchResult represent all matched String on one PDFPage.
  * col1, col2 is used as outlineView key-value binding.

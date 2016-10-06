@@ -8,6 +8,9 @@
 
 import Cocoa
 
+/**
+ * use TableView to show the error message when load PDF has errors via loading Notes
+ */
 class ErrorWindowController: NSWindowController, NSTableViewDataSource {
 
     @IBOutlet weak var errorMessageTableView: NSTableView!
@@ -33,7 +36,7 @@ class ErrorWindowController: NSWindowController, NSTableViewDataSource {
         self.errorURLs = urls
     }
  
-    
+    // MARK: - TableViewDataSource
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return self.errorURLs.count
     }
