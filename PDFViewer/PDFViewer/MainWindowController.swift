@@ -160,6 +160,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     for url in set.addresses {
                         self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
                     }
+                    // set PDFSet's delegate as MainWindowController
                     set.setPDFDocumentsDelegate(self)
                     set.delegate = self
                     self.pdfView.setDocument(set.moveToGivenPDF(0))
