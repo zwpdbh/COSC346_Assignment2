@@ -540,6 +540,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
 
     // when receive notification from delete button in the popup view:
     func deleteNoteItemWithNotification(note: NSNotification) {
+
         let itemInfo = note.userInfo! as! [String: NoteItem]
         if let item = itemInfo["noteItem"]{
             if let parent = item.parent {
