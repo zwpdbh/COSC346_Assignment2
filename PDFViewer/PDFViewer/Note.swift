@@ -115,12 +115,16 @@ class Note: NSObject, NSCoding {
     }
     
     func isValidated(item: NoteItem) -> Bool {
+        
         if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+            print("title is empty")
             return false
         } else if isRedundantTitleWithPage(item) {
+            print("title is shoud be unique")
             return false
         }
         
+        print("valid")
         return true
     }
     

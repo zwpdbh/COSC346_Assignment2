@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="PopoverViewController" customModule="PDFViewer" customModuleProvider="target">
             <connections>
                 <outlet property="deleteButton" destination="OLW-1m-IrD" id="k8v-cX-Eb4"/>
+                <outlet property="errorInfor" destination="d8w-Us-T4p" id="Qc9-mE-s5B"/>
                 <outlet property="noteContent" destination="YhL-sb-ALo" id="eYR-B2-huN"/>
                 <outlet property="noteTitle" destination="Wby-wI-lhS" id="E9r-Jn-h0n"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -65,6 +66,14 @@
                         <action selector="deleteNoteItem:" target="-2" id="OyP-iJ-Tla"/>
                     </connections>
                 </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d8w-Us-T4p">
+                    <rect key="frame" x="20" y="255" width="400" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="yET-cm-W4Z">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
         </customView>
     </objects>

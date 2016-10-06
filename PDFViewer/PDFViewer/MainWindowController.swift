@@ -552,6 +552,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     // MARK: - Popover
     // show popover at selected item
     func popoverWillShow(notification: NSNotification) {
+        self.popoverViewController?.errorInfor.stringValue = ""
+    
         if isAdding {
             self.popoverViewController?.deleteButton.enabled = false
             self.popoverViewController?.noteTitle.stringValue = ""
@@ -592,10 +594,17 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             if let content = self.popoverViewController?.noteContent.string {
                 self.operatingNoteItem!.content = content
             }
-            let result = note.isValidated(self.operatingNoteItem!)
-            if result {
-                true
+            
+            let validate = note.isValidated(self.operatingNoteItem!)
+            
+            if  !validate{
+                self.popoverViewController?.errorInfor.textColor = NSColor.redColor()
+                self.popoverViewController?.errorInfor.stringValue = "title can not be empty and should be unqie at one page."
+            } else {
+                self.popoverViewController?.errorInfor.stringValue = ""
             }
+            
+            return validate
         }
         return true
     }

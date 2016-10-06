@@ -17,6 +17,7 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var noteTitle: NSTextField!
     @IBOutlet var noteContent: NSTextView!
     @IBOutlet weak var deleteButton: NSButton!
+    @IBOutlet weak var errorInfor: NSTextField!
     
     @IBAction func deleteNoteItem(sender: NSButton) {
         if let item = self.noteitem {
