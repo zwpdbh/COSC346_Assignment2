@@ -20,9 +20,11 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var errorInfor: NSTextField!
     
     @IBAction func deleteNoteItem(sender: NSButton) {
+        // if during the adding process, user click the delete button, then cancel the process, close pop up window
         if isAdding {
             NSNotificationCenter.defaultCenter().postNotificationName("DeleteNoteItemFromPopupViewNotification", object: nil)
         }
+        // if the during the process of editing, when user click the delete button, delete the editing noteItem. 
         if let item = self.noteitem {
             let info = ["noteItem": item]
             NSNotificationCenter.defaultCenter().postNotificationName("DeleteNoteItemFromPopupViewNotification", object: self, userInfo: info)
@@ -38,6 +40,7 @@ class PopoverViewController: NSViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receiveAndSetPopupWindowViewWithNotification), name: "AboutToEditNoteItemNotification", object: nil)
     }
 
+    // use notification to configure pop up window. Such as populate title and content if the user is chaning the note
     func receiveAndSetPopupWindowViewWithNotification(note: NSNotification) {
         let itemInfo = note.userInfo! as! [String: NoteItem]
         if let item = itemInfo["noteItem"]{

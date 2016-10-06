@@ -17,7 +17,7 @@ import Quartz
  * subnotes: is an array of NoteItem. Once user use popup window to write down a note, it is saved as NoteItem.
  * bookmask: is an array of Bookmark. Once user use button to add one bookmark, it is saved as a Bookmark
  * resultGroup: is an array of SearchResult. Each SearchResult represent all matched String on one PDFPage.
- * col1, col2 is used as outlineView binding.
+ * col1, col2 is used as outlineView key-value binding.
  */
 class Note: NSObject, NSCoding {
     var pdfURL: NSURL
@@ -60,6 +60,11 @@ class Note: NSObject, NSCoding {
         return self.title
     }
     
+    /**
+     * Add one PDFSelection into one Note, meanwhile also record in which Note this PDFSelection belongs
+     * Because, the search is doing among multiple PDFs, so when it adds a result, it needs to distinguish
+     * which Note(associated with PDF) it belongs to.
+     */
     func addResultSelections(instance: PDFSelection, parent: Note) {
         if let item = instance.pages().first as? PDFPage {
             instance.setColor(NSColor.yellowColor())
@@ -75,6 +80,7 @@ class Note: NSObject, NSCoding {
         }
     }
     
+    // one page for one bookmark. Check if there is already a bookmark at that page.
     func alreadyHaveBookmark(bookmark: Bookmark) -> Bool {
         for i in 0..<self.bookmarks.count {
             if self.bookmarks[i].page == bookmark.page {
@@ -84,6 +90,7 @@ class Note: NSObject, NSCoding {
         return false
     }
     
+    // when user use Backspace to delete bookmark, remove the bookmark on that page.
     func removeBookmarkWithPage(page: Int) -> Bool {
         for i in 0..<self.bookmarks.count {
             if page == self.bookmarks[i].page {
@@ -94,6 +101,7 @@ class Note: NSObject, NSCoding {
         return false
     }
     
+    // remove one note with specified title and page.
     func removeSubnotesWithPageAndTitle(page: Int, title: String) -> Bool {
         for i in 0..<self.subnotes.count{
             let noteitem = self.subnotes[i]
@@ -105,12 +113,14 @@ class Note: NSObject, NSCoding {
         return false
     }
     
+    // insert a note
     func insertSubnote(item: NoteItem) {
         if isValidated(item, isAdding: true, exceptTitle: nil) {
             self.subnotes.append(item)
         }
     }
     
+    // Update a noteItem, based on orignal note's title and page
     func updateSubnote(withitem item: NoteItem, orignalTitle title: String, orignalPage page: Int) {
         if isValidated(item, isAdding: false, exceptTitle: title) {
             for i in 0..<self.subnotes.count {
@@ -126,6 +136,12 @@ class Note: NSObject, NSCoding {
         }
     }
     
+    /**
+     * check if the submited title is whether valid or note. Title can not be empty and it should be unique on one page.
+     * @NoteItem is the submited NoteItem
+     * @isAdding indicate this submition is an updating or insertion
+     * @exceptTitle is the title you want to exclude when it is an updating: you are updating the primary key
+     */
     func isValidated(item: NoteItem, isAdding: Bool, exceptTitle: String?) -> Bool {
         
         if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
@@ -136,7 +152,12 @@ class Note: NSObject, NSCoding {
         return true
     }
     
-    
+    /**
+     * check if the submited title is whether repeated or unique.
+     * @NoteItem is the submited NoteItem
+     * @isAdding indicate this submition is an updating or insertion
+     * @exceptTitle is the title you want to exclude when it is an updating: you are updating the primary key
+     */
     private func isRedundantTitleWithinPage(item: NoteItem, isAdding: Bool, exceptTitle: String?) -> Bool {
         if isAdding {
             for each in self.subnotes {
@@ -156,6 +177,14 @@ class Note: NSObject, NSCoding {
     }
 }
 
+/**
+ * One NoteItem contains:
+ * page: the page number
+ * title: the title of the note
+ * content: the content of the note
+ * parent: which Note this NoteItem belongs to 
+ * col1, col2 are for outlineView key-value binding
+ */
 class NoteItem: NSObject, NSCoding {
     var page: Int
     var title: String
@@ -184,6 +213,7 @@ class NoteItem: NSObject, NSCoding {
         }
     }
     
+    
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.page, forKey: "zwpdbh.NoteItem.page")
         aCoder.encodeObject(self.title, forKey: "zwpdbh.NoteItem.title")
@@ -200,6 +230,14 @@ class NoteItem: NSObject, NSCoding {
     }
 }
 
+/**
+ * A Bookmark represents a bookmark user added on one page, it contains:
+ * title: the title of the bookmark
+ * page: the page number in the PDF
+ * parent: which note this Bookmark belongs to
+ * col1, col2 are for outlineView key-value binding
+ * A Bookmark is unique on one page.
+ */
 class Bookmark: NSObject, NSCoding {
     var title: String
     var page: Int
@@ -218,14 +256,14 @@ class Bookmark: NSObject, NSCoding {
         self.parent = parent
     }
     
+    // encode method for conforming NSCoding protocol
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.title, forKey: "zwpdbh.Bookmark.title")
         aCoder.encodeObject(self.page, forKey: "zwpdbh.Bookmark.page")
         aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.Bookmark.parent")
     }
     
-    
-    
+    // decode method for conforming NSCoding protocal
     required init(coder aDecoder: NSCoder) {
         self.title = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.title") as! String
         self.page = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.page") as! Int
@@ -242,6 +280,15 @@ class Bookmark: NSObject, NSCoding {
     }
 }
 
+/**
+ * A SearchResult represent the search result on one page, contains:
+ * page: page number of the PDF
+ * results: it is an array of PDFSelection which highlights all the matched parts
+ * parent: Because the search is search though multiple PDFs, so the SearchResult also
+ *         need to record which Note(associated with PDF) this SearchResult belongs to.
+ * times: records the occuring times the searching String appears on one page
+ * col1, col2 are for outlineView key-value binding
+ */
 class SearchResult: NSObject, NSCoding {
     let page: Int
     var results = Array<PDFSelection>()
@@ -263,12 +310,14 @@ class SearchResult: NSObject, NSCoding {
         self.parent = parent
     }
     
+    // encode method for comforming the NSCoding protocol
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.page, forKey: "zwpdbh.SearchResult.page")
         aCoder.encodeObject(self.results, forKey: "zwpdbh.SearchResult.results")
         aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.SearchResult.parent")
     }
-
+    
+    // decode method for comforming the NSCoding protocol
     required init?(coder aDecoder: NSCoder) {
         self.page = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.page") as! Int
         self.results = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.results") as! Array<PDFSelection>
@@ -276,6 +325,11 @@ class SearchResult: NSObject, NSCoding {
         
     }
     
+    /**
+     * add one PDFSelection into results array, meanwhile making the first PDFSelection include
+     * all the PDFSelection on the same page, so during high lighting, 
+     * it shows all the matching part on one page.
+     */
     func addSelectionsIntoGroup(selection: PDFSelection) {
         if self.results.count > 0 {
             self.results[0].addSelection(selection)
