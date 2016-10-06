@@ -22,8 +22,6 @@
 		DB76E0A81DA2751000C1D046 /* introductory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DB76E0A71DA2751000C1D046 /* introductory.pdf */; };
 		DBB75D991DA474480054FCB8 /* ErrorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */; };
 		DBB75D9A1DA474480054FCB8 /* ErrorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */; };
-		DBCA1DFA1DA50C010055D0DF /* ErrorMessageWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCA1DF81DA50C010055D0DF /* ErrorMessageWindowController.swift */; };
-		DBCA1DFB1DA50C010055D0DF /* ErrorMessageWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBCA1DF91DA50C010055D0DF /* ErrorMessageWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,8 +42,6 @@
 		DB76E0A71DA2751000C1D046 /* introductory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = introductory.pdf; path = ../../../../../../Downloads/introductory.pdf; sourceTree = "<group>"; };
 		DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorWindowController.swift; sourceTree = "<group>"; };
 		DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorWindowController.xib; sourceTree = "<group>"; };
-		DBCA1DF81DA50C010055D0DF /* ErrorMessageWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorMessageWindowController.swift; sourceTree = "<group>"; };
-		DBCA1DF91DA50C010055D0DF /* ErrorMessageWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorMessageWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,8 +87,6 @@
 				DB53F8CE1DA3276D00984B55 /* AboutWindowController.xib */,
 				DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */,
 				DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */,
-				DBCA1DF81DA50C010055D0DF /* ErrorMessageWindowController.swift */,
-				DBCA1DF91DA50C010055D0DF /* ErrorMessageWindowController.xib */,
 				DB3803941D9BCBFD002089FD /* supporting files */,
 			);
 			path = PDFViewer;
@@ -167,7 +161,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBCA1DFB1DA50C010055D0DF /* ErrorMessageWindowController.xib in Resources */,
 				DB76E0A81DA2751000C1D046 /* introductory.pdf in Resources */,
 				DB4F2A541DA0560900EF2C1E /* PopoverViewController.xib in Resources */,
 				DB3803821D9BC9C1002089FD /* Assets.xcassets in Resources */,
@@ -185,7 +178,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBCA1DFA1DA50C010055D0DF /* ErrorMessageWindowController.swift in Sources */,
 				DBB75D991DA474480054FCB8 /* ErrorWindowController.swift in Sources */,
 				DB584C801D9CC0FE00C460EE /* Note.swift in Sources */,
 				DB3803961D9BCC3A002089FD /* PDFData.swift in Sources */,

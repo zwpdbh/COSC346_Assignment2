@@ -93,17 +93,23 @@ class Note: NSObject, NSCoding {
         return false
     }
     
-    func insertSubnote(item: NoteItem) -> Int {
+    func insertSubnote(item: NoteItem) {
         if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
-            return -1
+            return
         }
         for i in 0..<self.subnotes.count {
             if self.subnotes[i].page == item.page && item.title == self.subnotes[i].title {
-                return -2
+                let errorMessageAlert = NSAlert()
+                errorMessageAlert.addButtonWithTitle("OK")
+                errorMessageAlert.messageText = "note title is alreay exist at the same page"
+                errorMessageAlert.informativeText = "Insert new note failed!"
+                let response = errorMessageAlert.runModal()
+                if response == NSAlertFirstButtonReturn {
+                    return
+                }
             }
         }
         self.subnotes.append(item)
-        return 1
     }
     
     func updateSubnote(withitem item: NoteItem, orignalTitle title: String, orignalPage page: Int) {
@@ -122,6 +128,7 @@ class Note: NSObject, NSCoding {
         }
     }
     
+
 
 }
 
