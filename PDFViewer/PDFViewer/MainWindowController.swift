@@ -306,6 +306,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     var isAdding: Bool =  true
     var editingNoteItem: NoteItem?
+    var operatingNoteItem: NoteItem?
+    var submiteErrorCode = 1
     
     var aboutWindowController: AboutWindowController?
     var errorWindowController: ErrorWindowController?
@@ -564,18 +566,10 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     func popoverWillClose(notification: NSNotification) {
-        // get the current viewing pdf page
-        let page = self.pdfSet!.getCurrentPage()
         // get the current note
         let note = self.notes[self.indexOfSelectedPDF]
-        
-        if let title = self.popoverViewController?.noteTitle.stringValue {
-            let noteItem = NoteItem(page: page, title: title, parent: note)
-            if let content = self.popoverViewController?.noteContent.string {
-                noteItem.content = content
-            }
-            
-            // when popup view is closing, do append or update depend on it is saving or adding
+
+        if let noteItem = self.operatingNoteItem {
             if isAdding {
                 note.insertSubnote(noteItem)
             } else {
@@ -584,6 +578,26 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 }
             }
         }
+    }
+    
+    func popoverShouldClose(popover: NSPopover) -> Bool {
+        self.operatingNoteItem = nil
+        // get the current viewing pdf page
+        let page = self.pdfSet!.getCurrentPage()
+        // get the current note
+        let note = self.notes[self.indexOfSelectedPDF]
+        
+        if let title = self.popoverViewController?.noteTitle.stringValue {
+            self.operatingNoteItem = NoteItem(page: page, title: title, parent: note)
+            if let content = self.popoverViewController?.noteContent.string {
+                self.operatingNoteItem!.content = content
+            }
+            let result = note.isValidated(self.operatingNoteItem!)
+            if result {
+                true
+            }
+        }
+        return true
     }
     
     func popoverDidClose(notification: NSNotification) {

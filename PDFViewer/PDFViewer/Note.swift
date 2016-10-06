@@ -94,42 +94,44 @@ class Note: NSObject, NSCoding {
     }
     
     func insertSubnote(item: NoteItem) {
-        if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
-            return
+        if isValidated(item) {
+            self.subnotes.append(item)
         }
-        for i in 0..<self.subnotes.count {
-            if self.subnotes[i].page == item.page && item.title == self.subnotes[i].title {
-                let errorMessageAlert = NSAlert()
-                errorMessageAlert.addButtonWithTitle("OK")
-                errorMessageAlert.messageText = "note title is alreay exist at the same page"
-                errorMessageAlert.informativeText = "Insert new note failed!"
-                let response = errorMessageAlert.runModal()
-                if response == NSAlertFirstButtonReturn {
-                    return
-                }
-            }
-        }
-        self.subnotes.append(item)
     }
     
     func updateSubnote(withitem item: NoteItem, orignalTitle title: String, orignalPage page: Int) {
-        if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
-            return
-        }
-        for i in 0..<self.subnotes.count {
-            let subnote = self.subnotes[i]
-            if subnote.page == page && title == subnote.title {
-                subnote.title = item.title
-                subnote.page = item.page
-                if let content = item.content {
-                    subnote.content = content
+        if isValidated(item) {
+            for i in 0..<self.subnotes.count {
+                let subnote = self.subnotes[i]
+                if subnote.page == page && title == subnote.title {
+                    subnote.title = item.title
+                    subnote.page = item.page
+                    if let content = item.content {
+                        subnote.content = content
+                    }
                 }
             }
         }
     }
     
-
-
+    func isValidated(item: NoteItem) -> Bool {
+        if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
+            return false
+        } else if isRedundantTitleWithPage(item) {
+            return false
+        }
+        
+        return true
+    }
+    
+    private func isRedundantTitleWithPage(item: NoteItem) -> Bool {
+        for each in self.subnotes {
+            if each.page == item.page && each.title == item.title {
+                return true;
+            }
+        }
+        return false
+    }
 }
 
 class NoteItem: NSObject, NSCoding {
