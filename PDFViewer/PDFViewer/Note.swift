@@ -9,6 +9,16 @@
 import Foundation
 import Quartz
 
+
+/**
+ * My notes model. Each opened PDF file will associated with one note.
+ * Each note contains:
+ * pdfURL: indicate where the PDF has been loaded
+ * subnotes: is an array of NoteItem. Once user use popup window to write down a note, it is saved as NoteItem.
+ * bookmask: is an array of Bookmark. Once user use button to add one bookmark, it is saved as a Bookmark
+ * resultGroup: is an array of SearchResult. Each SearchResult represent all matched String on one PDFPage.
+ * col1, col2 is used as outlineView binding.
+ */
 class Note: NSObject, NSCoding {
     var pdfURL: NSURL
     var subnotes = Array<NoteItem>()
@@ -29,6 +39,7 @@ class Note: NSObject, NSCoding {
         self.pdfURL = url
     }
     
+    // used for Archive, for saving data
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.pdfURL, forKey: "zwpdbh.Note.pdfURL")
         aCoder.encodeObject(self.subnotes, forKey: "zwpdbh.Note.subnotes")
@@ -36,6 +47,7 @@ class Note: NSObject, NSCoding {
         aCoder.encodeObject(self.resultGroup, forKey: "zwpdbh.Note.resultsGroup")
     }
     
+    // used for UNArchive, for loading data
     required init(coder aDecoder: NSCoder) {
         self.pdfURL = aDecoder.decodeObjectForKey("zwpdbh.Note.pdfURL") as! NSURL
         self.subnotes = aDecoder.decodeObjectForKey("zwpdbh.Note.subnotes") as! Array<NoteItem>
