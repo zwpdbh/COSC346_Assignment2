@@ -20,6 +20,9 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var errorInfor: NSTextField!
     
     @IBAction func deleteNoteItem(sender: NSButton) {
+        if isAdding {
+            NSNotificationCenter.defaultCenter().postNotificationName("DeleteNoteItemFromPopupViewNotification", object: nil)
+        }
         if let item = self.noteitem {
             let info = ["noteItem": item]
             NSNotificationCenter.defaultCenter().postNotificationName("DeleteNoteItemFromPopupViewNotification", object: self, userInfo: info)
@@ -27,6 +30,7 @@ class PopoverViewController: NSViewController {
     }
     
     var noteitem: NoteItem? = nil
+    var isAdding: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +41,7 @@ class PopoverViewController: NSViewController {
     func receiveAndSetPopupWindowViewWithNotification(note: NSNotification) {
         let itemInfo = note.userInfo! as! [String: NoteItem]
         if let item = itemInfo["noteItem"]{
+            isAdding = false
             self.noteitem = NoteItem(page: item.page, title: item.title, parent: item.parent!)
             self.noteitem?.content = item.content
         }

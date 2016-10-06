@@ -82,6 +82,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         if let _ = self.pdfSet {
             // show popover when click addnote button
             isAdding = true
+            self.popoverViewController?.isAdding = isAdding
             popover.showRelativeToRect(self.addNoteButton.bounds, ofView: self.addNoteButton, preferredEdge: NSRectEdge.MinY)
         }
     }
@@ -540,7 +541,11 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
 
     // when receive notification from delete button in the popup view:
     func deleteNoteItemWithNotification(note: NSNotification) {
-
+        if isAdding {
+            self.popover.close()
+            return
+        }
+        
         let itemInfo = note.userInfo! as! [String: NoteItem]
         if let item = itemInfo["noteItem"]{
             if let parent = item.parent {
@@ -556,11 +561,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.popoverViewController?.errorInfor.stringValue = ""
     
         if isAdding {
-            self.popoverViewController?.deleteButton.enabled = false
             self.popoverViewController?.noteTitle.stringValue = ""
             self.popoverViewController?.noteContent.string = ""
         } else if let item = self.editingNoteItem {
-            self.popoverViewController?.deleteButton.enabled = true
             self.popoverViewController?.noteTitle.stringValue = item.title
             if let conent = item.content {
                 self.popoverViewController?.noteContent.string = conent
