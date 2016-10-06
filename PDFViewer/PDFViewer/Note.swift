@@ -94,13 +94,13 @@ class Note: NSObject, NSCoding {
     }
     
     func insertSubnote(item: NoteItem) {
-        if isValidated(item) {
+        if isValidated(item, isAdding: true, exceptTitle: nil) {
             self.subnotes.append(item)
         }
     }
     
     func updateSubnote(withitem item: NoteItem, orignalTitle title: String, orignalPage page: Int) {
-        if isValidated(item) {
+        if isValidated(item, isAdding: false, exceptTitle: title) {
             for i in 0..<self.subnotes.count {
                 let subnote = self.subnotes[i]
                 if subnote.page == page && title == subnote.title {
@@ -114,26 +114,32 @@ class Note: NSObject, NSCoding {
         }
     }
     
-    func isValidated(item: NoteItem) -> Bool {
+    func isValidated(item: NoteItem, isAdding: Bool, exceptTitle: String?) -> Bool {
         
         if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
-            print("title is empty")
             return false
-        } else if isRedundantTitleWithPage(item) {
-            print("title is shoud be unique")
+        } else if isRedundantTitleWithinPage(item, isAdding: isAdding, exceptTitle: nil) {
             return false
         }
-        
-        print("valid")
         return true
     }
     
-    private func isRedundantTitleWithPage(item: NoteItem) -> Bool {
-        for each in self.subnotes {
-            if each.page == item.page && each.title == item.title {
-                return true;
+    
+    private func isRedundantTitleWithinPage(item: NoteItem, isAdding: Bool, exceptTitle: String?) -> Bool {
+        if isAdding {
+            for each in self.subnotes {
+                if each.page == item.page && each.title == item.title {
+                    return true;
+                }
+            }
+        } else if exceptTitle != nil {
+            for each in self.subnotes {
+                if each.page == item.page && each.title == item.title && item.title != exceptTitle! {
+                    return true
+                }
             }
         }
+
         return false
     }
 }

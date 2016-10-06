@@ -595,7 +595,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 self.operatingNoteItem!.content = content
             }
             
-            let validate = note.isValidated(self.operatingNoteItem!)
+
+            let validate = note.isValidated(self.operatingNoteItem!, isAdding: isAdding, exceptTitle: editingNoteItem?.title)
             
             if  !validate{
                 self.popoverViewController?.errorInfor.textColor = NSColor.redColor()
