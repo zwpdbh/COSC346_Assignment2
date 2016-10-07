@@ -19,9 +19,9 @@
 		DB53F8CF1DA3276D00984B55 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB53F8CD1DA3276D00984B55 /* AboutWindowController.swift */; };
 		DB53F8D01DA3276D00984B55 /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB53F8CE1DA3276D00984B55 /* AboutWindowController.xib */; };
 		DB584C801D9CC0FE00C460EE /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB584C7F1D9CC0FE00C460EE /* Note.swift */; };
-		DB76E0A81DA2751000C1D046 /* introductory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DB76E0A71DA2751000C1D046 /* introductory.pdf */; };
 		DBB75D991DA474480054FCB8 /* ErrorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */; };
 		DBB75D9A1DA474480054FCB8 /* ErrorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */; };
+		DBFD2E211DA71E4400D160AE /* introductory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DBFD2E201DA71E4400D160AE /* introductory.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,9 +39,9 @@
 		DB53F8CD1DA3276D00984B55 /* AboutWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		DB53F8CE1DA3276D00984B55 /* AboutWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutWindowController.xib; sourceTree = "<group>"; };
 		DB584C7F1D9CC0FE00C460EE /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
-		DB76E0A71DA2751000C1D046 /* introductory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = introductory.pdf; path = ../../../../../../Downloads/introductory.pdf; sourceTree = "<group>"; };
 		DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorWindowController.swift; sourceTree = "<group>"; };
 		DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorWindowController.xib; sourceTree = "<group>"; };
+		DBFD2E201DA71E4400D160AE /* introductory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = introductory.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 		DB38037E1D9BC9C1002089FD /* PDFViewer */ = {
 			isa = PBXGroup;
 			children = (
-				DB76E0A71DA2751000C1D046 /* introductory.pdf */,
+				DBFD2E201DA71E4400D160AE /* introductory.pdf */,
 				DB3803951D9BCC3A002089FD /* PDFData.swift */,
 				DB584C7F1D9CC0FE00C460EE /* Note.swift */,
 				DB3803901D9BCA7C002089FD /* MainWindowController.swift */,
@@ -161,7 +161,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB76E0A81DA2751000C1D046 /* introductory.pdf in Resources */,
+				DBFD2E211DA71E4400D160AE /* introductory.pdf in Resources */,
 				DB4F2A541DA0560900EF2C1E /* PopoverViewController.xib in Resources */,
 				DB3803821D9BC9C1002089FD /* Assets.xcassets in Resources */,
 				DB53F8D01DA3276D00984B55 /* AboutWindowController.xib in Resources */,
