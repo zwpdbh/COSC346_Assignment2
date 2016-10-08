@@ -12,6 +12,7 @@ import Quartz
 
 /**
  * My notes model. Each opened PDF file will associated with one note.
+ * Actions relates to Notes will manipulate this model, such as add a bookmark, add a note, the result of searching.
  * Each note contains:
  * pdfURL: indicate where the PDF has been loaded
  * subnotes: is an array of NoteItem. Once user use popover view to write down a note, it is saved as NoteItem.
@@ -20,12 +21,12 @@ import Quartz
  * col1, col2 is used as outlineView key-value binding.
  */
 class Note: NSObject, NSCoding {
-    var pdfURL: URL
+    var pdfURL: NSURL
     var subnotes = Array<NoteItem>()
     var bookmarks = Array<Bookmark>()
     var resultGroup = Array<SearchResult>()
     var title: String {
-        return self.pdfURL.lastPathComponent
+        return self.pdfURL.lastPathComponent!
     }
     
     var col1: String {
@@ -35,24 +36,24 @@ class Note: NSObject, NSCoding {
         return ""
     }
     
-    init(url: URL) {
+    init(url: NSURL) {
         self.pdfURL = url
     }
     
     // used for Archive, for saving data
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.pdfURL, forKey: "zwpdbh.Note.pdfURL")
-        aCoder.encode(self.subnotes, forKey: "zwpdbh.Note.subnotes")
-        aCoder.encode(self.bookmarks, forKey: "zwpdbh.Note.bookmarks")
-        aCoder.encode(self.resultGroup, forKey: "zwpdbh.Note.resultsGroup")
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.pdfURL, forKey: "zwpdbh.Note.pdfURL")
+        aCoder.encodeObject(self.subnotes, forKey: "zwpdbh.Note.subnotes")
+        aCoder.encodeObject(self.bookmarks, forKey: "zwpdbh.Note.bookmarks")
+        aCoder.encodeObject(self.resultGroup, forKey: "zwpdbh.Note.resultsGroup")
     }
     
     // used for UNArchive, for loading data
     required init(coder aDecoder: NSCoder) {
-        self.pdfURL = aDecoder.decodeObject(forKey: "zwpdbh.Note.pdfURL") as! URL
-        self.subnotes = aDecoder.decodeObject(forKey: "zwpdbh.Note.subnotes") as! Array<NoteItem>
-        self.bookmarks = aDecoder.decodeObject(forKey: "zwpdbh.Note.bookmarks") as! Array<Bookmark>
-        self.resultGroup = aDecoder.decodeObject(forKey: "zwpdbh.Note.resultsGroup") as! Array<SearchResult>
+        self.pdfURL = aDecoder.decodeObjectForKey("zwpdbh.Note.pdfURL") as! NSURL
+        self.subnotes = aDecoder.decodeObjectForKey("zwpdbh.Note.subnotes") as! Array<NoteItem>
+        self.bookmarks = aDecoder.decodeObjectForKey("zwpdbh.Note.bookmarks") as! Array<Bookmark>
+        self.resultGroup = aDecoder.decodeObjectForKey("zwpdbh.Note.resultsGroup") as! Array<SearchResult>
         super.init()
     }
     
@@ -65,23 +66,23 @@ class Note: NSObject, NSCoding {
      * Because, the search is doing among multiple PDFs, so when it adds a result, it needs to distinguish
      * which Note(associated with PDF) it belongs to.
      */
-    func addResultSelections(_ instance: PDFSelection, parent: Note) {
-        if let item = instance.pages.first as? PDFPage {
-            instance.color = NSColor.yellow
+    func addResultSelections(instance: PDFSelection, parent: Note) {
+        if let item = instance.pages().first as? PDFPage {
+            instance.setColor(NSColor.yellowColor())
             for eachSearchResult in self.resultGroup {
-                if Int(item.label) == eachSearchResult.page {
+                if Int(item.label()) == eachSearchResult.page {
                     eachSearchResult.addSelectionsIntoGroup(instance)
                     return
                 }
             }
-            let searchResult = SearchResult(page: Int(item.label)!, parent: parent)
+            let searchResult = SearchResult(page: Int(item.label())!, parent: parent)
             searchResult.addSelectionsIntoGroup(instance)
             self.resultGroup.append(searchResult)
         }
     }
     
     // one page for one bookmark. Check if there is already a bookmark at that page.
-    func alreadyHaveBookmark(_ bookmark: Bookmark) -> Bool {
+    func alreadyHaveBookmark(bookmark: Bookmark) -> Bool {
         for i in 0..<self.bookmarks.count {
             if self.bookmarks[i].page == bookmark.page {
                 return true
@@ -91,10 +92,10 @@ class Note: NSObject, NSCoding {
     }
     
     // when user use Backspace to delete bookmark, remove the bookmark on that page.
-    func removeBookmarkWithPage(_ page: Int) -> Bool {
+    func removeBookmarkWithPage(page: Int) -> Bool {
         for i in 0..<self.bookmarks.count {
             if page == self.bookmarks[i].page {
-                self.bookmarks.remove(at: i)
+                self.bookmarks.removeAtIndex(i)
                 return true
             }
         }
@@ -102,11 +103,11 @@ class Note: NSObject, NSCoding {
     }
     
     // remove one note with specified title and page.
-    func removeSubnotesWithPageAndTitle(_ page: Int, title: String) -> Bool {
+    func removeSubnotesWithPageAndTitle(page: Int, title: String) -> Bool {
         for i in 0..<self.subnotes.count{
             let noteitem = self.subnotes[i]
             if page == noteitem.page && title == noteitem.title {
-                self.subnotes.remove(at: i)
+                self.subnotes.removeAtIndex(i)
                 return true
             }
         }
@@ -114,7 +115,7 @@ class Note: NSObject, NSCoding {
     }
     
     // insert a note
-    func insertSubnote(_ item: NoteItem) {
+    func insertSubnote(item: NoteItem) {
         if isValidated(item, isAdding: true, exceptTitle: nil) {
             self.subnotes.append(item)
         }
@@ -142,9 +143,9 @@ class Note: NSObject, NSCoding {
      * @isAdding indicate this submition is an updating or insertion
      * @exceptTitle is the title you want to exclude when it is an updating: you are updating the primary key
      */
-    func isValidated(_ item: NoteItem, isAdding: Bool, exceptTitle: String?) -> Bool {
+    func isValidated(item: NoteItem, isAdding: Bool, exceptTitle: String?) -> Bool {
         
-        if item.title.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
+        if item.title.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) == "" {
             return false
         } else if isRedundantTitleWithinPage(item, isAdding: isAdding, exceptTitle: nil) {
             return false
@@ -158,7 +159,7 @@ class Note: NSObject, NSCoding {
      * @isAdding indicate this submition is an updating or insertion
      * @exceptTitle is the title you want to exclude when it is an updating: you are updating the primary key
      */
-    fileprivate func isRedundantTitleWithinPage(_ item: NoteItem, isAdding: Bool, exceptTitle: String?) -> Bool {
+    private func isRedundantTitleWithinPage(item: NoteItem, isAdding: Bool, exceptTitle: String?) -> Bool {
         if isAdding {
             for each in self.subnotes {
                 if each.page == item.page && each.title == item.title {
@@ -178,7 +179,7 @@ class Note: NSObject, NSCoding {
 }
 
 /**
- * One NoteItem contains:
+ * One NoteItem represents one note item the user added on Note, it contains:
  * page: the page number
  * title: the title of the note
  * content: the content of the note
@@ -213,19 +214,20 @@ class NoteItem: NSObject, NSCoding {
         }
     }
     
-    
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.page, forKey: "zwpdbh.NoteItem.page")
-        aCoder.encode(self.title, forKey: "zwpdbh.NoteItem.title")
-        aCoder.encode(self.content, forKey: "zwpdbh.NoteItem.content")
+    // encode method for conforming NSCoding
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.page, forKey: "zwpdbh.NoteItem.page")
+        aCoder.encodeObject(self.title, forKey: "zwpdbh.NoteItem.title")
+        aCoder.encodeObject(self.content, forKey: "zwpdbh.NoteItem.content")
         aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.NoteItem.parent")
     }
     
+    // decode method for conforming NSCoding
     required init(coder aDecoder: NSCoder) {
-        self.page = aDecoder.decodeObject(forKey: "zwpdbh.NoteItem.page") as! Int
-        self.title = aDecoder.decodeObject(forKey: "zwpdbh.NoteItem.title") as! String
-        self.content = aDecoder.decodeObject(forKey: "zwpdbh.NoteItem.content") as? String
-        self.parent = aDecoder.decodeObject(forKey: "zwpdbh.NoteItem.parent") as? Note
+        self.page = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.page") as! Int
+        self.title = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.title") as! String
+        self.content = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.content") as? String
+        self.parent = aDecoder.decodeObjectForKey("zwpdbh.NoteItem.parent") as? Note
         super.init()
     }
 }
@@ -257,17 +259,17 @@ class Bookmark: NSObject, NSCoding {
     }
     
     // encode method for conforming NSCoding protocol
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.title, forKey: "zwpdbh.Bookmark.title")
-        aCoder.encode(self.page, forKey: "zwpdbh.Bookmark.page")
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.title, forKey: "zwpdbh.Bookmark.title")
+        aCoder.encodeObject(self.page, forKey: "zwpdbh.Bookmark.page")
         aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.Bookmark.parent")
     }
     
     // decode method for conforming NSCoding protocal
     required init(coder aDecoder: NSCoder) {
-        self.title = aDecoder.decodeObject(forKey: "zwpdbh.Bookmark.title") as! String
-        self.page = aDecoder.decodeObject(forKey: "zwpdbh.Bookmark.page") as! Int
-        self.parent = aDecoder.decodeObject(forKey: "zwpdbh.Bookmark.parent") as? Note
+        self.title = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.title") as! String
+        self.page = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.page") as! Int
+        self.parent = aDecoder.decodeObjectForKey("zwpdbh.Bookmark.parent") as? Note
         super.init()
     }
     
@@ -311,17 +313,17 @@ class SearchResult: NSObject, NSCoding {
     }
     
     // encode method for comforming the NSCoding protocol
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.page, forKey: "zwpdbh.SearchResult.page")
-        aCoder.encode(self.results, forKey: "zwpdbh.SearchResult.results")
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.page, forKey: "zwpdbh.SearchResult.page")
+        aCoder.encodeObject(self.results, forKey: "zwpdbh.SearchResult.results")
         aCoder.encodeConditionalObject(self.parent, forKey: "zwpdbh.SearchResult.parent")
     }
     
     // decode method for comforming the NSCoding protocol
     required init?(coder aDecoder: NSCoder) {
-        self.page = aDecoder.decodeObject(forKey: "zwpdbh.SearchResult.page") as! Int
-        self.results = aDecoder.decodeObject(forKey: "zwpdbh.SearchResult.results") as! Array<PDFSelection>
-        self.parent = aDecoder.decodeObject(forKey: "zwpdbh.SearchResult.parent") as? Note
+        self.page = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.page") as! Int
+        self.results = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.results") as! Array<PDFSelection>
+        self.parent = aDecoder.decodeObjectForKey("zwpdbh.SearchResult.parent") as? Note
         
     }
     
@@ -330,9 +332,9 @@ class SearchResult: NSObject, NSCoding {
      * all the PDFSelection on the same page, so during high lighting, 
      * it shows all the matching part on one page.
      */
-    func addSelectionsIntoGroup(_ selection: PDFSelection) {
+    func addSelectionsIntoGroup(selection: PDFSelection) {
         if self.results.count > 0 {
-            self.results[0].add(selection)
+            self.results[0].addSelection(selection)
         }
         self.results.append(selection)
     }

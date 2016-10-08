@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C9D472251DA71E12008CA75B /* introductory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C9D472241DA71E12008CA75B /* introductory.pdf */; };
 		DB3803801D9BC9C1002089FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB38037F1D9BC9C1002089FD /* AppDelegate.swift */; };
 		DB3803821D9BC9C1002089FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB3803811D9BC9C1002089FD /* Assets.xcassets */; };
 		DB3803851D9BC9C1002089FD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB3803831D9BC9C1002089FD /* MainMenu.xib */; };
@@ -21,10 +22,10 @@
 		DB584C801D9CC0FE00C460EE /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB584C7F1D9CC0FE00C460EE /* Note.swift */; };
 		DBB75D991DA474480054FCB8 /* ErrorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */; };
 		DBB75D9A1DA474480054FCB8 /* ErrorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */; };
-		DBFD2E211DA71E4400D160AE /* introductory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = DBFD2E201DA71E4400D160AE /* introductory.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C9D472241DA71E12008CA75B /* introductory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = introductory.pdf; sourceTree = "<group>"; };
 		DB38037C1D9BC9C1002089FD /* PDFViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB38037F1D9BC9C1002089FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB3803811D9BC9C1002089FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -41,7 +42,6 @@
 		DB584C7F1D9CC0FE00C460EE /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		DBB75D971DA474480054FCB8 /* ErrorWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorWindowController.swift; sourceTree = "<group>"; };
 		DBB75D981DA474480054FCB8 /* ErrorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorWindowController.xib; sourceTree = "<group>"; };
-		DBFD2E201DA71E4400D160AE /* introductory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = introductory.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 		DB38037E1D9BC9C1002089FD /* PDFViewer */ = {
 			isa = PBXGroup;
 			children = (
-				DBFD2E201DA71E4400D160AE /* introductory.pdf */,
+				C9D472241DA71E12008CA75B /* introductory.pdf */,
 				DB3803951D9BCC3A002089FD /* PDFData.swift */,
 				DB584C7F1D9CC0FE00C460EE /* Note.swift */,
 				DB3803901D9BCA7C002089FD /* MainWindowController.swift */,
@@ -130,12 +130,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Otago;
 				TargetAttributes = {
 					DB38037B1D9BC9C1002089FD = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -162,12 +161,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBFD2E211DA71E4400D160AE /* introductory.pdf in Resources */,
 				DB4F2A541DA0560900EF2C1E /* PopoverViewController.xib in Resources */,
 				DB3803821D9BC9C1002089FD /* Assets.xcassets in Resources */,
 				DB53F8D01DA3276D00984B55 /* AboutWindowController.xib in Resources */,
 				DBB75D9A1DA474480054FCB8 /* ErrorWindowController.xib in Resources */,
 				DB3803931D9BCA7C002089FD /* MainWindowController.xib in Resources */,
+				C9D472251DA71E12008CA75B /* introductory.pdf in Resources */,
 				DB3803851D9BC9C1002089FD /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,10 +216,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -264,10 +261,8 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -286,7 +281,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -299,7 +293,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zwpdbh.PDFViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -312,7 +305,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zwpdbh.PDFViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

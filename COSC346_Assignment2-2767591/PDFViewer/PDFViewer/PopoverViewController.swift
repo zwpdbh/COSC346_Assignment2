@@ -19,15 +19,15 @@ class PopoverViewController: NSViewController {
     @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var errorInfor: NSTextField!
     
-    @IBAction func deleteNoteItem(_ sender: NSButton) {
+    @IBAction func deleteNoteItem(sender: NSButton) {
         // if during the adding process, user click the delete button, then cancel the process, close pop up window
         if isAdding {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "DeleteNoteItemFromPopupViewNotification"), object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName("DeleteNoteItemFromPopupViewNotification", object: nil)
         }
         // if the during the process of editing, when user click the delete button, delete the editing noteItem. 
         if let item = self.noteitem {
             let info = ["noteItem": item]
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "DeleteNoteItemFromPopupViewNotification"), object: self, userInfo: info)
+            NSNotificationCenter.defaultCenter().postNotificationName("DeleteNoteItemFromPopupViewNotification", object: self, userInfo: info)
         }
     }
     
@@ -37,12 +37,12 @@ class PopoverViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveAndSetPopupWindowViewWithNotification), name: NSNotification.Name(rawValue: "AboutToEditNoteItemNotification"), object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receiveAndSetPopupWindowViewWithNotification), name: "AboutToEditNoteItemNotification", object: nil)
     }
 
     // use notification to configure pop up window. Such as populate title and content if the user is chaning the note
-    func receiveAndSetPopupWindowViewWithNotification(_ note: Notification) {
-        let itemInfo = (note as NSNotification).userInfo! as! [String: NoteItem]
+    func receiveAndSetPopupWindowViewWithNotification(note: NSNotification) {
+        let itemInfo = note.userInfo! as! [String: NoteItem]
         if let item = itemInfo["noteItem"]{
             isAdding = false
             self.noteitem = NoteItem(page: item.page, title: item.title, parent: item.parent!)

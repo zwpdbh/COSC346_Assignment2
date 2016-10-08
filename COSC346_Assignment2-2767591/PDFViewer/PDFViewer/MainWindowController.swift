@@ -16,18 +16,18 @@ import Quartz
 class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, NSPopoverDelegate {
 
     // MARK: - Outlets and Actions
-    @IBAction func createAboutWindow(_ sender: NSMenuItem) {
+    @IBAction func createAboutWindow(sender: NSMenuItem) {
         let aboutWindowController = AboutWindowController()
         aboutWindowController.showWindow(self)
         self.aboutWindowController = aboutWindowController
     }
     
-    @IBAction func createNewMainWindow(_ sender: NSMenuItem) {
+    @IBAction func createNewMainWindow(sender: NSMenuItem) {
         if !self.isMainWindowOpening {
             let mainWindowController = MainWindowController()
             mainWindowController.showWindow(self)
             self.mainWindowController = mainWindowController
-            self.newMainWindowButton.isHidden = false;
+            self.newMainWindowButton.hidden = false;
         }
     }
     
@@ -46,7 +46,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     @IBOutlet weak var searchTextField: NSTextField!
     
     // update the outlineView column header when user select different option
-    @IBAction func outlineOptionSelect(_ sender: NSPopUpButtonCell) {
+    @IBAction func outlineOptionSelect(sender: NSPopUpButtonCell) {
         self.selectedOutLineOption = self.outlineOption.indexOfSelectedItem
         if self.selectedOutLineOption == 0 {
             self.outlineView.tableColumns[0].title = "time"
@@ -61,7 +61,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         self.outlineView.reloadData()
     }
     
-    @IBAction func addBookmark(_ sender: NSButton) {
+    @IBAction func addBookmark(sender: NSButton) {
         if let set = self.pdfSet {
             let page = set.getCurrentPage()
             let title = "page: \(page)"
@@ -78,18 +78,19 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         }
     }
     
-    @IBAction func addNote(_ sender: NSButton) {
+    @IBAction func addNote(sender: NSButton) {
         if let _ = self.pdfSet {
             // show popover when click addnote button
             isAdding = true
             self.popoverViewController?.isAdding = isAdding
-            popover.show(relativeTo: self.addNoteButton.bounds, of: self.addNoteButton, preferredEdge: NSRectEdge.minY)
+            popover.showRelativeToRect(self.addNoteButton.bounds, ofView: self.addNoteButton, preferredEdge: NSRectEdge.MinY)
         }
     }
-    @IBAction func saveNotes(_ sender: NSMenuItem) {
+    
+    @IBAction func saveNotes(sender: NSMenuItem) {
         // should save all notes under the same direcotry with pdfs
         for eachNote in self.notes {
-            if let savingURL = getNoteURLFromPDFURL(eachNote.pdfURL as URL).path {
+            if let savingURL = getNoteURLFromPDFURL(eachNote.pdfURL).path {
                 let result = NSKeyedArchiver.archiveRootObject(eachNote, toFile: savingURL)
                 if result {
                     print("save note succeed, at: " + savingURL)
@@ -101,7 +102,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     // An helper method for generating saving note NSURL from PDF's NSURL
-    func getNoteURLFromPDFURL(_ url: URL) -> URL {
+    func getNoteURLFromPDFURL(url: NSURL) -> NSURL {
         var savingURL = ""
         if let parts = url.pathComponents {
             for  i in 1..<parts.count-1 {
@@ -114,32 +115,33 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             savingURL = "/" + savingURL + "/" + parts[parts.count-1] + ".note"
         }
         
-        return URL(fileURLWithPath: savingURL)
+        return NSURL(fileURLWithPath: savingURL)
     }
     
     // open a panel to load Notes, meanwhile trying to load associated PDFs
-    @IBAction func openNotes(_ sender: NSMenuItem) {
+    @IBAction func openNotes(sender: NSMenuItem) {
         // open notes and load associated files
         let panel = NSOpenPanel()
         panel.allowedFileTypes = ["note"]
         panel.allowsMultipleSelection = true;
         
-        panel.begin { (result) in
+        panel.beginWithCompletionHandler { (result) in
             if result == NSFileHandlingPanelOKButton {
                 self.pdfSet = nil
-                var pdfURLs: Array<URL> = []
+                var pdfURLs: Array<NSURL> = []
                 self.notes = []
                 
-                var invalidURLs = Array<URL>()
+                var invalidURLs = Array<NSURL>()
                 
-                for url in panel.urls {
-                    if let note = NSKeyedUnarchiver.unarchiveObject(withFile: url.path) as? Note {
+                // use Unarchiver to load the Note back via NSURLs
+                for url in panel.URLs {
+                    if let note = NSKeyedUnarchiver.unarchiveObjectWithFile(url.path!) as? Note {
                         var error: NSError?
-                        if (note.pdfURL as NSURL).checkResourceIsReachableAndReturnError(&error) {
+                        if note.pdfURL.checkResourceIsReachableAndReturnError(&error) {
                             self.notes.append(note)
-                            pdfURLs.append(note.pdfURL as URL)
+                            pdfURLs.append(note.pdfURL)
                         } else {
-                            invalidURLs.append(note.pdfURL as URL)
+                            invalidURLs.append(note.pdfURL)
                         }
                     }
                 }
@@ -150,21 +152,21 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     errorWindowController.showWindow(self)
                     self.errorWindowController = errorWindowController
         
-                    self.errorWindowController!.updateError(invalidURLs: invalidURLs as Array<NSURL>)
+                    self.errorWindowController!.updateError(invalidURLs: invalidURLs)
                 }
                 
                 // if found any associated PDF, load it into PDF model
                 if pdfURLs.count > 0 {
-                    self.pdfSet = PDFSet(pdfURLS: pdfURLs as Array<NSURL>)
+                    self.pdfSet = PDFSet(pdfURLS: pdfURLs)
                 }
                 if let set = self.pdfSet {
                     for url in set.addresses {
-                        self.selectPDFButton.addItem(withTitle: url.lastPathComponent!)
+                        self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
                     }
                     // set PDFSet's delegate as MainWindowController
                     set.setPDFDocumentsDelegate(self)
                     set.delegate = self
-                    self.pdfView.document = set.moveToGivenPDF(0)
+                    self.pdfView.setDocument(set.moveToGivenPDF(0))
                 }
                 self.outlineView.reloadData()
             }
@@ -175,17 +177,17 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     // MARK: - Action
     // open panel to load PDFs
-    @IBAction func openFile(_ sender: NSMenuItem) {
+    @IBAction func openFile(sender: NSMenuItem) {
     
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = true;
         panel.allowedFileTypes = ["pdf"]
         
-        panel.begin { (result) in
+        panel.beginWithCompletionHandler { (result) in
             if(result == NSFileHandlingPanelOKButton) {
                 // if load PDFs succeed, reset all PDF data and reset PDF selection button
                 self.selectPDFButton.removeAllItems()
-                self.pdfSet = PDFSet(pdfURLS: panel.urls as Array<NSURL>)
+                self.pdfSet = PDFSet(pdfURLS: panel.URLs)
                 
                 // one pdf file for one note, if there has been a note with current pdf, then load it, 
                 // otherwise, create a new one with pdf' url
@@ -193,9 +195,9 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                 
                 if let set = self.pdfSet {
                     for url in set.addresses {
-                        self.selectPDFButton.addItem(withTitle: url.lastPathComponent!)
+                        self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
                         // if want associated Note, load it
-                        if let note = self.getNoteFromURL(url as URL) {
+                        if let note = self.getNoteFromURL(url) {
                             self.notes.append(note)
                         } else {
                             // else create a new Note
@@ -205,7 +207,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     
                     set.setPDFDocumentsDelegate(self)
                     set.delegate = self
-                    self.pdfView.document = set.moveToGivenPDF(0)
+                    self.pdfView.setDocument(set.moveToGivenPDF(0))
                 }
                 self.outlineView.reloadData()
             }
@@ -213,87 +215,87 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     // a helper method to try to load Note when open a PDF by using PDF's NSURL
-    func getNoteFromURL(_ pdfURL: URL) -> Note? {
+    func getNoteFromURL(pdfURL: NSURL) -> Note? {
         let noteURL = getNoteURLFromPDFURL(pdfURL)
         var error: NSError?
-        let noteExist = (noteURL as NSURL).checkResourceIsReachableAndReturnError(&error)
+        let noteExist = noteURL.checkResourceIsReachableAndReturnError(&error)
         if noteExist {
-            return NSKeyedUnarchiver.unarchiveObject(withFile: noteURL.path) as? Note
+            return NSKeyedUnarchiver.unarchiveObjectWithFile(noteURL.path!) as? Note
         } else {
             return nil
         }
     }
     
     // go to previous page
-    @IBAction func previousPage(_ sender: NSButton) {
+    @IBAction func previousPage(sender: NSButton) {
         if let set = self.pdfSet {
             if let page = set.moveToPreviousPage() {
-                self.pdfView.go(to: page)
+                self.pdfView.goToPage(page)
             }
         }
     }
     
     
     // go to the next page
-    @IBAction func nextPage(_ sender: NSButton) {
+    @IBAction func nextPage(sender: NSButton) {
         if let set = self.pdfSet {
             if let page = set.moveToNextPage() {
-                self.pdfView.go(to: page)
+                self.pdfView.goToPage(page)
             }
         }
     }
     
     // go to the Given page
-    @IBAction func goToGivenPage(_ sender: NSTextField) {
+    @IBAction func goToGivenPage(sender: NSTextField) {
         if let set = self.pdfSet {
             if let pageNumber = Int(sender.stringValue) {
                 if let page = set.moveToGivenPage(pageNumber) {
-                    self.pdfView.go(to: page)
+                    self.pdfView.goToPage(page)
                 }
             }
         }
     }
     
     // if there is not one pdf, then click this can go to previous one
-    @IBAction func goToPreviousPDF(_ sender: NSButton) {
+    @IBAction func goToPreviousPDF(sender: NSButton) {
         if let set = self.pdfSet {
             if let pdf = set.moveToPreviousPDF() {
-                self.pdfView.document = pdf
+                self.pdfView.setDocument(pdf)
             }
         }
 
     }
     
     // if there is not one pdf, then click this can to to next one
-    @IBAction func goToNextPDF(_ sender: NSButton) {
+    @IBAction func goToNextPDF(sender: NSButton) {
         if let set = self.pdfSet {
             if let pdf = set.moveToNextPDF() {
-                self.pdfView.document = pdf
+                self.pdfView.setDocument(pdf)
             }
         }
     }
     
     // move to selected pdf
-    @IBAction func selectPDF(_ sender: NSPopUpButtonCell) {
+    @IBAction func selectPDF(sender: NSPopUpButtonCell) {
         if let set = self.pdfSet {
             let selectedIndex = self.selectPDFButton.indexOfSelectedItem
             if let pdf = set.moveToGivenPDF(selectedIndex) {
-                self.pdfView.document = pdf
+                self.pdfView.setDocument(pdf)
             }
         }
         
     }
     
-    @IBAction func zoomIn(_ sender: NSButton) {
+    @IBAction func zoomIn(sender: NSButton) {
         self.pdfView.zoomIn(sender)
     }
     
-    @IBAction func zoomOut(_ sender: NSButton) {
+    @IBAction func zoomOut(sender: NSButton) {
         self.pdfView.zoomOut(sender)
     }
     
-    @IBAction func resetZoom(_ sender: NSButton) {
-        self.pdfView.autoScales = true
+    @IBAction func resetZoom(sender: NSButton) {
+        self.pdfView.setAutoScales(true)
     }
     
     // MARK: - Model Variables
@@ -329,15 +331,16 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     var isMainWindowOpening: Bool = false
     
     // MARK: - Action Related to Window
-    func windowDidResize(_ notification: Notification) {
-        self.pdfView.autoScales = true
+    func windowDidResize(notification: NSNotification) {
+        self.pdfView.setAutoScales(true)
     }
     
-    func mainWindowDidClose(_ notice: Notification) {
+    // control the "open MainWindow" menue depends on wether the MainWindow is closed or not.
+    func mainWindowDidClose(notice: NSNotification) {
         if let object = notice.object {
-            if String(describing: type(of: (object) as AnyObject)) == "NSKVONotifying_NSWindow" {
+            if String(object.dynamicType) == "NSKVONotifying_NSWindow" {
                 isMainWindowOpening = false
-                self.newMainWindowButton.isHidden = false
+                self.newMainWindowButton.hidden = false
             }
         }
     }
@@ -349,40 +352,40 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     override func windowDidLoad() {
         super.windowDidLoad()
         self.isMainWindowOpening = true
-        self.newMainWindowButton.isHidden = true
+        self.newMainWindowButton.hidden = true
         
         // setup Notification for MainWindow
-        NotificationCenter.default.addObserver(self, selector: #selector(mainWindowDidClose(_:)), name: NSNotification.Name.NSWindowWillClose, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainWindowDidClose(_:)), name: NSWindowWillCloseNotification, object: nil)
         
         // setup Notification for scroll of pages
-        NotificationCenter.default.post(name: NSNotification.Name.PDFViewPageChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(pageChangedAfterScroll), name: NSNotification.Name.PDFViewPageChanged, object: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(PDFViewPageChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pageChangedAfterScroll), name: PDFViewPageChangedNotification, object: nil)
         
         // setup Notification for delete action on popover view
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteNoteItemWithNotification), name: NSNotification.Name(rawValue: "DeleteNoteItemFromPopupViewNotification"), object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(deleteNoteItemWithNotification), name: "DeleteNoteItemFromPopupViewNotification", object: nil)
         
         // set up popover controller
         self.popoverViewController = PopoverViewController(nibName: "PopoverViewController", bundle: nil)!
         self.popover.contentViewController = self.popoverViewController
-        self.popover.behavior = NSPopoverBehavior.transient
+        self.popover.behavior = NSPopoverBehavior.Transient
         self.popover.delegate = self
         
         // setup Notifications for search
-        NotificationCenter.default.addObserver(self, selector: #selector(didBeginFind), name: NSNotification.Name.PDFDocumentDidBeginFind, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didEndFind), name: NSNotification.Name.PDFDocumentDidEndFind, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didBeginFind), name: PDFDocumentDidBeginFindNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didEndFind), name: PDFDocumentDidEndFindNotification, object: nil)
         
         // Set up introductory startup page to your application
-        if let path = Bundle.main.path(forResource: "introductory", ofType: "pdf") {
-            let startUpPDFURL = URL(fileURLWithPath: path)
+        if let path = NSBundle.mainBundle().pathForResource("introductory", ofType: "pdf") {
+            let startUpPDFURL = NSURL(fileURLWithPath: path)
             var error: NSError?
-            if (startUpPDFURL as NSURL).checkResourceIsReachableAndReturnError(&error) {
+            if startUpPDFURL.checkResourceIsReachableAndReturnError(&error) {
                 self.pdfSet = PDFSet(pdfURLS: [startUpPDFURL])
                 // one pdf file for one note, reset notes
                 self.notes = Array<Note>()
                 if let set = self.pdfSet {
                     for url in set.addresses {
-                        self.selectPDFButton.addItem(withTitle: url.lastPathComponent!)
-                        if let note = self.getNoteFromURL(url as URL) {
+                        self.selectPDFButton.addItemWithTitle(url.lastPathComponent!)
+                        if let note = self.getNoteFromURL(url) {
                             self.notes.append(note)
                         } else {
                             self.notes.append(Note(url: url))
@@ -390,7 +393,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     }
                     set.setPDFDocumentsDelegate(self)
                     set.delegate = self
-                    self.pdfView.document = set.moveToGivenPDF(0)
+                    self.pdfView.setDocument(set.moveToGivenPDF(0))
                 }
                 self.outlineView.reloadData()
             } else {
@@ -403,23 +406,23 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     // Recieve notification: update view, set current pdf to certain page, and update current page info
     func pageChangedAfterScroll() {
-        if let page = self.pdfView.currentPage {
+        if let page = self.pdfView.currentPage() {
             self.pdfSet!.setPage(page)
         }
     }
     
     // MARK: - PDFSetDelegate A self defined protocol to sync info
-    func pdfInfoNeedChangeTo(_ nthPDF: Int, totalPDFs: Int, title: String, page: Int, totalPages: Int) {
+    func pdfInfoNeedChangeTo(nthPDF: Int, totalPDFs: Int, title: String, page: Int, totalPages: Int) {
         self.window?.title = "\(nthPDF)/\(totalPDFs)_" + title
         self.currentPageDisplay.stringValue = "\(page)/\(totalPages)"
         self.indexOfSelectedPDF = nthPDF - 1
-        self.selectPDFButton.selectItem(at: nthPDF - 1)
+        self.selectPDFButton.selectItemAtIndex(nthPDF - 1)
     }
     
     
 
     // MARK: - NSOutlineViewDataSource
-    func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
         
         if let note = item as? Note{
             if selectedOutLineOption == 1 {
@@ -433,7 +436,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         return self.notes.count
     }
     
-    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
         if let note = item as? Note {
             if selectedOutLineOption == 1 {
                 return note.subnotes[index]
@@ -447,7 +450,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         return self.notes[index]
     }
     
-    func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
         if let note = item as? Note {
             if selectedOutLineOption == 1 {
                 return note.subnotes.count > 0
@@ -460,7 +463,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
         return false
     }
     
-    func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
+    func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
         if let note = item as? Note {
             return note
         } else if let noteItem = item as? NoteItem {
@@ -475,15 +478,15 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     
     // MARK: - NSOutlineViewDelegate
-    func outlineViewSelectionDidChange(_ notification: Notification) {
+    func outlineViewSelectionDidChange(notification: NSNotification) {
         let row = self.outlineView.selectedRow
-        if let item = self.outlineView.item(atRow: row) {
+        if let item = self.outlineView.itemAtRow(row) {
             if let bookmark = item as? Bookmark {
                 if let parent = bookmark.parent {
                     let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
                     
                     // simulate select popup button
-                    self.selectPDFButton.selectItem(at: Int(pdfIndex!))
+                    self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
                     self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
                     
                     // simulate go to a given page
@@ -497,7 +500,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
                     
                     // simulate select popup button
-                    self.selectPDFButton.selectItem(at: Int(pdfIndex!))
+                    self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
                     self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
                     // simulate go to a given page
                     self.currentPageDisplay.stringValue = "\(noteItem.page)"
@@ -505,27 +508,27 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
                     
                     // record the noteitem which will be changed
                     editingNoteItem = noteItem
-                    popover.show(relativeTo: self.outlineView.frameOfOutlineCell(atRow: row), of: self.outlineView.view(atColumn: 0, row: row, makeIfNecessary: false)!, preferredEdge: NSRectEdge.minY)
+                    popover.showRelativeToRect(self.outlineView.frameOfOutlineCellAtRow(row), ofView: self.outlineView.viewAtColumn(0, row: row, makeIfNecessary: false)!, preferredEdge: NSRectEdge.MinY)
                     
                     let noteItemInfo = ["noteItem": noteItem]
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "AboutToEditNoteItemNotification"), object: self, userInfo: noteItemInfo as [AnyHashable: Any])
+                    NSNotificationCenter.defaultCenter().postNotificationName("AboutToEditNoteItemNotification", object: self, userInfo: noteItemInfo as [NSObject : AnyObject])
                 }
             } else if let searchResult = item as? SearchResult {
                 if let parent = searchResult.parent {
                     let pdfIndex = self.pdfSet?.getIndexByTitle(parent.title)
                     
                     // simulate select popup button
-                    self.selectPDFButton.selectItem(at: Int(pdfIndex!))
+                    self.selectPDFButton.selectItemAtIndex(Int(pdfIndex!))
                     self.selectPDF(self.selectPDFButton.selectedCell() as! NSPopUpButtonCell)
                 }
                 if let selection = searchResult.results.first {
-                    if let page = selection.pages.first as? PDFPage {
-                        if let pageNumber = Int(page.label) {
+                    if let page = selection.pages().first as? PDFPage {
+                        if let pageNumber = Int(page.label()) {
                             
                             // simulate go to a given page
                             self.currentPageDisplay.stringValue = "\(pageNumber)"
                             self.goToGivenPage(self.currentPageDisplay)
-                            self.pdfView.currentSelection = selection
+                            self.pdfView.setCurrentSelection(selection)
                             self.pdfView.scrollSelectionToVisible(self)
                         }
                     }
@@ -536,17 +539,17 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     
     // MARK: - key event
-    override func keyDown(with theEvent: NSEvent) {
+    override func keyDown(theEvent: NSEvent) {
         interpretKeyEvents([theEvent])
     }
     
     // key action for deleting bookmark
-    override func deleteBackward(_ sender: Any?) {
+    override func deleteBackward(sender: AnyObject?) {
         let row = self.outlineView.selectedRow
         if row == -1 {
             return
         }
-        if let item = self.outlineView.item(atRow: row) {
+        if let item = self.outlineView.itemAtRow(row) {
             if let bookmark = item as? Bookmark {
                 if let parent = bookmark.parent {
                     parent.removeBookmarkWithPage(bookmark.page)
@@ -557,13 +560,13 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
 
     // when receive notification from delete button in the popover view:
-    func deleteNoteItemWithNotification(_ note: Notification) {
+    func deleteNoteItemWithNotification(note: NSNotification) {
         if isAdding {
             self.popover.close()
             return
         }
         
-        let itemInfo = (note as NSNotification).userInfo! as! [String: NoteItem]
+        let itemInfo = note.userInfo! as! [String: NoteItem]
         if let item = itemInfo["noteItem"]{
             if let parent = item.parent {
                 parent.removeSubnotesWithPageAndTitle(item.page, title: item.title)
@@ -574,7 +577,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     
     // MARK: - Popover Control
     // show popover at selected item
-    func popoverWillShow(_ notification: Notification) {
+    func popoverWillShow(notification: NSNotification) {
         self.popoverViewController?.errorInfor.stringValue = ""
     
         if isAdding {
@@ -589,7 +592,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     // add or save NoteItem when popover view is closing
-    func popoverWillClose(_ notification: Notification) {
+    func popoverWillClose(notification: NSNotification) {
         // get the current note
         let note = self.notes[self.indexOfSelectedPDF]
 
@@ -605,7 +608,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     // befor closing popover view, validate data
-    func popoverShouldClose(_ popover: NSPopover) -> Bool {
+    func popoverShouldClose(popover: NSPopover) -> Bool {
         self.operatingNoteItem = nil
         // get the current viewing pdf page
         let page = self.pdfSet!.getCurrentPage()
@@ -621,8 +624,8 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
             let validate = note.isValidated(self.operatingNoteItem!, isAdding: isAdding, exceptTitle: editingNoteItem?.title)
             
             if  !validate{
-                self.popoverViewController?.errorInfor.textColor = NSColor.red
-                self.popoverViewController?.errorInfor.stringValue = "title can not be empty and should be unqie at one page."
+                self.popoverViewController?.errorInfor.textColor = NSColor.redColor()
+                self.popoverViewController?.errorInfor.stringValue = "title can not be empty and should be unique at one page."
             } else {
                 self.popoverViewController?.errorInfor.stringValue = ""
             }
@@ -633,14 +636,14 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     // a selector for reload outlineView data when popover view cloded
-    func popoverDidClose(_ notification: Notification) {
+    func popoverDidClose(notification: NSNotification) {
         self.outlineView.reloadData()
     }
     
     // MARK: - Search Functions
-    @IBAction func search(_ sender: NSTextField) {
+    @IBAction func search(sender: NSTextField) {
         if let set = self.pdfSet {
-            self.outlineOption.selectItem(at: 2)
+            self.outlineOption.selectItemAtIndex(2)
             self.outlineOptionSelect(self.outlineOption.selectedCell() as! NSPopUpButtonCell)
             
             for eachNote in self.notes {
@@ -656,12 +659,12 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     // selector for notification: search begin
-    func didBeginFind(_ note: Notification) {
+    func didBeginFind(note: NSNotification) {
         self.outlineView.reloadData()
     }
     
     // selector for notification: search end
-    func didEndFind(_ note: Notification) {
+    func didEndFind(note: NSNotification) {
         self.outlineView.reloadData()
         for each in self.notes {
             self.outlineView.expandItem(each, expandChildren: true)
@@ -669,7 +672,7 @@ class MainWindowController: NSWindowController, PDFViewerDelegate, NSOutlineView
     }
     
     // selector for notification: find a matched String
-    override func didMatchString(_ instance: PDFSelection) {
+    override func didMatchString(instance: PDFSelection!) {
         self.notes[indexOfNote].addResultSelections(instance, parent: self.notes[indexOfNote])
     }
     
